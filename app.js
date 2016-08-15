@@ -41,8 +41,8 @@ client.end();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
 app.engine('html',hbs.express4({
-    //partialsDir: __dirname + "/views/partials",
-    defaultLayout: __dirname + "/views/mapLayout.html"
+    partialsDir: __dirname + "/views/partials",
+    defaultLayout: __dirname + "/views/layout.html"
 }));
 
 // uncomment after placing your favicon in /public

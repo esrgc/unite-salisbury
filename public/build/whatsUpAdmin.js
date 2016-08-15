@@ -19,8 +19,13 @@ app.View.EventAdd = Backbone.View.extend({
 });
 
 app.View.EventTable = Backbone.View.extend({
+    name: 'EventTable',
     el: '#tableArea',
     addRow: function( data ){
+	var tableArea = $(this.el);
+	var newRow = tableArea.find('tr').clone(true);
+	console.log( newRow );
+	tableArea.find('table').append( newRow );
 	console.log("adding row with data",data);
     }
     
@@ -37,9 +42,11 @@ app.Model.EventModel = Backbone.Model.extend({
 //To hold our event models as they are created
 app.Collection.EventCollection = Backbone.Collection.extend({
     name: "EventCollection",
+    url: 'getUserEvents',
     initialize: function(){
 	console.log("New event collection created");
     },
+    
     newLocation: function( values ){
 	var req = new XMLHttpRequest();
 	var scope = this;
@@ -72,9 +79,10 @@ app.Collection.EventCollection = Backbone.Collection.extend({
 
 app.Router.AdminRouter = Backbone.Router.extend({
     routes:{
-	"": "defaultRoute",
+	"": "tableRoute"
     },
-    defaultRoute: function(){
+    tableRoute: function(){
+	
 	console.log("Admin router routing default route");
 	var eventAddView = app.getViewByName('EventAdd');
 	var eventTableView = app.getViewByName('EventTable');
@@ -83,8 +91,9 @@ app.Router.AdminRouter = Backbone.Router.extend({
 	    var success = eventCollection.newLocation( values );
 	    console.log("Validation was a ", success );
 	}
-	eventCollection.validationSuccess = function(){
+	eventCollection.validationSuccess = function( data ){
 	    console.log("Validation was a success");
+	    eventTableView.addRow( data );
 	}
 	    
 	
@@ -99,6 +108,7 @@ function startApp(){
 	collections : ['EventCollection'],
 	routers: ['AdminRouter']
     });
+
 }
 
 //for admin page

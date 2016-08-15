@@ -7,7 +7,7 @@ module.exports = function( app, passport ){
     
     app.get('/admin', function( req, res ){
 	console.log(res);
-	res.render('admin/index', {layout: 'adminLayout', message: req.flash('loginMessage') });
+	res.render('admin/index', { message: req.flash('loginMessage') });
     });
 
     app.get('/table', function( req, res ){
@@ -24,14 +24,14 @@ module.exports = function( app, passport ){
 	       if( req.user ){
 		   res.render('admin/table', {
 		       user: req.user.rows[0].email,
-		       data: data,
-		       layout: 'adminLayout'
+		       //data: data
 		   });
 	       }
 	       else
 		   res.render('admin/index');
 	   });
     });
+
 
     app.get('/create', function( req, res ){
 	res.render('admin/create', {message: req.flash('createMessage') } );
@@ -44,10 +44,16 @@ module.exports = function( app, passport ){
 	failureRedirect: '/admin',
 	failureFlash: true })
     );
+
+
     app.post('/create',
 	     passport.authenticate('local-create',{
 		 successRedirect: '/table',
 		 failureRedirect: '/create',
 		 failureFlash: true })
     );
+
+    app.post('/getData', function( req, res ){
+	console.log("Get data from collection", req.user.rows);
+    });
 }

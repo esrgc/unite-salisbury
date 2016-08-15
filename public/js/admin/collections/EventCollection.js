@@ -1,9 +1,11 @@
 //To hold our event models as they are created
 app.Collection.EventCollection = Backbone.Collection.extend({
     name: "EventCollection",
+    url: 'getUserEvents',
     initialize: function(){
 	console.log("New event collection created");
     },
+    
     newLocation: function( values ){
 	var req = new XMLHttpRequest();
 	var scope = this;

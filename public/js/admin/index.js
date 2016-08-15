@@ -5,6 +5,7 @@ function startApp(){
 	collections : ['EventCollection'],
 	routers: ['AdminRouter']
     });
+
 }
 
 //for admin page

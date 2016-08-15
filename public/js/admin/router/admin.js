@@ -1,8 +1,9 @@
 app.Router.AdminRouter = Backbone.Router.extend({
     routes:{
-	"": "defaultRoute",
+	"": "tableRoute"
     },
-    defaultRoute: function(){
+    tableRoute: function(){
+	
 	console.log("Admin router routing default route");
 	var eventAddView = app.getViewByName('EventAdd');
 	var eventTableView = app.getViewByName('EventTable');
@@ -11,8 +12,9 @@ app.Router.AdminRouter = Backbone.Router.extend({
 	    var success = eventCollection.newLocation( values );
 	    console.log("Validation was a ", success );
 	}
-	eventCollection.validationSuccess = function(){
+	eventCollection.validationSuccess = function( data ){
 	    console.log("Validation was a success");
+	    eventTableView.addRow( data );
 	}
 	    
 	
