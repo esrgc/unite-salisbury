@@ -1,0 +1,28 @@
+table {
+  border: 1px solid black;
+  width: 100%;
+}
+table th,
+table td {
+  border: 1px solid black;
+  height: 50px;
+  vertical-align: bottom;
+  padding: 15px;
+}
+table tr:hover {
+  background-color: #f5f5f5;
+}
+table .table-remove {
+  color: #700;
+  cursor: pointer;
+}
+table .table-remove:hover {
+  color: #f00;
+}
+.table-add {
+  color: #070;
+  cursor: pointer;
+}
+.glyphicon {
+  font-size: 20px;
+}

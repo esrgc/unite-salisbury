@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <h4> If you have an accont, log in here to add/edit events shown on the whatsUp app</h4>
+      <form action="/login" method="post">
+	<div>
+	  <label>Email:</label>
+	  <input type="text" name="email"/>
+	</div>
+	<div>
+	  <label>Password:</label>
+	  <input type="password" name="password"/>
+	</div>
+	<div>
+	<input type="submit" value="Log In"/>
+	</div>
+	{{#if message}}
+	<div class="alert alert-danger">{{message}}</div>
+	{{/if}}
+      </form>
+      <a href="/create"> Create Account</a>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+</div>
+

@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <h4> To create a profile, enter your email, a password you want to use, and the authorization code given by the ESRGC</h4>
+      <form action="/create" method="post">
+	<div>
+	  <label>New Email:</label>
+	  <input type="text" name="email"/>
+	</div>
+	<div>
+	  <label>New Password:</label>
+	  <input type="password" name="password"/>
+	</div>
+	<div>
+	  <label>Access Code: </label>
+	  <input type="password" name="access"/>
+	</div>
+	<div>
+	  <input type="submit" value="Create"/>
+	</div>
+	{{#if message}}
+	<div class="alert alert-danger">{{message}}</div>
+	{{/if}}
+      </form>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+</div>

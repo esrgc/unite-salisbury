@@ -1,0 +1,62 @@
+<div class="container">
+<div class="row">
+ <div class="col-md-12">
+  <h3>{{user}}'s Event Table</h3>
+<div id="tableArea">
+    <table class="adminTable">
+      <thead> 
+	<th>Name</th> 
+	<th>Start Date</th>
+	<th>End Date</th>
+	<th>Steet Address</td>
+	<th>Lat/Long</th>
+	<th>Description</th>
+	<th></th>
+      </thead> 
+      <tbody> 
+	{{#each data}}
+	<tr> 
+	  <td contenteditable="true">{{this.name}}</td> 
+	  <td contenteditable="false">{{this.startdate}}</td>
+	  <td contenteditable="false">{{this.enddate}}</td>
+	  <td contenteditable="false">{{this.street}},{{this.city}}</td>
+	  <td contenteditable="true">{{this.lat}},{{this.lon}}</td>
+	  <td contenteditable="true">{{this.description}}</td> 
+	  <td> <span class="table-remove glyphicon glyphicon-remove"></span> </td>
+	</tr> 
+	{{/each}}
+      </tbody> 
+    </table>
+     <button class="btn btn-primary" data-toggle="modal" data-target="#addModal"> Add Event </button>
+    <button id="saveButton" class="btn btn-primary"> Save </button>
+</div>    
+ </div>
+</div>
+</div>
+
+
+<div class="modal fade" id="addModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <form id="eventAddForm">
+	  <input type="text" name="title" value="Event Title"></br>
+	  <input type="text" name="street" value="Street Address"></br>
+	  <input type="text" name="city" value="City"></br>
+	  <input type="text" name="startDate" value="Start Date"></br>
+	  <input type="text" name="endDate" value="End Date"></br>
+	  <input type="text" name="description" value="Description"></br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Discard</button>
+        <button id="addItem" type="button" class="btn btn-primary">Add Event</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
