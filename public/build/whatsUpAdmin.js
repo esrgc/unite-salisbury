@@ -5,7 +5,8 @@ app.View.EventAdd = Backbone.View.extend({
 	'click #addItem' : 'addItem'
     },
     addItem: function(){
-	console.log("Adding item");
+
+	//Get data from form and pass to router
 	var form = $('#eventAddForm :input');
 	var values = {};
 	form.each( function(){
@@ -15,6 +16,19 @@ app.View.EventAdd = Backbone.View.extend({
 	if( typeof this.validateLocation == 'function' )
 	    this.validateLocation( values );
 
+
+
+    },
+    //hide and reset modal
+    hideModal: function(){
+	console.log("hiding modal");
+	$(this.el).modal('hide');
+	$("#eventAddForm")[0].reset();
+	$("#modalErr").html('');
+    },
+    modalError: function( err ){
+	console.log("Error modal");
+	$("#modalErr").html("&nbsp"+ err );
     }
 });
 
@@ -27,8 +41,16 @@ app.View.EventTable = Backbone.View.extend({
 	console.log( newRow );
 	tableArea.find('table').append( newRow );
 	console.log("adding row with data",data);
+    },
+    render: function( data ){
+
+	console.log( "View render" , data );
+	var source = $('#tableTemplate').html();
+	var template = Handlebars.compile( source );
+	var html = template( data );
+	console.log( html );
+	$( this.el ).html( html );
     }
-    
 });
 
 
@@ -43,11 +65,40 @@ app.Model.EventModel = Backbone.Model.extend({
 app.Collection.EventCollection = Backbone.Collection.extend({
     name: "EventCollection",
     url: 'getUserEvents',
+    cache: null,
     initialize: function(){
 	console.log("New event collection created");
     },
-    
+    getUserData: function(){
+	var scope = this;
+	this.fetch({
+	    success: function(){
+		if( typeof scope.onDataLoaded == 'function' )
+		    scope.onDataLoaded();
+		else
+		    console.error("No handle for data load");
+	    },
+	    error: function(){
+		if( typeof scope.onDataError == 'function' )
+		    scope.onDataError();
+		else
+		    console.error("No handle for data error");
+	    }
+	});
+    },
+	    
     newLocation: function( values ){
+	this.cache = values;
+	var datesResult = this.validateDate( values ) 
+	
+	if( datesResult == true )
+	    this.validateLocation( values );
+        else
+            if( typeof this.validationFailure == 'function' )
+		this.validationFailure( datesResult );
+		
+    },
+    validateLocation: function( values ){
 	var req = new XMLHttpRequest();
 	var scope = this;
 	var qString = 'http://nominatim.openstreetmap.org/search/q='
@@ -61,16 +112,47 @@ app.Collection.EventCollection = Backbone.Collection.extend({
 	}
 	req.open('GET', qString );
 	req.send();
-        console.log("Verification request sent");                                                                            	
+        console.log("Verification request sent");	
     },
     nominatimListener: function(){
 	console.log(this.responseText);
 	this.collectionCallback( this.responseText );
     },
     validationCallback: function( response ){
-	console.log("Got response callback" , response );
-	if( typeof this.validationSuccess == 'function' )
-	    this.validationSuccess();
+	var data = JSON.parse(response); 
+	console.log("Got response callback" , data );
+	if( typeof data[0] == 'undefined' || typeof data[0].lat == 'undefined' || typeof data[0].lon == 'undefined'){
+	    if( typeof this.validationFailure == 'function' )
+		this.validationFailure( "Could not lookup that address");
+	}
+	else
+	    if( typeof this.validationSuccess == 'function' )
+		this.validationSuccess({ lat: data[0].lat, lon:data[0].lon});
+    },
+    validateDate: function( values ){
+	var startdate = values.startdate;
+	var enddate = values.enddate;
+	var starttime = values.starttime;
+	var endtime = values.endtime;
+	console.log( "Values",values );
+	console.log( "dates ",startdate, enddate, starttime, values.endtime );
+	if( !this.checkDate( startdate ) || !this.checkDate( enddate ) )
+	    return "Dates not formatted correctly";
+	if( !this.checkTime( starttime ) || !this.checkTime( endtime ) )
+	    return "Times not formatted correctly";
+	return true;
+    },
+    checkDate: function( dateIn ){
+	var reDate = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+	if( !dateIn.match( reDate ) )
+	    return false;
+	return true;
+    },
+    checkTime: function( timeIn ){
+	var reTime = /^\d{1,2}:\d{2}([ap]m)?$/;
+	if( !timeIn.match( reTime ) )
+	    return false;
+	return true;
     }
 	
 	
@@ -84,19 +166,51 @@ app.Router.AdminRouter = Backbone.Router.extend({
     tableRoute: function(){
 	
 	console.log("Admin router routing default route");
+	
+	console.log( Handlebars );
 	var eventAddView = app.getViewByName('EventAdd');
 	var eventTableView = app.getViewByName('EventTable');
 	var eventCollection = app.getCollection('EventCollection');
+
 	eventAddView.validateLocation = function( values ){
-	    var success = eventCollection.newLocation( values );
-	    console.log("Validation was a ", success );
+	    eventCollection.newLocation( values );
 	}
 	eventCollection.validationSuccess = function( data ){
 	    console.log("Validation was a success");
-	    eventTableView.addRow( data );
-	}
-	    
+	    console.log( eventCollection.cache, data );
+	    var cache = eventCollection.cache;
+	    eventCollection.add({
+		description:cache.description,
+		enddate: cache.endDate,
+		startdate: cache.startDate,
+		name: cache.title,
+		lat: data.lat,
+		lon: data.lon
 	
+	    });
+	    var viewData = [];
+	    for( i in this.models )
+		viewData.push( this.models[i].toJSON() );
+	    eventTableView.render( viewData );
+	    eventAddView.hideModal();
+	};
+
+	eventCollection.onDataLoaded = function(){
+	    console.log("Data load success");
+	    var viewData = [];
+	    for( i in this.models )
+		viewData.push( this.models[i].toJSON() );
+	    eventTableView.render( viewData );
+	};
+	eventCollection.onDataError = function(){
+	    console.log("Data load error" );
+	};
+	eventCollection.validationFailure = function( err ){
+	    console.log("Form validation error: ", err );
+	    eventAddView.modalError( err );
+	}
+    
+       eventCollection.getUserData();
 	//Initialize MVC
    },
 });

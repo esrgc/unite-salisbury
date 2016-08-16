@@ -5,7 +5,8 @@ app.View.EventAdd = Backbone.View.extend({
 	'click #addItem' : 'addItem'
     },
     addItem: function(){
-	console.log("Adding item");
+
+	//Get data from form and pass to router
 	var form = $('#eventAddForm :input');
 	var values = {};
 	form.each( function(){
@@ -15,5 +16,18 @@ app.View.EventAdd = Backbone.View.extend({
 	if( typeof this.validateLocation == 'function' )
 	    this.validateLocation( values );
 
+
+
+    },
+    //hide and reset modal
+    hideModal: function(){
+	console.log("hiding modal");
+	$(this.el).modal('hide');
+	$("#eventAddForm")[0].reset();
+	$("#modalErr").html('');
+    },
+    modalError: function( err ){
+	console.log("Error modal");
+	$("#modalErr").html("&nbsp"+ err );
     }
 });

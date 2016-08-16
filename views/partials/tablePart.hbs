@@ -1,5 +1,4 @@
-<script id="tableTemplate type="text/x-handlebars-template">
-<div id="tableArea">
+<script id="tableTemplate" type="text/x-handlebars-template">
     <table class="adminTable">
       <thead> 
 	<th>Name</th> 
@@ -11,20 +10,17 @@
 	<th></th>
       </thead> 
       <tbody> 
-	{{#each data}}
+	\{{#each this}}
 	<tr> 
-	  <td contenteditable="true">{{this.name}}</td> 
-	  <td contenteditable="false">{{this.startdate}}</td>
-	  <td contenteditable="false">{{this.enddate}}</td>
-	  <td contenteditable="false">{{this.street}},{{this.city}}</td>
-	  <td contenteditable="true">{{this.lat}},{{this.lon}}</td>
-	  <td contenteditable="true">{{this.description}}</td> 
+	  <td contenteditable="true">\{{this.name}}</td> 
+	  <td contenteditable="false">\{{startdate}}</td>
+	  <td contenteditable="false">\{{enddate}}</td>
+	  <td contenteditable="false">\{{street}},{{this.city}}</td>
+	  <td contenteditable="true">\{{lat}},\{{lon}}</td>
+	  <td contenteditable="true">\{{description}}</td> 
 	  <td> <span class="table-remove glyphicon glyphicon-remove"></span> </td>
 	</tr> 
-	{{/each}}
+	\{{/each}}
       </tbody> 
     </table>
-     <button class="btn btn-primary" data-toggle="modal" data-target="#addModal"> Add Event </button>
-    <button id="saveButton" class="btn btn-primary"> Save </button>
-   </div>    
 </script>

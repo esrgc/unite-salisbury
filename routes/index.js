@@ -12,24 +12,12 @@ module.exports = function( app, passport ){
 
     app.get('/table', function( req, res ){
 	var data;
-	console.log( handlers );
-	handlers.getDataForUserId( req.user.rows[0].id, 
-	   function( err, result ){
-	       if( err )
-		   console.log("Data fetch error", err );
-	       else{
-		   console.log("Got result", result.rows );
-		   data = result.rows;
-	       }
-	       if( req.user ){
-		   res.render('admin/table', {
-		       user: req.user.rows[0].email,
-		       //data: data
-		   });
-	       }
-	       else
-		   res.render('admin/index');
-	   });
+	res.render('admin/table', {
+	       user: req.user.rows[0].email,
+	       //data: data
+	 });
+	
+	
     });
 
 
@@ -53,7 +41,18 @@ module.exports = function( app, passport ){
 		 failureFlash: true })
     );
 
-    app.post('/getData', function( req, res ){
+    app.get('/getUserEvents', function( req, res ){
 	console.log("Get data from collection", req.user.rows);
+	handlers.getDataForUserId( req.user.rows[0].id, 
+	   function( err, result ){
+	       if( err )
+		   console.log("Data fetch error", err );
+	       else{
+		   console.log("Got result", result.rows );
+		   data = result.rows;
+		   res.json(data);
+	       }
+	  });
+	
     });
 }

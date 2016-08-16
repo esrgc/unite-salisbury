@@ -12,10 +12,13 @@
 	  <input type="text" name="title" value="Event Title"></br>
 	  <input type="text" name="street" value="Street Address"></br>
 	  <input type="text" name="city" value="City"></br>
-	  <input type="text" name="startDate" value="Start Date"></br>
-	  <input type="text" name="endDate" value="End Date"></br>
+	  <input type="datetime" name="startdate" value="Start Date">&nbsp( ex: mm/dd/yyyy )</br>
+	  <input type="datetime" name="starttime" value="Start Time">&nbsp( ex: 12:30pm )</br>
+	  <input type="datetime" name="enddate" value="End Date">&nbsp( ex: mm/dd/yyyy )</br>
+	  <input type="datetime" name="endtime" value="End Time">&nbsp( ex: 12:30pm )</br>
 	  <input type="text" name="description" value="Description"></br>
       </div>
+      <strong id="modalErr" style="color:red"></strong>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Discard</button>
         <button id="addItem" type="button" class="btn btn-primary">Add Event</button>

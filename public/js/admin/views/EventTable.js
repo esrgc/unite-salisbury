@@ -7,6 +7,14 @@ app.View.EventTable = Backbone.View.extend({
 	console.log( newRow );
 	tableArea.find('table').append( newRow );
 	console.log("adding row with data",data);
+    },
+    render: function( data ){
+
+	console.log( "View render" , data );
+	var source = $('#tableTemplate').html();
+	var template = Handlebars.compile( source );
+	var html = template( data );
+	console.log( html );
+	$( this.el ).html( html );
     }
-    
 });
