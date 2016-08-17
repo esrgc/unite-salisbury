@@ -34,23 +34,30 @@ app.View.EventAdd = Backbone.View.extend({
 
 app.View.EventTable = Backbone.View.extend({
     name: 'EventTable',
-    el: '#tableArea',
-    addRow: function( data ){
-	var tableArea = $(this.el);
-	var newRow = tableArea.find('tr').clone(true);
-	console.log( newRow );
-	tableArea.find('table').append( newRow );
-	console.log("adding row with data",data);
+    el: '#tableViewArea',
+    events:{
+	'click #saveButton': 'saveData',
+	'click .table-remove': 'remove'
     },
-    render: function( data ){
+   render: function( data ){
 
 	console.log( "View render" , data );
 	var source = $('#tableTemplate').html();
 	var template = Handlebars.compile( source );
 	var html = template( data );
 	console.log( html );
-	$( this.el ).html( html );
+	$( "#tableArea" ).html( html );
+    },
+    saveData: function(){
+	console.log("View save");
+	if( typeof this.saveCollection == 'function' )
+	    this.saveCollection();
+    },
+    remove: function(){
+	console.log("Removing");
+	//$(this).parents('tr').detach();
     }
+
 });
 
 
@@ -66,6 +73,8 @@ app.Collection.EventCollection = Backbone.Collection.extend({
     name: "EventCollection",
     url: 'getUserEvents',
     cache: null,
+    topId: 0,
+    userId: 0,
     initialize: function(){
 	console.log("New event collection created");
     },
@@ -86,7 +95,10 @@ app.Collection.EventCollection = Backbone.Collection.extend({
 	    }
 	});
     },
-	    
+    saveData: function(){
+	console.log("Collection saving data");
+	this.sync( 'create', this );
+    },
     newLocation: function( values ){
 	this.cache = values;
 	var datesResult = this.validateDate( values ) 
@@ -172,6 +184,10 @@ app.Router.AdminRouter = Backbone.Router.extend({
 	var eventTableView = app.getViewByName('EventTable');
 	var eventCollection = app.getCollection('EventCollection');
 
+
+	eventTableView.saveCollection = function(){
+	    eventCollection.saveData();
+	}
 	eventAddView.validateLocation = function( values ){
 	    eventCollection.newLocation( values );
 	}
@@ -179,13 +195,21 @@ app.Router.AdminRouter = Backbone.Router.extend({
 	    console.log("Validation was a success");
 	    console.log( eventCollection.cache, data );
 	    var cache = eventCollection.cache;
+	    this.topId++;
 	    eventCollection.add({
 		description:cache.description,
-		enddate: cache.endDate,
-		startdate: cache.startDate,
+		enddate: cache.enddate,
+		startdate: cache.startdate,
+		starttime: cache.starttime,
+		endtime: cache.endtime,
 		name: cache.title,
 		lat: data.lat,
-		lon: data.lon
+		lon: data.lon,
+		street: cache.street,
+		city: cache.city,
+		ownerid: this.userId,
+		eventid: this.topId
+	    
 	
 	    });
 	    var viewData = [];
@@ -197,10 +221,20 @@ app.Router.AdminRouter = Backbone.Router.extend({
 
 	eventCollection.onDataLoaded = function(){
 	    console.log("Data load success");
+
 	    var viewData = [];
-	    for( i in this.models )
+	    var max = 0;
+	    if( this.models.length > 0 )
+		this.userId = this.models[0].get('ownerid');
+	    for( i in this.models ){
 		viewData.push( this.models[i].toJSON() );
-	    eventTableView.render( viewData );
+		var eId = this.models[i].get('eventid');
+		if( eId > max)
+		   max = eId;
+	    }
+	    this.topId = max;
+	   console.log("Owner id ", this.userId," top id", this.topId );
+	   eventTableView.render( viewData );
 	};
 	eventCollection.onDataError = function(){
 	    console.log("Data load error" );
@@ -225,36 +259,13 @@ function startApp(){
 
 }
 
-//for admin page
 
-
-
-
-var $table = $('.adminTable');
-var $saveButton = $('#saveButton');
-var $tableArea = $('#tableArea');
 
 $('.table-remove').click( function(){
     $(this).parents('tr').detach();
 });
 
 
-function listener(){
-    console.log(this.responseText);
-}
-
-
-$saveButton.click( function(){
-    var rows = $tableArea.find('tr:not(:hidden)');
-    var data;
-    for( var i =1; i < rows.length; i++ )
-	console.log(rows[i]);
-    var req = new XMLHttpRequest();
-    req.addEventListener( "load", listener );
-    req.collectionCallback = this;
-    req.open( "GET", "http://nominatim.openstreetmap.org/search/q=705%20edgewater%20drive,%20salisbury?format=json");
-    req.send();
-});
 
 
 

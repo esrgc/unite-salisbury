@@ -11,6 +11,10 @@ app.Router.AdminRouter = Backbone.Router.extend({
 	var eventTableView = app.getViewByName('EventTable');
 	var eventCollection = app.getCollection('EventCollection');
 
+
+	eventTableView.saveCollection = function(){
+	    eventCollection.saveData();
+	}
 	eventAddView.validateLocation = function( values ){
 	    eventCollection.newLocation( values );
 	}
@@ -18,13 +22,21 @@ app.Router.AdminRouter = Backbone.Router.extend({
 	    console.log("Validation was a success");
 	    console.log( eventCollection.cache, data );
 	    var cache = eventCollection.cache;
+	    this.topId++;
 	    eventCollection.add({
 		description:cache.description,
-		enddate: cache.endDate,
-		startdate: cache.startDate,
+		enddate: cache.enddate,
+		startdate: cache.startdate,
+		starttime: cache.starttime,
+		endtime: cache.endtime,
 		name: cache.title,
 		lat: data.lat,
-		lon: data.lon
+		lon: data.lon,
+		street: cache.street,
+		city: cache.city,
+		ownerid: this.userId,
+		eventid: this.topId
+	    
 	
 	    });
 	    var viewData = [];
@@ -36,10 +48,20 @@ app.Router.AdminRouter = Backbone.Router.extend({
 
 	eventCollection.onDataLoaded = function(){
 	    console.log("Data load success");
+
 	    var viewData = [];
-	    for( i in this.models )
+	    var max = 0;
+	    if( this.models.length > 0 )
+		this.userId = this.models[0].get('ownerid');
+	    for( i in this.models ){
 		viewData.push( this.models[i].toJSON() );
-	    eventTableView.render( viewData );
+		var eId = this.models[i].get('eventid');
+		if( eId > max)
+		   max = eId;
+	    }
+	    this.topId = max;
+	   console.log("Owner id ", this.userId," top id", this.topId );
+	   eventTableView.render( viewData );
 	};
 	eventCollection.onDataError = function(){
 	    console.log("Data load error" );

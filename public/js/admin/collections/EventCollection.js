@@ -3,6 +3,8 @@ app.Collection.EventCollection = Backbone.Collection.extend({
     name: "EventCollection",
     url: 'getUserEvents',
     cache: null,
+    topId: 0,
+    userId: 0,
     initialize: function(){
 	console.log("New event collection created");
     },
@@ -23,7 +25,10 @@ app.Collection.EventCollection = Backbone.Collection.extend({
 	    }
 	});
     },
-	    
+    saveData: function(){
+	console.log("Collection saving data");
+	this.sync( 'create', this );
+    },
     newLocation: function( values ){
 	this.cache = values;
 	var datesResult = this.validateDate( values ) 

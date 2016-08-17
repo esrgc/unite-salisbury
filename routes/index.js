@@ -25,6 +25,23 @@ module.exports = function( app, passport ){
 	res.render('admin/create', {message: req.flash('createMessage') } );
     });
 
+
+    app.get('/getUserEvents', function( req, res ){
+	console.log("Get data from collection", req.user.rows);
+	handlers.getDataForUserId( req.user.rows[0].id, 
+	   function( err, result ){
+	       if( err )
+		   console.log("Data fetch error", err );
+	       else{
+		   console.log("Got result", result.rows );
+		   data = result.rows;
+		   res.json(data);
+	       }
+	  });
+	
+    });
+
+
     //Post req
     app.post('/login', 
 	passport.authenticate('local-login', {
@@ -41,18 +58,13 @@ module.exports = function( app, passport ){
 		 failureFlash: true })
     );
 
-    app.get('/getUserEvents', function( req, res ){
-	console.log("Get data from collection", req.user.rows);
-	handlers.getDataForUserId( req.user.rows[0].id, 
-	   function( err, result ){
-	       if( err )
-		   console.log("Data fetch error", err );
-	       else{
-		   console.log("Got result", result.rows );
-		   data = result.rows;
-		   res.json(data);
-	       }
-	  });
-	
-    });
+
+    app.post('/getUserEvents',function( req, res ){
+	console.log("Got post", req.body);
+	handlers.updateByUserId( req.user.rows[0].id, req.body, 
+		 function( err, client ){
+		     if( err )
+			 console.log("Update error", err );
+		     });
+	});
 }

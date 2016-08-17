@@ -1,20 +1,27 @@
 app.View.EventTable = Backbone.View.extend({
     name: 'EventTable',
-    el: '#tableArea',
-    addRow: function( data ){
-	var tableArea = $(this.el);
-	var newRow = tableArea.find('tr').clone(true);
-	console.log( newRow );
-	tableArea.find('table').append( newRow );
-	console.log("adding row with data",data);
+    el: '#tableViewArea',
+    events:{
+	'click #saveButton': 'saveData',
+	'click .table-remove': 'remove'
     },
-    render: function( data ){
+   render: function( data ){
 
 	console.log( "View render" , data );
 	var source = $('#tableTemplate').html();
 	var template = Handlebars.compile( source );
 	var html = template( data );
 	console.log( html );
-	$( this.el ).html( html );
+	$( "#tableArea" ).html( html );
+    },
+    saveData: function(){
+	console.log("View save");
+	if( typeof this.saveCollection == 'function' )
+	    this.saveCollection();
+    },
+    remove: function(){
+	console.log("Removing");
+	//$(this).parents('tr').detach();
     }
+
 });
