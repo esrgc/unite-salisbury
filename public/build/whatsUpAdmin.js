@@ -234,7 +234,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
 	    for( i in this.models ){
 		viewData.push( this.models[i].toJSON() );
 		var eId = this.models[i].get('eventid');
-		if( eId > max)
+			if( eId > max)
 		   max = eId;
 	    }
 	    this.topId = max;

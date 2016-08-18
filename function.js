@@ -59,6 +59,16 @@ module.exports = {
 
 	
     },
+    getMapData: function( cb ){
+	var client = new pg.Client( conString );
+	client.connect();
+	client.query('SELECT * FROM data', function( err, results ){
+	    if( err)
+		cb(err)
+	    else
+		cb( null, results.rows )
+	});
+    },
     check: function( item ){
 	if( item )
 	    return item

@@ -26,3 +26,8 @@ table .table-remove:hover {
 .glyphicon {
   font-size: 20px;
 }
+#mapArea {
+  border: solid;
+  width: 100vw;
+  height: 100vh;
+}

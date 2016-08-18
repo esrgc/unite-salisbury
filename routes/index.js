@@ -1,6 +1,7 @@
 var handlers = require('../function');
 module.exports = function( app, passport ){
-    //Get req
+    //Get
+//////////////////////////////////////////////////////////////////////////////////////////////
     app.get('/', function( req, res ){
 	res.render('map/home.html');
     });
@@ -40,9 +41,16 @@ module.exports = function( app, passport ){
 	  });
 	
     });
+    app.get('/getMapData', function( req, res ){
+	console.log("Getting map data");
+	handlers.getMapData(function(err, results ){
+	    res.json( results )
+	});
+    });
 
 
-    //Post req
+    //Post
+///////////////////////////////////////////////////////////////////////////
     app.post('/login', 
 	passport.authenticate('local-login', {
 	successRedirect: '/table',
@@ -67,4 +75,6 @@ module.exports = function( app, passport ){
 			 console.log("Update error", err );
 		     });
 	});
+
+
 }
