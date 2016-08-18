@@ -49,13 +49,13 @@ app.View.EventTable = Backbone.View.extend({
 	$( "#tableArea" ).html( html );
     },
     saveData: function(){
-	console.log("View save");
 	if( typeof this.saveCollection == 'function' )
 	    this.saveCollection();
     },
-    remove: function(){
-	console.log("Removing");
-	//$(this).parents('tr').detach();
+    remove: function( e ){
+	$(e.target).parents('tr').detach();
+	if( typeof this.removeById == 'function' )
+	    this.removeById( $(e.target).attr('value')  );
     }
 
 });
@@ -165,11 +165,14 @@ app.Collection.EventCollection = Backbone.Collection.extend({
 	if( !timeIn.match( reTime ) )
 	    return false;
 	return true;
+    },
+    removeById: function( eventid ){
+	console.log("Removing event id", eventid );
+	this.remove( this.where( { eventid: Number(eventid) } ) ); 
     }
 	
 	
 });
-
 
 app.Router.AdminRouter = Backbone.Router.extend({
     routes:{
@@ -188,6 +191,9 @@ app.Router.AdminRouter = Backbone.Router.extend({
 	eventTableView.saveCollection = function(){
 	    eventCollection.saveData();
 	}
+	eventTableView.removeById = function( eventId ){
+	    eventCollection.removeById( eventId );
+	}
 	eventAddView.validateLocation = function( values ){
 	    eventCollection.newLocation( values );
 	}
@@ -195,8 +201,8 @@ app.Router.AdminRouter = Backbone.Router.extend({
 	    console.log("Validation was a success");
 	    console.log( eventCollection.cache, data );
 	    var cache = eventCollection.cache;
-	    this.topId++;
-	    eventCollection.add({
+	    this.topId=this.topId+1;
+	   eventCollection.add({
 		description:cache.description,
 		enddate: cache.enddate,
 		startdate: cache.startdate,
@@ -210,7 +216,6 @@ app.Router.AdminRouter = Backbone.Router.extend({
 		ownerid: this.userId,
 		eventid: this.topId
 	    
-	
 	    });
 	    var viewData = [];
 	    for( i in this.models )
@@ -261,9 +266,7 @@ function startApp(){
 
 
 
-$('.table-remove').click( function(){
-    $(this).parents('tr').detach();
-});
+
 
 
 

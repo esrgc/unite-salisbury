@@ -15,13 +15,13 @@ app.View.EventTable = Backbone.View.extend({
 	$( "#tableArea" ).html( html );
     },
     saveData: function(){
-	console.log("View save");
 	if( typeof this.saveCollection == 'function' )
 	    this.saveCollection();
     },
-    remove: function(){
-	console.log("Removing");
-	//$(this).parents('tr').detach();
+    remove: function( e ){
+	$(e.target).parents('tr').detach();
+	if( typeof this.removeById == 'function' )
+	    this.removeById( $(e.target).attr('value')  );
     }
 
 });

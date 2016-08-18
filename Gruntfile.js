@@ -20,7 +20,7 @@ module.exports = function( grunt ){
 			'./public/js/map/models/*.js',
 			'./public/js/map/collections/*.js',
 			'./public/js/map/router/*.js',
-			'./public/js/admin/*.js'
+			'./public/js/map/*.js'
 		    ]
 		}		      
 	    },

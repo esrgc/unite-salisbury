@@ -15,6 +15,9 @@ app.Router.AdminRouter = Backbone.Router.extend({
 	eventTableView.saveCollection = function(){
 	    eventCollection.saveData();
 	}
+	eventTableView.removeById = function( eventId ){
+	    eventCollection.removeById( eventId );
+	}
 	eventAddView.validateLocation = function( values ){
 	    eventCollection.newLocation( values );
 	}
@@ -22,8 +25,8 @@ app.Router.AdminRouter = Backbone.Router.extend({
 	    console.log("Validation was a success");
 	    console.log( eventCollection.cache, data );
 	    var cache = eventCollection.cache;
-	    this.topId++;
-	    eventCollection.add({
+	    this.topId=this.topId+1;
+	   eventCollection.add({
 		description:cache.description,
 		enddate: cache.enddate,
 		startdate: cache.startdate,
@@ -37,7 +40,6 @@ app.Router.AdminRouter = Backbone.Router.extend({
 		ownerid: this.userId,
 		eventid: this.topId
 	    
-	
 	    });
 	    var viewData = [];
 	    for( i in this.models )

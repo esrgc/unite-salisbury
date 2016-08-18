@@ -95,6 +95,10 @@ app.Collection.EventCollection = Backbone.Collection.extend({
 	if( !timeIn.match( reTime ) )
 	    return false;
 	return true;
+    },
+    removeById: function( eventid ){
+	console.log("Removing event id", eventid );
+	this.remove( this.where( { eventid: Number(eventid) } ) ); 
     }
 	
 	
