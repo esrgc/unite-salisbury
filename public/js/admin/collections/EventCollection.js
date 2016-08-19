@@ -11,7 +11,8 @@ app.Collection.EventCollection = Backbone.Collection.extend({
     getUserData: function(){
 	var scope = this;
 	this.fetch({
-	    success: function(){
+	    success: function(c, r, o){
+		this.userId = o.xhr.getResponseHeader('id');
 		if( typeof scope.onDataLoaded == 'function' )
 		    scope.onDataLoaded();
 		else

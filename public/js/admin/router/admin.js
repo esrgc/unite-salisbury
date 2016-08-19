@@ -50,7 +50,6 @@ app.Router.AdminRouter = Backbone.Router.extend({
 
 	eventCollection.onDataLoaded = function(){
 	    console.log("Data load success");
-
 	    var viewData = [];
 	    var max = 0;
 	    if( this.models.length > 0 )

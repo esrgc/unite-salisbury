@@ -11,6 +11,9 @@
  <a id="discardButton" class="btn btn-primary" href="./table"> Discard Changes </a>
       {{> tablePart }}
       {{> addPartial }}
+      {{#if message}}
+      <div class="alert alert-danger">{{message}}</div>
+      {{/if}}
     </div>
     </div>
   </div>

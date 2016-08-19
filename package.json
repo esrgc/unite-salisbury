@@ -30,6 +30,7 @@
     "passport-twitter": "^1.0.2",
     "backbone":"latest",
     "leaflet":"latest",
-    "handlebars":"latest"
+    "handlebars":"latest",
+    "async":"latest"
   }
 }
