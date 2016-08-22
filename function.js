@@ -10,7 +10,7 @@ module.exports = {
 	var client = new pg.Client( conString );
 	client.connect(function(){
 	    client.query({
-		text: 'SELECT * from data where ownerid = $1',
+		text: 'SELECT name, startdate::date as startdate, startdate::time as starttime, enddate::date as enddate, enddate::time as endtime, street, city, lat, lon, description, eventid, ownerid, updatekey FROM data where ownerid = $1',
 		values: [id]
 	        }, function( err, result ){
 		    if( err )

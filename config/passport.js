@@ -44,6 +44,7 @@ module.exports = function(passport) {
 	   return done( null, false, req.flash('createMessage', "Incorrect Access code") );
        else
 	   User.createOne( email, password, function( message, user ){
+	       console.log("User callback");
 	       if( ! user )
 		   return done( null, false, req.flash('createMessage', "There was an error creating your profile") );
 		else{

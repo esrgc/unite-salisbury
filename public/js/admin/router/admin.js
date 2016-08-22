@@ -11,22 +11,33 @@ app.Router.AdminRouter = Backbone.Router.extend({
 	var eventTableView = app.getViewByName('EventTable');
 	var eventCollection = app.getCollection('EventCollection');
 
-
+	//Router functions for views
 	eventTableView.saveCollection = function(){
 	    eventCollection.saveData();
+	}
+	eventTableView.addEvent = function(){
+	    eventAddView.addItem();
 	}
 	eventTableView.removeById = function( eventId ){
 	    eventCollection.removeById( eventId );
 	}
+	eventTableView.editById = function( id ){
+	    
+	    var model = eventCollection.getModelById( id );
+	    console.log("Got model");
+	    eventAddView.editItem( model );
+	}
 	eventAddView.validateLocation = function( values ){
 	    eventCollection.newLocation( values );
 	}
+
+	//Router functions for collection
 	eventCollection.validationSuccess = function( data ){
 	    console.log("Validation was a success");
 	    console.log( eventCollection.cache, data );
 	    var cache = eventCollection.cache;
 	    this.topId=this.topId+1;
-	   eventCollection.add({
+	    eventCollection.add({
 		description:cache.description,
 		enddate: cache.enddate,
 		startdate: cache.startdate,

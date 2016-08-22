@@ -80,8 +80,9 @@ module.exports ={
 		        console.log("Id is", id );
 		    client.end();
 		    user = new User( id, email, pass );  
-		    if( scope.save( user , cb) )
-		       cb( false , user )
+		    console.log("Saving");
+		    scope.save( user , cb);
+
 		});
 	});
     },
@@ -95,16 +96,10 @@ module.exports ={
 	    },
 	   //callback on query
 	   function( err, result ){
-		if( err ){
-		    console.log("Error", err );
-		    cb( err, null );
-		    client.end();
-		    return false
-		}
-	        else{
-		    client.end();
-		    return true;
-		}
+	       console.log("Save complete");
+		if( err ) cb( err, null );
+		else cb( null, user );
+		client.end();
 	       
 	   });
 	});

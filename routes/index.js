@@ -2,6 +2,15 @@
 //Aug 2016
 //Routes
 var handlers = require('../function');
+
+var formatDates = function( d ){
+    d.startdate = (d.startdate.getMonth()+1) +'/'+ (d.startdate.getDay()+1) + '/' + d.startdate.getFullYear();
+
+    d.starttime = d.starttime.toString();
+    d.enddate = (d.enddate.getMonth()+1) +'/'+ (d.enddate.getDay()+1) + '/' + d.enddate.getFullYear();
+}
+    
+
 module.exports = function( app, passport ){
 //************GET Requests***********************************************
     //Render map app
@@ -17,34 +26,38 @@ module.exports = function( app, passport ){
     //Render user table and admin app (needs to be logged in)
     app.get('/table', function( req, res ){
 	var data;
-	res.render('admin/table', {
-	       user: req.user.rows[0].email,
-	 });
+	if( typeof req.user == 'undefined' )
+	    res.render( 'admin/index' );
+	else
+	    res.render( 'admin/table', {
+		user: req.user.rows[0].email,
+	});
     });
 
     //Render user creation form
-    app.get('/create', function( req, res ){
-	res.render('admin/create', {message: req.flash('createMessage') } );
+    app.get( '/create', function( req, res ){
+	res.render( 'admin/create', { message: req.flash( 'createMessage' ) } );
     });
 
     //GET url from admin event collection
     app.get('/getUserEvents', function( req, res ){
-	console.log("Get data from collection", req.user.rows);
 	handlers.getDataForUserId( req.user.rows[0].id, 
 	   function( err, result ){
 	       if( err )
 		   console.log("Data fetch error", err );
 	       else{
 		   data = result.rows;
+		   for( i in data )
+		       formatDates( data[i] );
 		   res.header('id', req.user.rows[0].id );
 		   res.json(data);
 	       }
 	  });
     });
-    //Get alll event data
+    //GET all event data
     app.get('/getMapData', function( req, res ){
 	console.log("Getting map data");
-	handlers.getMapData(function(err, results ){
+	handlers.getMapData(function( err, results ){
 	    res.json( results )
 	});
     });

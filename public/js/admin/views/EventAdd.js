@@ -1,23 +1,40 @@
 app.View.EventAdd = Backbone.View.extend({
     name: 'EventAdd',
     el: '#addModal',
+    templateEl: '#eventForm',
     events:{
-	'click #addItem' : 'addItem'
+	'click #validateEvent' : 'validateEvent'
     },
     addItem: function(){
+	var modal = $(this.el);
+	var template = Handlebars.compile(  $(this.templateEl).html() );
+	var html = template( item.toJSON() );
+	var content = modal.find('.modal-body');
+	content.html( html );
+	modal.modal('show');
 
-	//Get data from form and pass to router
+
+    },
+    validateEvent: function(){
 	var form = $('#eventAddForm :input');
 	var values = {};
 	form.each( function(){
 	    values[this.name] = $(this).val();
 	});
 	console.log( values );
-	if( typeof this.validateLocation == 'function' )
-	    this.validateLocation( values );
-
-
-
+	var newEvent = new app.Model.EventModel( values );
+	console.log(" New event ", newEvent );
+	//if( typeof this.validateLocation == 'function' )
+	  //  this.validateLocation( values );
+    },
+    //
+    editItem: function ( item ){
+	var modal = $(this.el);
+	var template = Handlebars.compile(  $(this.templateEl).html() );
+	var html = template( item.toJSON() );
+	var content = modal.find('.modal-body');
+	content.html( html );
+	modal.modal('show');
     },
     //hide and reset modal
     hideModal: function(){
@@ -26,6 +43,7 @@ app.View.EventAdd = Backbone.View.extend({
 	$("#eventAddForm")[0].reset();
 	$("#modalErr").html('');
     },
+    //Set error message on modal
     modalError: function( err ){
 	console.log("Error modal");
 	$("#modalErr").html("&nbsp"+ err );
