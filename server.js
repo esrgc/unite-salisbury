@@ -1,10 +1,9 @@
+/*
+Startup code for whatsup
+*/
+
 var app = require('./app');
+var port = require('./config').port;
 
-var config = require('./config/config');
-
-
-app.listen( config.serverPort );
-
-
-console.log("App listening on " + config.serverPort );
-
+app.listen(port);
+console.log('Server listening on port ' + port);
