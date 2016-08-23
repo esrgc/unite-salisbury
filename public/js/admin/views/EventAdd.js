@@ -1,4 +1,4 @@
-OB//View for event adding and editing
+//View for event adding and editing
 app.View.EventAdd = Backbone.View.extend({
     name: 'EventAdd',
     el: '#addModal',

@@ -1,4 +1,4 @@
-OB//View for event adding and editing
+//View for event adding and editing
 app.View.EventAdd = Backbone.View.extend({
     name: 'EventAdd',
     el: '#addModal',
@@ -129,10 +129,11 @@ app.Model.EventModel = Backbone.Model.extend({
     },
     //Begin validation process
     validate: function( cb ){
-	if( this.validateDates() )
+	var dateVal = this.validateDates();
+	if( dateVal == true )
 	    this.validateLocation( cb );
 	else 
-	    cb( "Dates not formatted correctly" );
+	    cb( dateVal );
 	
     },
     //validate date data
@@ -168,17 +169,19 @@ app.Model.EventModel = Backbone.Model.extend({
 	var req = new XMLHttpRequest();
 	var scope = this;
 	var qString = 'http://nominatim.openstreetmap.org/search/q='
-	              + this.street +
-	             ',' + this.city +
-	              '?format=json';
+	              + this.get('street') +
+	             ',' + this.get('city') +
+	              ',USA?format=json';
  
 	req.addEventListener("load", this.geocodingListener );
 	//A little trickery with scope here, the geocoding listener is
 	// a method of the req object, but we need it to make a callback to
 	//the model (this file) object. So we will attach a new middleman method to req
 	//below that points to the real validation callback in the model
-	//obj
+	//obj. Then the model callback will call a callback bound to the event collection 
+	
 	req.dataRecievedCallback = function( response ){
+	    console.log( 'respionse', response );
 	    scope.validationCallback( response);
 	}
 	req.open('GET', qString );
@@ -188,9 +191,14 @@ app.Model.EventModel = Backbone.Model.extend({
 	this.dataRecievedCallback( this.responseText );
     },
     validationCallback: function( response){
-	var data = JSON.parse( response );
-	console.log( data );
-	this.validationCB( "Got it");
+	var data = JSON.parse( response )[0];
+	if( ! data || ( !data.lat || !data.lon ) )
+	    this.validationCB("Cannot look up that address");
+	else{
+	    this.set('lat',data.lat);
+	    this.set('lon',data.lon);
+	    this.validationCB( null, this );
+	}
 	
     }
 	
@@ -252,10 +260,6 @@ app.Collection.EventCollection = Backbone.Collection.extend({
 	    this.update( model );
 	if( typeof this.validationDone == 'function' )
 	    this.validationDone( err );
-	else 
-	    console.log("nope", this);
-	
-    	    
     },
     removeById: function( eventid ){
 	console.log("Removing event id", eventid );

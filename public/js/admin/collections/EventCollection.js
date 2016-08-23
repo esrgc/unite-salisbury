@@ -54,10 +54,6 @@ app.Collection.EventCollection = Backbone.Collection.extend({
 	    this.update( model );
 	if( typeof this.validationDone == 'function' )
 	    this.validationDone( err );
-	else 
-	    console.log("nope", this);
-	
-    	    
     },
     removeById: function( eventid ){
 	console.log("Removing event id", eventid );
