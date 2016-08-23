@@ -7,7 +7,6 @@ app.Collection.EventCollection = Backbone.Collection.extend({
     topId: 0,
     userId: 0,
     initialize: function(){
-	console.log("New event collection created");
     },
     getUserData: function(){
 	var scope = this;
@@ -27,22 +26,38 @@ app.Collection.EventCollection = Backbone.Collection.extend({
 	    }
 	});
     },
-    addNewModel: function( model ){
-	console.log( model.validate() );	    
+   // addNewModel: function( model ){
+//	console.log( model.validate() );	    
+  //  },
+    update: function( model ){
+	console.log( "Updating collection with", model );
     },
     saveData: function(){
-	console.log("Collection saving data");
+	console.log( "Collection saving data" );
 	this.sync( 'create', this );
     },
-    newLocation: function( values ){
-	this.cache = values;
-	var datesResult = this.validateDate( values ) 
+    enterEvent: function( model ){
+	this.cache = model;
+	model.validate( this.validationCallback.bind( this ) );
+
+	    
+	//if( datesResult == true )
+	 //   this.validateLocation( values );
+        //else
+          //  if( typeof this.validationFailure == 'function' )
+	//	this.validationFailure( datesResult );
+    },
+    validationCallback: function( err, model ){
 	
-	if( datesResult == true )
-	    this.validateLocation( values );
-        else
-            if( typeof this.validationFailure == 'function' )
-		this.validationFailure( datesResult );
+	console.log("Collection callback called", err);
+	if( !err )
+	    this.update( model );
+	if( typeof this.validationDone == 'function' )
+	    this.validationDone( err );
+	else 
+	    console.log("nope", this);
+	
+    	    
     },
     removeById: function( eventid ){
 	console.log("Removing event id", eventid );

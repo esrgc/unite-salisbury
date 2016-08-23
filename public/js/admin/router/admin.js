@@ -5,7 +5,9 @@ app.Router.AdminRouter = Backbone.Router.extend({
     tableRoute: function(){
 	
 	console.log("Admin router routing default route");
-	
+
+
+
 	console.log( Handlebars );
 	var eventAddView = app.getViewByName('EventAdd');
 	var eventTableView = app.getViewByName('EventTable');
@@ -27,36 +29,25 @@ app.Router.AdminRouter = Backbone.Router.extend({
 	    console.log("Got model");
 	    eventAddView.editItem( model );
 	}
-	eventAddView.validateLocation = function( values ){
-	    eventCollection.newLocation( values );
+	eventAddView.validateInfo = function( model ){
+	    console.log("Validate info", model);
+	    eventCollection.enterEvent( model );
+	    
+	    
 	}
 
 	//Router functions for collection
-	eventCollection.validationSuccess = function( data ){
-	    console.log("Validation was a success");
-	    console.log( eventCollection.cache, data );
-	    var cache = eventCollection.cache;
-	    this.topId=this.topId+1;
-	    eventCollection.add({
-		description:cache.description,
-		enddate: cache.enddate,
-		startdate: cache.startdate,
-		starttime: cache.starttime,
-		endtime: cache.endtime,
-		name: cache.title,
-		lat: data.lat,
-		lon: data.lon,
-		street: cache.street,
-		city: cache.city,
-		ownerid: this.userId,
-		eventid: this.topId
-	    
-	    });
-	    var viewData = [];
-	    for( i in this.models )
-		viewData.push( this.models[i].toJSON() );
-	    eventTableView.render( viewData );
-	    eventAddView.hideModal();
+	eventCollection.validationDone = function( err ){
+	    console.log("Router validation done");
+	    if( err )
+		eventAddView.modalError( err );
+	    else{
+		var viewData = [];
+		for( i in this.models )
+		    viewData.push( this.models[i].toJSON() );
+		eventTableView.render( viewData );
+		eventAddView.hideModal();
+	    }
 	};
 
 	eventCollection.onDataLoaded = function(){
@@ -80,7 +71,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
 	};
 	eventCollection.validationFailure = function( err ){
 	    console.log("Form validation error: ", err );
-	    eventAddView.modalError( err );
+
 	}
     
        eventCollection.getUserData();

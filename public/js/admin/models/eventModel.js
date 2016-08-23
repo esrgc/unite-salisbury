@@ -1,3 +1,4 @@
+
 app.Model.EventModel = Backbone.Model.extend({
     eventid: null,
     ownerid: null,
@@ -16,18 +17,20 @@ app.Model.EventModel = Backbone.Model.extend({
 	console.log("New event created with attr", attr);
     },
     //Begin validation process
-    validate: function(){
+    validate: function( cb ){
 	if( this.validateDates() )
-	    this.validateLocation();
+	    this.validateLocation( cb );
+	else 
+	    cb( "Dates not formatted correctly" );
+	
     },
     //validate date data
     validateDates: function(){
-	var startdate = values.startdate;
-	var enddate = values.enddate;
-	var starttime = values.starttime;
-	var endtime = values.endtime;
-	console.log( "Values ",values );
-	console.log( "Dates ",startdate, enddate, starttime, values.endtime );
+	var startdate = this.get('startdate');
+	var enddate = this.get('enddate');
+	var starttime = this.get('starttime');
+	var endtime = this.get('endtime');
+	
 	if( !this.checkDate( startdate ) || !this.checkDate( enddate ) )
 	    return "Dates not formatted correctly";
 	if( !this.checkTime( starttime ) || !this.checkTime( endtime ) )
@@ -49,7 +52,8 @@ app.Model.EventModel = Backbone.Model.extend({
 	return true;
     },
     //Validate location for USA
-    validateLocation: function(){
+    validateLocation: function( cb ){
+	this.validationCB = cb;
 	var req = new XMLHttpRequest();
 	var scope = this;
 	var qString = 'http://nominatim.openstreetmap.org/search/q='
@@ -63,19 +67,20 @@ app.Model.EventModel = Backbone.Model.extend({
 	//the model (this file) object. So we will attach a new middleman method to req
 	//below that points to the real validation callback in the model
 	//obj
-	req.collectionCallback = function( response ){
-	    scope.validationCallback( response );
+	req.dataRecievedCallback = function( response ){
+	    scope.validationCallback( response);
 	}
 	req.open('GET', qString );
 	req.send();
-        console.log("Verification request sent");	
     },
     geocodingListener: function(){
-	console.log(this.responseText);
-	this.collectionCallback( this.responseText );
+	this.dataRecievedCallback( this.responseText );
     },
-    validationCallback: function( response ){
-	var data = JSON.parse( response ); 
+    validationCallback: function( response){
+	var data = JSON.parse( response );
+	console.log( data );
+	this.validationCB( "Got it");
+	
     }
 	
 });

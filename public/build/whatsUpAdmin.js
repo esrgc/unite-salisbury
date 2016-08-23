@@ -1,51 +1,67 @@
+OB//View for event adding and editing
 app.View.EventAdd = Backbone.View.extend({
     name: 'EventAdd',
     el: '#addModal',
     templateEl: '#eventForm',
     events:{
-	'click #validateEvent' : 'validateEvent'
+	'click #validateEvent' : 'validateEvent',
+	'click .closeModal': 'hideModal'
     },
+    //When adding a brandnew item
     addItem: function(){
-	var modal = $(this.el);
-	var template = Handlebars.compile(  $(this.templateEl).html() );
-	var html = template( item.toJSON() );
+	//Render defaults with an event id of null
+	var modal = $( this.el );
+	var template = Handlebars.compile(  $( this.templateEl ).html() );
+	var html = template({
+	    "title": "Event Title",
+	    "street": "Street Address",
+	    "city": "City",
+	    "startdate": "Start Date",
+	    "starttime": "Start Time",
+	    "enddate": "End Date",
+	    "endtime" : "End Time",
+	    "description": "Description",
+	    "eventid": "null"
+			     });
 	var content = modal.find('.modal-body');
 	content.html( html );
+	$('.startdate').datepicker(); 
+	$('.enddate').datepicker(); 
 	modal.modal('show');
-
-
     },
+    //When editing and existing event
+    editItem: function ( model ){
+	//Render based on model
+	var modal = $( this.el );
+	var template = Handlebars.compile(  $( this.templateEl ).html() );
+	var html = template( model.toJSON() );
+	var content = modal.find('.modal-body');
+	content.html( html );
+	$('.startdate').datepicker(); 
+	$('.enddate').datepicker(); 
+	modal.modal('show');
+    },
+    //Grab data from form and package in a new model for validation
     validateEvent: function(){
 	var form = $('#eventAddForm :input');
+	var id = String($('#eventId').attr('value'));
+	console.log('id', id );
 	var values = {};
 	form.each( function(){
-	    values[this.name] = $(this).val();
+	    values[this.name] = $( this ).val();
 	});
-	console.log( values );
+	values['eventid'] = id;
 	var newEvent = new app.Model.EventModel( values );
-	console.log(" New event ", newEvent );
-	//if( typeof this.validateLocation == 'function' )
-	  //  this.validateLocation( values );
-    },
-    //
-    editItem: function ( item ){
-	var modal = $(this.el);
-	var template = Handlebars.compile(  $(this.templateEl).html() );
-	var html = template( item.toJSON() );
-	var content = modal.find('.modal-body');
-	content.html( html );
-	modal.modal('show');
+	if( typeof this.validateInfo == 'function' )
+	    this.validateInfo( newEvent );
     },
     //hide and reset modal
     hideModal: function(){
-	console.log("hiding modal");
-	$(this.el).modal('hide');
-	$("#eventAddForm")[0].reset();
+	$( this.el ).modal('hide');
 	$("#modalErr").html('');
     },
     //Set error message on modal
     modalError: function( err ){
-	console.log("Error modal");
 	$("#modalErr").html("&nbsp"+ err );
     }
 });
@@ -93,6 +109,7 @@ app.View.EventTable = Backbone.View.extend({
 
 
 
+
 app.Model.EventModel = Backbone.Model.extend({
     eventid: null,
     ownerid: null,
@@ -111,18 +128,20 @@ app.Model.EventModel = Backbone.Model.extend({
 	console.log("New event created with attr", attr);
     },
     //Begin validation process
-    validate: function(){
+    validate: function( cb ){
 	if( this.validateDates() )
-	    this.validateLocation();
+	    this.validateLocation( cb );
+	else 
+	    cb( "Dates not formatted correctly" );
+	
     },
     //validate date data
     validateDates: function(){
-	var startdate = values.startdate;
-	var enddate = values.enddate;
-	var starttime = values.starttime;
-	var endtime = values.endtime;
-	console.log( "Values ",values );
-	console.log( "Dates ",startdate, enddate, starttime, values.endtime );
+	var startdate = this.get('startdate');
+	var enddate = this.get('enddate');
+	var starttime = this.get('starttime');
+	var endtime = this.get('endtime');
+	
 	if( !this.checkDate( startdate ) || !this.checkDate( enddate ) )
 	    return "Dates not formatted correctly";
 	if( !this.checkTime( starttime ) || !this.checkTime( endtime ) )
@@ -144,7 +163,8 @@ app.Model.EventModel = Backbone.Model.extend({
 	return true;
     },
     //Validate location for USA
-    validateLocation: function(){
+    validateLocation: function( cb ){
+	this.validationCB = cb;
 	var req = new XMLHttpRequest();
 	var scope = this;
 	var qString = 'http://nominatim.openstreetmap.org/search/q='
@@ -158,19 +178,20 @@ app.Model.EventModel = Backbone.Model.extend({
 	//the model (this file) object. So we will attach a new middleman method to req
 	//below that points to the real validation callback in the model
 	//obj
-	req.collectionCallback = function( response ){
-	    scope.validationCallback( response );
+	req.dataRecievedCallback = function( response ){
+	    scope.validationCallback( response);
 	}
 	req.open('GET', qString );
 	req.send();
-        console.log("Verification request sent");	
     },
     geocodingListener: function(){
-	console.log(this.responseText);
-	this.collectionCallback( this.responseText );
+	this.dataRecievedCallback( this.responseText );
     },
-    validationCallback: function( response ){
-	var data = JSON.parse( response ); 
+    validationCallback: function( response){
+	var data = JSON.parse( response );
+	console.log( data );
+	this.validationCB( "Got it");
+	
     }
 	
 });
@@ -184,7 +205,6 @@ app.Collection.EventCollection = Backbone.Collection.extend({
     topId: 0,
     userId: 0,
     initialize: function(){
-	console.log("New event collection created");
     },
     getUserData: function(){
 	var scope = this;
@@ -204,22 +224,38 @@ app.Collection.EventCollection = Backbone.Collection.extend({
 	    }
 	});
     },
-    addNewModel: function( model ){
-	console.log( model.validate() );	    
+   // addNewModel: function( model ){
+//	console.log( model.validate() );	    
+  //  },
+    update: function( model ){
+	console.log( "Updating collection with", model );
     },
     saveData: function(){
-	console.log("Collection saving data");
+	console.log( "Collection saving data" );
 	this.sync( 'create', this );
     },
-    newLocation: function( values ){
-	this.cache = values;
-	var datesResult = this.validateDate( values ) 
+    enterEvent: function( model ){
+	this.cache = model;
+	model.validate( this.validationCallback.bind( this ) );
+
+	    
+	//if( datesResult == true )
+	 //   this.validateLocation( values );
+        //else
+          //  if( typeof this.validationFailure == 'function' )
+	//	this.validationFailure( datesResult );
+    },
+    validationCallback: function( err, model ){
 	
-	if( datesResult == true )
-	    this.validateLocation( values );
-        else
-            if( typeof this.validationFailure == 'function' )
-		this.validationFailure( datesResult );
+	console.log("Collection callback called", err);
+	if( !err )
+	    this.update( model );
+	if( typeof this.validationDone == 'function' )
+	    this.validationDone( err );
+	else 
+	    console.log("nope", this);
+	
+    	    
     },
     removeById: function( eventid ){
 	console.log("Removing event id", eventid );
@@ -240,7 +276,9 @@ app.Router.AdminRouter = Backbone.Router.extend({
     tableRoute: function(){
 	
 	console.log("Admin router routing default route");
-	
+
+
+
 	console.log( Handlebars );
 	var eventAddView = app.getViewByName('EventAdd');
 	var eventTableView = app.getViewByName('EventTable');
@@ -262,36 +300,25 @@ app.Router.AdminRouter = Backbone.Router.extend({
 	    console.log("Got model");
 	    eventAddView.editItem( model );
 	}
-	eventAddView.validateLocation = function( values ){
-	    eventCollection.newLocation( values );
+	eventAddView.validateInfo = function( model ){
+	    console.log("Validate info", model);
+	    eventCollection.enterEvent( model );
+	    
+	    
 	}
 
 	//Router functions for collection
-	eventCollection.validationSuccess = function( data ){
-	    console.log("Validation was a success");
-	    console.log( eventCollection.cache, data );
-	    var cache = eventCollection.cache;
-	    this.topId=this.topId+1;
-	    eventCollection.add({
-		description:cache.description,
-		enddate: cache.enddate,
-		startdate: cache.startdate,
-		starttime: cache.starttime,
-		endtime: cache.endtime,
-		name: cache.title,
-		lat: data.lat,
-		lon: data.lon,
-		street: cache.street,
-		city: cache.city,
-		ownerid: this.userId,
-		eventid: this.topId
-	    
-	    });
-	    var viewData = [];
-	    for( i in this.models )
-		viewData.push( this.models[i].toJSON() );
-	    eventTableView.render( viewData );
-	    eventAddView.hideModal();
+	eventCollection.validationDone = function( err ){
+	    console.log("Router validation done");
+	    if( err )
+		eventAddView.modalError( err );
+	    else{
+		var viewData = [];
+		for( i in this.models )
+		    viewData.push( this.models[i].toJSON() );
+		eventTableView.render( viewData );
+		eventAddView.hideModal();
+	    }
 	};
 
 	eventCollection.onDataLoaded = function(){
@@ -315,7 +342,7 @@ app.Router.AdminRouter = Backbone.Router.extend({
 	};
 	eventCollection.validationFailure = function( err ){
 	    console.log("Form validation error: ", err );
-	    eventAddView.modalError( err );
+
 	}
     
        eventCollection.getUserData();

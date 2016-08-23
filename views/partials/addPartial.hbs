@@ -2,10 +2,10 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close closeModal" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title">Add an Event</h4>
+        <h4 class="modal-title">Add/Edit Event</h4>
       </div>
       <div class="modal-body">
         <form id="eventAddForm">
@@ -20,8 +20,8 @@
       </div>
       <strong id="modalErr" style="color:red"></strong>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Discard</button>
-        <button id="validateEvent" type="button" class="btn btn-primary">Add Event</button>
+        <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Discard</button>
+        <button id="validateEvent" type="button" class="btn btn-primary">Enter</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

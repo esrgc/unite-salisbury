@@ -3,11 +3,24 @@
 //Routes
 var handlers = require('../function');
 
+var formatTime = function( t ){
+    var hours = Number( t[0]+t[1] );
+    var min = Number( t[3]+t[4] );
+    var suffix = 'am';
+    if( hours == 0 )
+	hours = 12;
+    else if( hours > 12 ){
+	hours = hours - 12;
+	suffix = 'pm';
+    }
+    return hours+':'+min+suffix;
+}
+
 var formatDates = function( d ){
     d.startdate = (d.startdate.getMonth()+1) +'/'+ (d.startdate.getDay()+1) + '/' + d.startdate.getFullYear();
-
-    d.starttime = d.starttime.toString();
+    d.starttime = formatTime( d.starttime );
     d.enddate = (d.enddate.getMonth()+1) +'/'+ (d.enddate.getDay()+1) + '/' + d.enddate.getFullYear();
+    d.endtime = formatTime( d.endtime );
 }
     
 
