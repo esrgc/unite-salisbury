@@ -3,7 +3,7 @@ var router = express.Router();
 
 var home = require('./home');
 var admin = require('./admin');
-var event = require('./eventMap');
+var eventMap = require('./eventMap');
 var login = require('./login');
 var users = require('./users');
 var events = require('./events');

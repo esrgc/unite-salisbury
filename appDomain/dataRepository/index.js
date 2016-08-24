@@ -1,0 +1,7 @@
+/*
+Database repository
+*/
+
+module.exports = {
+	
+};
