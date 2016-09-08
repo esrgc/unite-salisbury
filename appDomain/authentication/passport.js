@@ -42,7 +42,7 @@ passport.use('local-login', new LocalStrategy({
       if (!user.validPassword(password))
         return done(null, false, req.flash('loginMessage', 'Invalid password.')); // create the loginMessage and save it to session as flashdata
 
-      // all is well, return successful user
+      // all is well, log the user in
       req.logIn(user, function(err) {
         if (err) {
           return next(err);
