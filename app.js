@@ -38,12 +38,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 //passport initialization
-app.use(session({ secret: 'whatsupsalisburysecretsession' })); // session secret
+app.use(session({
+  resave: false,
+  saveUninitialized: true,
+  secret: 'whatsupsalisburysecretsession'
+})); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
+//app routes
 app.use('/', routes);
 
 // catch 404 and forward to error handler
