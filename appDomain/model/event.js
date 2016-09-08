@@ -10,7 +10,7 @@ var Schema = mongoose.Schema;
 
 // mongoose.connect(connectionStr);
 
-var Event = new Schema({
+var EventSchema = new Schema({
 	_id: String,
 	_creator: { type: Number, ref: 'User'},
 	name: String,
@@ -22,4 +22,4 @@ var Event = new Schema({
 	}
 });
 
-module.exports = Event;
+module.exports = mongoose.model('Event', EventSchema);

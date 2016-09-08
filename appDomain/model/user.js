@@ -10,7 +10,7 @@ var Schema = mongoose.Schema;
 
 // mongoose.connect(connectionStr);
 
-var User = new Schema({
+var UserSchema = new Schema({
 	_id: String,
 	username: String,
 	password: String, //for now. Need encryption later
@@ -20,4 +20,4 @@ var User = new Schema({
 	events: [{type: Schema.Types.ObjectId, ref: 'Event'}] //populated fields
 });
 
-module.exports = User;
+module.exports = mongoose.model('User', UserSchema);
