@@ -24,7 +24,7 @@ passport.use('local-login', new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password',
   passReqToCallback: true // allows us to pass back the entire request to the callback
-}, function(req, userName, password, done) {
+}, function(req, email, password, done) {
   // asynchronous
   // User.findOne wont fire unless data is sent back
   process.nextTick(function() {
