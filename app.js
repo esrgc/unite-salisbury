@@ -10,10 +10,13 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var hbs = require('express-hbs');
-
+var mongoose = require('mongoose');
 
 var routes = require('./routes');
+var config = require('./config');
 
+//connect to mongo database
+mongoose.connect(config.database.mongodb);
 
 var app = express();
 

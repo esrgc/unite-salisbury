@@ -5,8 +5,8 @@ var home = require('./home');
 var admin = require('./admin');
 var eventMap = require('./eventMap');
 var login = require('./login');
-var users = require('./users');
-var events = require('./events');
+var user = require('./user');
+var event = require('./event');
 
 
 /*Site routes*/
@@ -18,8 +18,8 @@ router.use('/login', login);
 
 
 //Api routes
-router.use('/events', events);
-router.use('/users', users);
+router.use('/event', event);
+router.use('/user', user);
 
 
 module.exports = router;

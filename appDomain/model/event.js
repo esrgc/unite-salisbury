@@ -12,12 +12,16 @@ var Schema = mongoose.Schema;
 
 var EventSchema = new Schema({
 	_id: String,
-	_creator: { type: Number, ref: 'User'},
+	_creator: { type: Number, ref: 'User'},//populated field
 	name: String,
 	date: Date,
 	detail: {
 		description: String,
-		instruction: String
+		startDate: Date,
+		endDate: Date,
+		address: String,
+		x: Number,
+		y: Number
 		//other details can be added here
 	}
 });
