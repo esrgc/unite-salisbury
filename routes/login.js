@@ -4,13 +4,20 @@ login page goes here
 
 var express = require('express');
 var router = express.Router();
+var passport = require('../appDomain/authentication').passport;
 
 var domain = require('../appDomain');
 
 /* GET users listing. */
 router.get('/login', function(req, res) {
-  res.render('login', { title: 'Please log in'})
+  res.render('login', { title: 'Please log in' })
 });
+
+router.post('/login', passport.authenticate('local-login', {
+  successRedirect: '/', // redirect to success page (will be profile page or event map page)
+  failureRedirect: '/login', // redirect back to the login page
+  failureFlash: true // allow flash messages
+}));
 
 
 module.exports = router;

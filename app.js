@@ -13,7 +13,7 @@ var hbs = require('express-hbs');
 var mongoose = require('mongoose');
 var flash = require('connect-flash');
 var session = require('express-session');
-var passport = require('./appDomain/authentication/passport');
+var passport = require('./appDomain/authentication').passport;
 
 var routes = require('./routes');
 var config = require('./config');
