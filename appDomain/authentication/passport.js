@@ -5,7 +5,7 @@ Implement passport authentication
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 //user model
-var User = require('../model/user');
+var User = require('../dataRepository').User;
 
 // used to serialize the user for the session
 passport.serializeUser(function(user, done) {
