@@ -2,22 +2,29 @@
 This defines schema for model user
 */
 
-
-// var connectionStr = require('../../config').database.mongodb;
-
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-
-// mongoose.connect(connectionStr);
+var bcrypt   = require('bcrypt-nodejs');
 
 var UserSchema = new Schema({
-	_id: String,
-	username: String,
-	password: String, //for now. Need encryption later
-	firstName: String,
-	lastName: String,
-	email: String,
-	events: [{type: Schema.Types.ObjectId, ref: 'Event'}] //populated fields
+  _id: String,
+  email: String,
+  password: String, //for now. Need encryption later
+  firstName: String,
+  lastName: String,
+  events: [{ type: Schema.Types.ObjectId, ref: 'Event' }] //populated fields
 });
+
+// methods ======================
+// generating a hash
+UserSchema.methods.generateHash = function(password) {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+
+// checking if password is valid
+UserSchema.methods.validPassword = function(password) {
+  return bcrypt.compareSync(password, this.password);
+};
+
 
 module.exports = mongoose.model('User', UserSchema);
