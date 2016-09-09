@@ -1,7 +1,7 @@
 /*
 Implement passport authentication
 */
-
+var accessCode = require('../../config').accessCode;
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 //user model
@@ -44,17 +44,49 @@ passport.use('local-login', new LocalStrategy({
 	return done(null, false, req.flash('loginMessage', 'Invalid password.')); // create the loginMessage and save it to session as flashdata
 
       // all is well, log the user in
-//      req.logIn(user, function(err) {
-  //      if (err) {
-    //      return done(err);
-      //  }
-        //console.log('Logging in..');
-     // });
+      req.logIn(user, function(err) {
+        if (err) {
+          return done(err);
+        }
+        console.log('Logging in..');
+      });
       return done(null, user);
     });
 
   });
 
 }));
+
+passport.use('local-create', new LocalStrategy({
+  usernameField: 'email',
+  passwordField: 'password',
+  passReqToCallback: true
+}, function( req, email, password, done ){
+	if( req.body.access != accessCode )
+		return done( null, false, req.flash('createMessage', "Incorrect access code."));
+	
+	User.findOne({ email: email }, function( err, user ){
+	  if( err )
+	    return done(err);
+	  if( user )
+	    return done( null, false, req.flash('createMessage', "That email is already taken."));
+	  else{
+	    var newUser = new User({ email: email, password: password } );
+	    newUser.save(function(err){// save
+	      if( err )
+	        return done( err );
+	      else
+	        req.logIn( newUser, function(err){//on save, login
+	         if( err )
+	           return done( err );
+	        return done( null, newUser );
+	       });//End req.logIn
+	   });//End newUser.save
+	 }//End else
+     });//End find one
+}));
+
+
+ 
 
 module.exports = passport;
