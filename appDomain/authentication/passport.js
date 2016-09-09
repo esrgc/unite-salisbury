@@ -9,7 +9,8 @@ var User = require('../dataRepository').User;
 
 // used to serialize the user for the session
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+console.log("Serialize", user );
+  done(null, user._id);
 });
 
 // used to deserialize the user
@@ -40,15 +41,15 @@ passport.use('local-login', new LocalStrategy({
 
       // if the user is found but the password is wrong
       if (!user.validPassword(password))
-        return done(null, false, req.flash('loginMessage', 'Invalid password.')); // create the loginMessage and save it to session as flashdata
+	return done(null, false, req.flash('loginMessage', 'Invalid password.')); // create the loginMessage and save it to session as flashdata
 
       // all is well, log the user in
-      req.logIn(user, function(err) {
-        if (err) {
-          return next(err);
-        }
-        console.log('Logging in..');
-      });
+//      req.logIn(user, function(err) {
+  //      if (err) {
+    //      return done(err);
+      //  }
+        //console.log('Logging in..');
+     // });
       return done(null, user);
     });
 
