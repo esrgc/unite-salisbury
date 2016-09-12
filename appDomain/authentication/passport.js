@@ -35,8 +35,10 @@ passport.use('local-login', new LocalStrategy({
     User.findOne({ 'email': email }, function(err, user) {
       // console.log(user);
       // if there are any errors, return the error before anything else
-      if (err)
+      if (err){
+        console.log(err);
         return done(err);
+      }
       // if no user is found, return the message
       if (!user)
         return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
@@ -50,7 +52,7 @@ passport.use('local-login', new LocalStrategy({
         if (err) {
           return done(err);
         }
-        console.log('Logging in..');
+        console.log('Logging %s in..', user.email);
       });
       return done(null, user);
     });
