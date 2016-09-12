@@ -9,7 +9,7 @@ var bcrypt = require('bcrypt-nodejs');
 var UserSchema = new Schema({
   id: String,
   email: String,
-  password: String, //for now. Need encryption later
+  password: String,
   firstName: String,
   lastName: String,
   events: [{ type: Schema.Types.ObjectId, ref: 'Event' }] //populated fields
