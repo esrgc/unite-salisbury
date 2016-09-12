@@ -4,17 +4,21 @@ authentication routes go here
 
 var express = require('express');
 var router = express.Router();
-var passport = require('../appDomain/authentication').passport;
 
 var domain = require('../appDomain');
+var passport = domain.authentication.passport;
+
 
 /* sign in*/
 router.get('/login', function(req, res) {
   res.render('login', { title: 'Please log in' , message: req.flash('loginMessage') , rootPath: '../'} );
 });
 
+// router.post('/login', function(req, res){
+// 	res.send('OK');
+// });
 router.post('/login', passport.authenticate('local-login', {
-  successRedirect: '/', // redirect to success page (will be profile page or event map page)
+  successRedirect: '../', // redirect to success page (will be profile page or event map page)
   failureRedirect: 'login', // redirect back to the login page
   failureFlash: true // allow flash messages
 }));

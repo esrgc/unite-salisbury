@@ -9,7 +9,7 @@ var User = require('../dataRepository').User;
 
 // used to serialize the user for the session
 passport.serializeUser(function(user, done) {
-  console.log("Serialize", user);
+  // console.log("Serialize", user);
   done(null, user._id);
 });
 
@@ -26,13 +26,14 @@ passport.use('local-login', new LocalStrategy({
   passwordField: 'password',
   passReqToCallback: true // allows us to pass back the entire request to the callback
 }, function(req, email, password, done) {
+  console.log('authenticating....');
   // asynchronous
   // User.findOne wont fire unless data is sent back
   process.nextTick(function() {
     // find a user whose email is the same as the forms email
     // we are checking to see if the user trying to login already exists
     User.findOne({ 'email': email }, function(err, user) {
-      console.log(user);
+      // console.log(user);
       // if there are any errors, return the error before anything else
       if (err)
         return done(err);
