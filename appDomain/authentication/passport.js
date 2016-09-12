@@ -41,7 +41,7 @@ passport.use('local-login', new LocalStrategy({
 
       // if the user is found but the password is wrong
       if (!user.validPassword(password))
-	return done(null, false, req.flash('loginMessage', 'Invalid password.')); // create the loginMessage and save it to session as flashdata
+	       return done(null, false, req.flash('loginMessage', 'Invalid password.')); // create the loginMessage and save it to session as flashdata
 
       // all is well, log the user in
       req.logIn(user, function(err) {
@@ -71,7 +71,8 @@ passport.use('local-signup', new LocalStrategy({
 	  if( user )
 	    return done( null, false, req.flash('createMessage', "That email is already taken."));
 	  else{
-	    var newUser = new User({ email: email, password: password } );
+	    var newUser = new User({ email: email } );
+      newUser.password = newUser.generateHash(password);
 	    newUser.save(function(err){// save
 	      if( err )
 	        return done( err );
