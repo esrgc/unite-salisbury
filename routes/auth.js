@@ -15,7 +15,7 @@ router.get('/login', function(req, res) {
 
 router.post('/login', passport.authenticate('local-login', {
   successRedirect: '/', // redirect to success page (will be profile page or event map page)
-  failureRedirect: '/login', // redirect back to the login page
+  failureRedirect: 'login', // redirect back to the login page
   failureFlash: true // allow flash messages
 }));
 
@@ -26,7 +26,7 @@ router.get('/signup', function(req, res) {
 
 router.post('/signup', passport.authenticate('local-signup', {
   successRedirect: '/', // redirect to success page (will be profile page or event map page)
-  failureRedirect: '/signup', // redirect back to the login page
+  failureRedirect: 'signup', // redirect back to the login page
   failureFlash: true // allow flash messages
 }));
 

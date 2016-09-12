@@ -62,8 +62,8 @@ passport.use('local-signup', new LocalStrategy({
   passwordField: 'password',
   passReqToCallback: true
 }, function(req, email, password, done) {
-  if (req.body.access != accessCode)
-    return done(null, false, req.flash('createMessage', "Incorrect access code."));
+//  if (req.body.access != accessCode)
+//    return done(null, false, req.flash('createMessage', "Incorrect access code."));
 
   User.findOne({ email: email }, function(err, user) {
     if (err)
