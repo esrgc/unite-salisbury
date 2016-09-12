@@ -10,7 +10,7 @@ var domain = require('../appDomain');
 
 /* sign in*/
 router.get('/login', function(req, res) {
-  res.render('login', { title: 'Please log in' , message: req.flash('loginMessage') } );
+  res.render('login', { title: 'Please log in' , message: req.flash('loginMessage') , rootPath: '../'} );
 });
 
 router.post('/login', passport.authenticate('local-login', {
@@ -21,7 +21,7 @@ router.post('/login', passport.authenticate('local-login', {
 
 /*sign up*/
 router.get('/signup', function(req, res) {
-  res.render('signup', { title: 'Create profile' , message: req.flash('createMessage') } );
+  res.render('signup', { title: 'Create profile' , message: req.flash('createMessage'), rootPath: '../' } );
 });
 
 router.post('/signup', passport.authenticate('local-signup', {

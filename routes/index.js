@@ -7,7 +7,7 @@ var eventMap = require('./eventMap');
 var auth = require('./auth');
 var user = require('./user');
 var event = require('./event');
-var create = require('./create');
+// var create = require('./create');
 
 /*Site routes*/
 router.use('/', home);
@@ -15,7 +15,7 @@ router.use('/index', home);
 router.use('/admin', admin);
 router.use('/eventMap', eventMap);
 router.use('/auth', auth);
-router.use('/create', create);
+// router.use('/create', create);
 
 //Api routes
 router.use('/event', event);
