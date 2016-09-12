@@ -4,7 +4,7 @@ This defines schema for model user
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var bcrypt   = require('bcrypt-nodejs');
+var bcrypt = require('bcrypt-nodejs');
 
 var UserSchema = new Schema({
   id: String,
@@ -23,8 +23,6 @@ UserSchema.methods.generateHash = function(password) {
 
 // checking if password is valid
 UserSchema.methods.validPassword = function(password) {
-  console.log(this);
-  var passHash = this.generateHash(password);
   return bcrypt.compareSync(passHash, this.password);
 };
 
