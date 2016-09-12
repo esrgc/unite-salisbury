@@ -1,24 +1,9 @@
 <div class="container">
-  <!--  <form action="login" method="post">
-        <div>
-          <label>Email:</label>
-          <input type="text" name="email" />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input type="password" name="password" />
-        </div>
-        <div>
-          <input type="submit" value="Log In" />
-        </div>
-       
-      </form>
-      <a href="signup"> Create Account</a> -->
   {{#if message}}
   <div class="alert alert-danger">{{message}}</div>
   {{/if}}
   <form class="login-form" action="login" method="post" role="form">
-    <h3><i class="fa fa-sign-in"></i>&nbsp;Please login</h3>
+  	<h3><i class="fa fa-sign-in"></i>&nbsp;Please login</h3>
     <input id="returnUrl" name="returnUrl" type="hidden" value="">
     <div class="form-input">
       <input type="email" name="Email" id="email" class="form-control" placeholder="Email address" autofocus="">
