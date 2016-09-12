@@ -30,4 +30,6 @@ router.post('/signup', passport.authenticate('local-signup', {
   failureFlash: true // allow flash messages
 }));
 
+console.log(router);
+
 module.exports = router;
