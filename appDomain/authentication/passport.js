@@ -57,7 +57,7 @@ passport.use('local-login', new LocalStrategy({
 
 }));
 
-passport.use('local-create', new LocalStrategy({
+passport.use('local-signup', new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password',
   passReqToCallback: true
