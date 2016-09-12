@@ -21,7 +21,7 @@ router.post('/login', passport.authenticate('local-login', {
 
 /*sign up*/
 router.get('/signup', function(req, res) {
-  res.render('signup', { title: 'Create profile' , message: req.flash('createMessage'), rootPath: '../' } );
+  res.render('signup', { title: 'Create profile' , message: req.flash('signupMessage'), rootPath: '../' } );
 });
 
 router.post('/signup', passport.authenticate('local-signup', {
@@ -29,7 +29,5 @@ router.post('/signup', passport.authenticate('local-signup', {
   failureRedirect: 'signup', // redirect back to the login page
   failureFlash: true // allow flash messages
 }));
-
-console.log(router);
 
 module.exports = router;

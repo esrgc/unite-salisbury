@@ -70,7 +70,7 @@ passport.use('local-signup', new LocalStrategy({
     if (err)
       return done(err);
     if (user)
-      return done(null, false, req.flash('createMessage', "That email is already taken."));
+      return done(null, false, req.flash('signupMessage', "That email is already taken."));
     else {
       var newUser = new User({ email: email });
       newUser.password = newUser.generateHash(password);
