@@ -1,25 +1,27 @@
-<div class="container">
-  {{#if message}}
-  <div class="alert alert-danger">{{message}}</div>
-  {{/if}}
-  <form class="login-form" action="login" method="post" role="form">
-  	<h3><i class="fa fa-sign-in"></i>&nbsp;Please login</h3>
-    <input id="returnUrl" name="returnUrl" type="hidden" value="">
-    <div class="form-input">
-      <input type="email" name="email" id="email" class="form-control" placeholder="Email address" autofocus="">
-      <input type="password" name="password" id="password" class="form-control" placeholder="Password">
-      <span class="help-block">
-            <a href="forgotPassword" class="pull-right"><small>Forgot your password?</small></a>
-        </span>
-      <label class="checkbox">
-        <input data-val="true" data-val-required="The Remember me? field is required." id="RememberMe" name="RememberMe" type="checkbox" value="true">
-        <input name="RememberMe" type="hidden" value="false"> Remember me
-      </label>
-      <button class="btn btn-lg btn-primary btn-block submit-button" type="submit" data-loading-text="Signing in...">
-        <i class="fa fa-lock" title="Secured login"></i>&nbsp;Log in
-      </button>
-      <span class="help-block">Not a member? <a href="signUp" data-original-title="" title=""><small>Sign up for WHATSUP</small></a>
-        </span>
-    </div>
-  </form>
+<div class="page-wrap">
+	<div class="container">
+		{{#if message}}
+		<div class="alert alert-danger">{{message}}</div>
+		{{/if}}
+		<form class="login-form" action="login" method="post" role="form">
+			<h3><i class="fa fa-sign-in"></i>&nbsp;Please login</h3>
+			<input id="returnUrl" name="returnUrl" type="hidden" value="">
+			<div class="form-input">
+				<input type="email" name="email" id="email" class="form-control" placeholder="Email address" autofocus="">
+				<input type="password" name="password" id="password" class="form-control" placeholder="Password">
+				<span class="help-block">
+					<a href="forgotPassword" class="pull-right"><small>Forgot your password?</small></a>
+				</span>
+				<label class="checkbox">
+					<input data-val="true" data-val-required="The Remember me? field is required." id="RememberMe" name="RememberMe" type="checkbox" value="true">
+					<input name="RememberMe" type="hidden" value="false"> Remember me
+				</label>
+				<button class="btn btn-lg btn-primary btn-block submit-button" type="submit" data-loading-text="Signing in...">
+					<i class="fa fa-lock" title="Secured login"></i>&nbsp;Log in
+				</button>
+				<span class="help-block">Not a member? <a href="signUp" data-original-title="" title=""><small>Sign up for WHATSUP</small></a>
+				</span>
+			</div>
+		</form>
+	</div>
 </div>

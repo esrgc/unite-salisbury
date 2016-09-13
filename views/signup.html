@@ -1,29 +1,21 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-      <h4> To create a profile, enter your email, a password you want to use, and the authorization code given by the ESRGC</h4>
-      <form action="signup" method="post">
-	<div>
-	  <label>New Email:</label>
-	  <input type="text" name="email"/>
+<div class="page-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-2"></div>
+			{{#if message}}
+			<div class="alert alert-danger">{{message}}</div>
+			{{/if}}
+			<div class="col-md-8">
+				<form class="login-form" action="signup" method="post">
+					<h3>Enter a email and password to get started! </h3>
+					<div class= "form-input">
+						<input class="form-control" type="text" placeholder="New Email" autofocus="" name="email"/>
+						<input class="form-control" type="password" placeholder="New Password" name="password"/>
+						<button class="btn btn-lg btn-primary btn-block" type="submit" >Create Profile </button>
+					</div>
+				</form>
+			</div>
+			<div class="col-md-2"></div>
+		</div>
 	</div>
-	<div>
-	  <label>New Password:</label>
-	  <input type="password" name="password"/>
-	</div>
-	<div>
-	  <label>Access Code: </label>
-	  <input type="password" name="access"/>
-	</div>
-	<div>
-	  <input type="submit" value="Create"/>
-	</div>
-	{{#if message}}
-	<div class="alert alert-danger">{{message}}</div>
-	{{/if}}
-      </form>
-    </div>
-    <div class="col-md-2"></div>
-  </div>
 </div>
