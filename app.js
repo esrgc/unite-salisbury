@@ -10,6 +10,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var hbs = require('express-hbs');
+
 var mongoose = require('mongoose');
 var flash = require('connect-flash');
 var session = require('express-session');
@@ -28,7 +29,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
 app.engine('html', hbs.express4({
   partialsDir: __dirname + '/views/partials',
-  defaultLayout: __dirname + '/views/layout.html'
+  defaultLayout: __dirname + '/views/layout.html',
+  extname: 'html',
+  //debugging
+  beautify: true
 }));
 
 // uncomment after placing your favicon in /public

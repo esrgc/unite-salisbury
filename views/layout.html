@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,14 +20,11 @@
     <![endif]-->
   {{{block 'customCss' }}}
   <!-- Custom styles for this template -->
-  
   {{#if PROD_MODE }}
-  <link href="{{rootPath}}build/style-whatsup.min.css" rel="stylesheet">
-  {{else}}
-  <link href="{{rootPath}}build/style-whatsup.css" rel="stylesheet"> 
-  {{/if}}
-   <!--Google analytics-->
- <!--  
+  <link href="{{rootPath}}build/style-whatsup.min.css" rel="stylesheet"> {{else}}
+  <link href="{{rootPath}}build/style-whatsup.css" rel="stylesheet"> {{/if}}
+  <!--Google analytics-->
+  <!--  
   analytics script goes here
   -->
 </head>
@@ -34,9 +32,9 @@
 ================================================== -->
 
 <body>
-{{> banner }}  
-  {{{ body }}}
-{{> footer }}
+  {{> banner }} 
+  {{{ body }}} 
+  {{> footer }}
   <!-- Bootstrap core JavaScript
     ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
