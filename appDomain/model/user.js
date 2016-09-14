@@ -25,7 +25,7 @@ var UserSchema = new Schema({
 						return( password[0] == password[1] );
 					return true;
 				},
-				message: 'Passwords Entered to not match.'
+				message: 'Passwords entered do not match.'
 			}
 		},
 		firstName: String,
