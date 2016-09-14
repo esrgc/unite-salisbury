@@ -36,7 +36,7 @@ router.post('/login', passport.authenticate('local-login', {
     console.log('Logging %s in..', user.email);
   });
 
-  if(returnUrl === '')
+  if (returnUrl === '')
     res.redirect('/');
   else
     res.redirect(returnUrl);
@@ -50,13 +50,30 @@ router.get('/logout', function(req, res) {
 
 /*sign up*/
 router.get('/signup', function(req, res) {
-  res.render('signup', { title: 'Singup', message: req.flash('signupMessage'), rootPath: '../' });
+  res.render('signup', {
+    title: 'Singup',
+    message: req.flash('signupMessage'),
+    rootPath: '../'
+  });
 });
 
-router.post('/signup', passport.authenticate('local-signup', {
-  successRedirect: '/', // redirect to success page (will be profile page or event map page)
-  failureRedirect: 'signup', // redirect back to the login page
-  failureFlash: true // allow flash messages
-}));
+router.post('/signup', function(req, res, next) {
+  passport.authenticate('local-signup', function(err, user, info) {
+    if (err)
+      return next(err);
+
+    if (!user) { 
+      //need to pass back user to re-display the info that previously typed
+
+      //if error render the sign up page again
+      res.render('signup', {
+        title: 'Singup',
+        message: req.flash('signupMessage'),
+        rootPath: '../'
+        //user model that contains previous user data
+      });
+    }
+  })(req, res, next);
+});
 
 module.exports = router;
