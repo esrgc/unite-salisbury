@@ -66,20 +66,30 @@ passport.use('local-signup', new LocalStrategy({
   passwordField: 'password',
   passReqToCallback: true
 }, function(req, email, password, done) {
-//  if (req.body.access != accessCode)
-//    return done(null, false, req.flash('createMessage', "Incorrect access code."));
-
+	//First check if all feilds are there
+	var confirmPass = req.body.confirmPassword;
+	if( !confirmPass || !email || !password )
+	 return	done( null, false, req.flash('signupMessage', "Fill out all fields.") );
+	//Now look for email existing
   User.findOne({ email: email }, function(err, user) {
     if (err)
       return done(err);
     if (user)
       return done(null, false, req.flash('signupMessage', "That email is already taken."));
     else {
-      var newUser = new User({ email: email });
-      newUser.password = newUser.generateHash(password);
+      var newUser = new User({
+			 	email: email, 
+				password: [password,req.body.confirmPassword]
+		 	});
       newUser.save(function(err) { // save
-        if (err)
-          return done(err);
+        if (err){
+					console.log( err );
+					if( err.name && err.name == 'ValidationError' ){
+						var msg = err.errors[Object.keys(err.errors)[0]].message;
+          	return done(null, false, req.flash('signupMessage', msg  ));
+					}
+				return done(err);
+				}
         else
           req.logIn(newUser, function(err) { //on save, login
             if (err)
