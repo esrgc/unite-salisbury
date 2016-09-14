@@ -25,7 +25,7 @@ router.post('/login', passport.authenticate('local-login', {
 
 /*sign up*/
 router.get('/signup', function(req, res) {
-  res.render('signup', { title: 'Create profile' , message: req.flash('signupMessage'), rootPath: '../' } );
+  res.render('signup', { title: 'Singup' , message: req.flash('signupMessage'), rootPath: '../' } );
 });
 
 router.post('/signup', passport.authenticate('local-signup', {

@@ -12,6 +12,7 @@ var UserSchema = new Schema({
   password: String,
   firstName: String,
   lastName: String,
+  role: String,
   events: [{ type: Schema.Types.ObjectId, ref: 'Event' }] //populated fields
 });
 
