@@ -69,9 +69,10 @@ passport.use('local-signup', new LocalStrategy({
     else {
       //create a new user
       var newUser = new User({
-        email: email,
-        password: password //hased in post validation
+        email: email        
       });
+
+      newUser.password = newUser.generateHash(password);
 
       //First check if all feilds are there
       var confirmPass = req.body.confirmPassword;
