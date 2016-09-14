@@ -11,11 +11,17 @@ var passport = domain.authentication.passport;
 
 /* sign in*/
 router.get('/login', function(req, res) {
-  res.render('login', { title: 'Please log in' , message: req.flash('loginMessage') , rootPath: '../'} );
+  var returnUrl = req.params.returnUrl || '';
+  res.render('login', {
+    title: 'Please log in',
+    message: req.flash('loginMessage'),
+    rootPath: '../',
+    returnUrl: returnUrl
+  });
 });
 
 // router.post('/login', function(req, res){
-// 	res.send('OK');
+//  res.send('OK');
 // });
 router.post('/login', passport.authenticate('local-login', {
   successRedirect: '../', // redirect to success page (will be profile page or event map page)
@@ -23,9 +29,15 @@ router.post('/login', passport.authenticate('local-login', {
   failureFlash: true // allow flash messages
 }));
 
+//logout
+router.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/');
+});
+
 /*sign up*/
 router.get('/signup', function(req, res) {
-  res.render('signup', { title: 'Singup' , message: req.flash('signupMessage'), rootPath: '../' } );
+  res.render('signup', { title: 'Singup', message: req.flash('signupMessage'), rootPath: '../' });
 });
 
 router.post('/signup', passport.authenticate('local-signup', {
