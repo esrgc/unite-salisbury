@@ -11,7 +11,7 @@ var passport = domain.authentication.passport;
 
 /* sign in*/
 router.get('/login', function(req, res) {
-  var returnUrl = req.params.returnUrl || '';
+  var returnUrl = req.query.returnUrl || '';
   res.render('login', {
     title: 'Please log in',
     message: req.flash('loginMessage'),
@@ -24,10 +24,23 @@ router.get('/login', function(req, res) {
 //  res.send('OK');
 // });
 router.post('/login', passport.authenticate('local-login', {
-  successRedirect: '../', // redirect to success page (will be profile page or event map page)
-  failureRedirect: 'login', // redirect back to the login page
   failureFlash: true // allow flash messages
-}));
+}), function(req, res) {
+  var user = req.user;
+  var returnUrl = req.body.returnUrl || '';
+  // all is well, log the user in
+  req.logIn(user, function(err) {
+    if (err) {
+      return done(err);
+    }
+    console.log('Logging %s in..', user.email);
+  });
+
+  if(returnUrl === '')
+    res.redirect('/');
+  else
+    res.redirect(returnUrl);
+});
 
 //logout
 router.get('/logout', function(req, res) {

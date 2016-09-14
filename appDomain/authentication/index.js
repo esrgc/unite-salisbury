@@ -10,35 +10,13 @@ var isLoggedIn = function(req, res, next) {
     return next();
 
   // if they aren't redirect them to the home page
-  req.flash('isLoggedInMessage', 'Please login to access this page!');
-  res.redirect('/auth/login');
-};
-var isAdmin = function(req, res, next) {
-  //first check if the user is logged in
-  isLoggedIn(req, res, function(req, res, next) {
-    //now check if the user is an admin
-    console.log(req.cookies);
-
-    return next();
-  });
-
-
-};
-var isCreator = function(req, res, next) {
-  //first check if the user is logged in
-  isLoggedIn(req, res, function(req, res, next) {
-    //now check if the user is a creator
-
-
-    return next();
-  });
+  req.flash('loginMessage', 'Please login to access this page!');
+  res.redirect('/auth/login?returnUrl=' + req.originalUrl);
 };
 
 //now export to middlewares
 module.exports = {
   // route middleware to make sure a user is logged in
   isLoggedIn: isLoggedIn,
-  isAdmin: isAdmin,
-  isCreator: isCreator,
   passport: passport
 };
