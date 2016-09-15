@@ -42,6 +42,7 @@ var UserSchema = new Schema({
   id: String,
   email: {
     type: String,
+    required: [true, 'A valid email address is required.'],
     validate:{ 
       validator: emailValidate,
       message: 'Email entered is invalid.'
