@@ -3,7 +3,9 @@
     <form action="signUp" class="form-horizontal" method="post" role="form" novalidate="novalidate">
       {{#if message}}
       <div class="alert alert-danger text-center">
-        {{message}} {{#if err}}
+        {{message}} 
+        <!--if there are validation error show them-->
+        {{#if err}}
         <div class="validation-summary-errors">
           <ul class="list-unstyled">
             {{#each err.errors}}
