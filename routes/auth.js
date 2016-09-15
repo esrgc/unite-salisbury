@@ -27,6 +27,7 @@ router.get('/login', function(req, res) {
 router.post('/login', passport.authenticate('local-login', {
   failureFlash: true // allow flash messages
 }), function(req, res) {
+  console.log("Mystery function");
   var user = req.user;
   var returnUrl = req.body.returnUrl || '';
   // all is well, log the user in

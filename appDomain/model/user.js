@@ -10,16 +10,22 @@ var bcrypt = require('bcrypt-nodejs');
 //
 //
 var passwordLength = function(password) {
+  if( this.hashed )
+    return true;
   return password.length > 7;
 }
 
 var passwordCaps = function(password) {
+  if( this.hashed )
+    return true;
   return /[^A-Z]/g.test(password);
 }
 
 var passwordNum = function(password) {
+    if( this.hashed )
+      return true;
     return /[0-9]/.test(password);
-  }
+}
   //Multiple validators with different error messages
 var passwordValidators = [
   { validator: passwordLength, message: 'Password must be at least 8 characters long' },
@@ -56,6 +62,7 @@ var UserSchema = new Schema({
   firstName: { type: String, required: [true, 'First name is required'] },
   lastName: { type: String, required: [true, 'Last name is required'] },
   role: String,
+  hashed: { type: Boolean, defualt: false },
   events: [{ type: Schema.Types.ObjectId, ref: 'Event' }] //populated fields
 });
 
@@ -65,12 +72,15 @@ var UserSchema = new Schema({
 //
 //This method makes validation cleaner, ( new User( {email: ...., password: [password, confirmPassword] }) to constructor
 UserSchema.post('validate', function() { //middleware to fire after validating, and before saving!
-  this.password = this.generateHash(this.password);
+  if(! this.hashed ){ 
+    this.password = this.generateHash(this.password);
+    this.hashed = true;
+  }
 
 });
 // checking if password is valid
 UserSchema.methods.validPassword = function(password) {
-  return bcrypt.compareSync(password, this.password);
+   return bcrypt.compareSync(password, this.password);
 };
 
 // generating a hash
