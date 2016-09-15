@@ -12,9 +12,11 @@
       <li>
         <a href="#"> <span class="fa fa-globe"></span> Map </a>
       </li>
+      {{#unless user }}
       <li>
         <a href="/auth/signUp"> <span class="fa fa-key"></span> Register </a>
       </li>
+      {{/unless}}
       <li>
         <a href="/"> <span class="fa fa-home"></span> Home </a>
       </li>
