@@ -62,7 +62,7 @@ var UserSchema = new Schema({
   firstName: { type: String, required: [true, 'First name is required'] },
   lastName: { type: String, required: [true, 'Last name is required'] },
   role: String,
-  hashed: { type: Boolean, defualt: false },
+  hashed: { type: Boolean, default: false },
   events: [{ type: Schema.Types.ObjectId, ref: 'Event' }] //populated fields
 });
 
