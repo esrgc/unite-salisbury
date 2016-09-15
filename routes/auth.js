@@ -85,6 +85,12 @@ router.post('/signup', function(req, res, next) {
         err: validationError //show all error messages
       });
     } else {
+      req.logIn(user, function(err) { //on save, login
+        if (err) {
+          req.flash('loginMessage', "Error logging in. Please try again!");
+          res.redirect('login'); //couldn't log in so redirect to login
+        }
+      }); //End req.logIn
       //redirect to profile page (home page for  now)      
       res.redirect('/');
     }
@@ -123,14 +129,8 @@ router.post('/signup', function(req, res, next) {
           req.flash('signupMessage', "Error saving data to the database. Please try again!");
           return done(true, newUser);
         } else
-          req.logIn(newUser, function(err) { //on save, login
-            if (err){
-              req.flash('loginMessage', "Error logging in. Please try again!");
-              res.redirect('login');//couldn't log in so redirect to login
-            }
-            //every worked so call done
-            return done(false, newUser);
-          }); //End req.logIn
+        //every worked so call done
+          return done(false, newUser);
       }); //End newUser.save
     } //End else
 
