@@ -69,20 +69,19 @@ passport.use('local-signup', new LocalStrategy({
     else {
       //create a new user
       var newUser = new User({
-        email: email        
+        email: email,
+				password: password				
       });
 
-      newUser.password = newUser.generateHash(password);
+      //newUser.password = newUser.generateHash(password); Need to check password first! Hash after validate
 
       //First check if all feilds are there
       var confirmPass = req.body.confirmPassword;
-      // if (!confirmPass || !email || !password)
-      //   return done(null, false, req.flash('signupMessage', "Fill out all fields."));
 
       //check if password == confirmPass
       if (confirmPass != password)
         return done(null, false,
-          req.flash('signupMessage', "Confirm Password does not match. Please try again"));
+          req.flash('signupMessage', "Confirmation Password does not match. Please try again"));
 
 
       newUser.save(function(err) { // save
