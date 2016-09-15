@@ -6,12 +6,17 @@
     <form class="signup-form" action="signup" method="post">
       <h3><i class="fa fa-user-plus"></i>&nbsp;Sign up to host events </h3>
       <div class="form-input">
-        <input class="form-control" type="text" placeholder="New Email" autofocus="" name="email" />
-        <input class="form-control" type="password" placeholder="New Password" name="password" />
-        <input class="form-control" type="password" placeholder="Confirm Password" name="confirmPassword" />
+        <input class="form-control" type="email" placeholder="New Email" autofocus="" name="email" />
+        <input class="form-control" type="password" placeholder="New Password" name="password" id="password" />
+        <input class="form-control" type="password" placeholder="Confirm Password" name="confirmPassword" id="confirmPassword" />
         <button class="btn btn-lg btn-primary btn-block" type="submit"><i class="fa fa-plus"></i>&nbsp; Create Profile </button>
       </div>
     </form>
     <!-- <div class="col-md-2"></div> Please use offset if you need to set blank col -->
   </div>
 </div>
+{{#contentFor "scripts"}}
+<script src="{{rootPath}}build/whatsup-signup.js">
+</script>
+{{/contentFor}}
+            

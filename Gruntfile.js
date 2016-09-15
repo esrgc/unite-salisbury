@@ -56,6 +56,12 @@ module.exports = function(grunt) {
             'public/js/dashboard/router/*.js',
             'public/js/dashboard/view/*.js',
             'public/js/dashboard/*.js'
+          ],
+          'public/build/<%= pkg.name %>-login.js':[
+            'public/js/login/*.js'
+          ],
+          'public/build/<%= pkg.name %>-signup.js':[
+            'public/js/signup/*.js'
           ]
         }
       }
