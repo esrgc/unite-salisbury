@@ -132,7 +132,7 @@ router.post('/signup', function(req, res, next) {
             //   //req.flash('loginMessage', "Error logging in. Please try again!");
             //   done(true, newUser)
             // }
-            //every worked so call done
+            //every thing worked so call done
             return done(false, newUser);
           }); //End req.logIn
       }); //End newUser.save
