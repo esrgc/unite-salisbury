@@ -54,54 +54,14 @@ passport.use('local-login', new LocalStrategy({
 
 }));
 
-passport.use('local-signup', new LocalStrategy({
-  usernameField: 'email',
-  passwordField: 'password',
-  passReqToCallback: true
-}, function(req, email, password, done) {
-  //Now look for email existing
-  User.findOne({ email: email }, function(err, user) {
-    if (err)
-      return done(err);
-    if (user)
-      return done(null, false,
-        req.flash('signupMessage', "That email is already taken."));
-    else {
-      //create a new user
-      var newUser = new User({
-        email: email,
-				password: password				
-      });
-
-      //newUser.password = newUser.generateHash(password); Need to check password first! Hash after validate
-
-      //First check if all feilds are there
-      var confirmPass = req.body.confirmPassword;
-
-      //check if password == confirmPass
-      if (confirmPass != password)
-        return done(null, false,
-          req.flash('signupMessage', "Confirmation Password does not match. Please try again"));
-
-
-      newUser.save(function(err) { // save
-        if (err) {
-          console.log(err);
-          if (err.name && err.name == 'ValidationError') {
-            var msg = err.errors[Object.keys(err.errors)[0]].message;
-            return done(null, false, req.flash('signupMessage', msg));
-          }
-          return done(err);
-        } else
-          req.logIn(newUser, function(err) { //on save, login
-            if (err)
-              return done(err);
-            return done(null, newUser);
-          }); //End req.logIn
-      }); //End newUser.save
-    } //End else
-  }); //End find one
-}));
+//moved to signup route..no need for passport here
+// passport.use('local-signup', new LocalStrategy({
+//   usernameField: 'email',
+//   passwordField: 'password',
+//   passReqToCallback: true
+// }, function(req, email, password, done) {
+  
+// }));
 
 
 

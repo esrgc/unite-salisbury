@@ -9,25 +9,25 @@ var bcrypt = require('bcrypt-nodejs');
 //Validators ========================================
 //
 //
-var passwordLength = function( password ){
+var passwordLength = function(password) {
   return password.length > 7;
 }
 
-var passwordCaps = function( password ){
-  return	/[^A-Z]/g.test( password );
+var passwordCaps = function(password) {
+  return /[^A-Z]/g.test(password);
 }
 
-var passwordNum = function( password ){
-  return	/[0-9]/.test( password );
-}
-//Multiple validators with different error messages
+var passwordNum = function(password) {
+    return /[0-9]/.test(password);
+  }
+  //Multiple validators with different error messages
 var passwordValidators = [
-  { validator:  passwordLength, message: 'Password must be at least 8 characters long' },
-  { validator:  passwordCaps, message: 'Password must contain an uppercase character' },
-  { validator:  passwordNum, message: 'Password must contain a number' }
+  { validator: passwordLength, message: 'Password must be at least 8 characters long' },
+  { validator: passwordCaps, message: 'Password must contain an uppercase character' },
+  { validator: passwordNum, message: 'Password must contain a number' }
 ]
 
-var emailValidate = function( email ){
+var emailValidate = function(email) {
   if (email.length == 0) {
     return false;
     return /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/.test(email);
@@ -43,17 +43,18 @@ var UserSchema = new Schema({
   email: {
     type: String,
     required: [true, 'A valid email address is required.'],
-    validate:{ 
+    validate: {
       validator: emailValidate,
       message: 'Email entered is invalid.'
     },
   },
   password: {
     type: String,
+    required: [true, 'Password is required.'],
     validate: passwordValidators
   },
-  firstName: String,
-  lastName: String,
+  firstName: { type: String, required: [true, 'First name is required'] },
+  lastName: { type: String, required: [true, 'Lirst name is required'] }
   role: String,
   events: [{ type: Schema.Types.ObjectId, ref: 'Event' }] //populated fields
 });
@@ -64,7 +65,7 @@ var UserSchema = new Schema({
 //
 //This method makes validation cleaner, ( new User( {email: ...., password: [password, confirmPassword] }) to constructor
 UserSchema.post('validate', function() { //middleware to fire after validating, and before saving!
-  this.password = this.generateHash( this.password );
+  this.password = this.generateHash(this.password);
 
 });
 // checking if password is valid
