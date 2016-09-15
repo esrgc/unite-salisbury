@@ -14,6 +14,7 @@ router.get('/login', function(req, res) {
   var returnUrl = req.query.returnUrl || '';
   res.render('login', {
     title: 'Please log in',
+    req: req,
     message: req.flash('loginMessage'),
     rootPath: '../',
     returnUrl: returnUrl
@@ -52,6 +53,7 @@ router.get('/logout', function(req, res) {
 router.get('/signup', function(req, res) {
   res.render('signup', {
     title: 'Singup',
+    req: req,
     message: req.flash('signupMessage'),
     rootPath: '../'
   });
@@ -68,6 +70,7 @@ router.post('/signup', function(req, res, next) {
       //if error render the sign up page again
       res.render('signup', {
         title: 'Singup',
+        req: req,
         message: req.flash('signupMessage'),
         rootPath: '../'
         //user model that contains previous user data
