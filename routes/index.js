@@ -9,6 +9,15 @@ var user = require('./user');
 var event = require('./event');
 // var create = require('./create');
 
+//this middleware is to detect user
+router.use(function(req, res, next) {
+  if (req.isAuthenticated()) {
+  	console.log("there's a logged in user");
+    res.locals.user = req.user;
+  }
+  next();
+});
+
 /*Site routes*/
 router.use('/', home);
 router.use('/index', home);
@@ -20,6 +29,7 @@ router.use('/auth', auth);
 //Api routes
 router.use('/event', event);
 router.use('/user', user);
+
 
 
 module.exports = router;

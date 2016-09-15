@@ -8,27 +8,31 @@
         <span class="icon-bar"></span>
       </button>
     </div>
+    <ul class="nav navbar-nav navbar-left">
+      <li>
+        <a href="#"> <span class="fa fa-globe"></span> Map </a>
+      </li>
+      <li>
+        <a href="/auth/signUp"> <span class="fa fa-key"></span> Register </a>
+      </li>
+      <li>
+        <a href="/"> <span class="fa fa-home"></span> Home </a>
+      </li>
+    </ul>
     <div class="collapse navbar-collapse" id="collapseables">
       <ul class="nav navbar-nav navbar-right">
-        {{#if req.user }}
+        {{#if user }}
         <li>
-          <a href="/auth/logout"> <span class="fa fa-sign-out"></span>logout</a>
+            <a>Logged in as <strong>{{user.email}}</strong></a>
+        </li>
+        <li>
+          <a href="/auth/logout"> <span class="fa fa-sign-out"></span>&nbsp;logout</a>
         </li>
         {{else}}
         <li>
-          <a href="/auth/login"> <span class="fa fa-sign-in"></span> Login </a>
+          <a href="/auth/login"> <span class="fa fa-sign-in"></span>&nbsp;Login </a>
         </li>
         {{/if}}
-        
-        <li>
-          <a href="#"> <span class="fa fa-globe"></span> Map </a>
-        </li>
-        <li>
-          <a href="/auth/signUp"> <span class="fa fa-key"></span> Register </a>
-        </li>
-        <li>
-          <a href="/"> <span class="fa fa-home"></span> Home </a>
-        </li>
       </ul>
     </div>
   </div>

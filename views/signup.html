@@ -10,13 +10,18 @@
       </div>
     </form> -->
     <form action="signUp" class="form-horizontal" method="post" role="form" novalidate="novalidate">
-      <!--  <div class="validation-summary-errors">
-        <ul>
-          <li style="display:none"></li>
-        </ul>
-      </div> -->
       {{#if message}}
-      <div class="alert alert-danger text-center">{{message}}</div>
+      <div class="alert alert-danger text-center">
+        {{message}} {{#if err}}
+        <div class="validation-summary-errors">
+          <ul class="list-unstyled">
+            {{#each err.errors}}
+            <li>{{message}}</li>
+            {{/each}}
+          </ul>
+        </div>
+        {{/if}}
+      </div>
       {{/if}}
       <div class="form-group">
         <div class="col-md-10 col-md-offset-1">
@@ -26,7 +31,7 @@
       <div class="form-group">
         <label for="firstName" class="col-md-3 control-label">First Name</label>
         <div class="col-md-6">
-          <input class="input-validation-error form-control" data-val="true" data-val-required="Please enter a valid email address" id="firstName" name="firstName" placeholder="John" type="email" value="">
+          <input class="input-validation-error form-control" data-val="true" data-val-required="Please enter a valid email address" id="firstName" name="firstName" placeholder="John" type="email" value="{{user.firstName}}">
           <span class="label label-default">Required</span>
           <span class="help-block">
             <span class="field-validation-error" data-valmsg-for="firstName" data-valmsg-replace="true">
@@ -38,7 +43,7 @@
       <div class="form-group">
         <label for="lastName" class="col-md-3 control-label">Last Name</label>
         <div class="col-md-6">
-          <input class="input-validation-error form-control" data-val="true" data-val-required="Please enter a valid email address" id="lastName" name="lastName" placeholder="Doe" type="email" value="">
+          <input class="input-validation-error form-control" data-val="true" data-val-required="Please enter a valid email address" id="lastName" name="lastName" placeholder="Doe" type="email" value="{{user.lastName}}">
           <span class="label label-default">Required</span>
           <span class="help-block">
             <span class="field-validation-error" data-valmsg-for="lastName" data-valmsg-replace="true">
@@ -50,7 +55,7 @@
       <div class="form-group">
         <label for="Email" class="col-md-3 control-label">Email</label>
         <div class="col-md-6">
-          <input class="input-validation-error form-control" data-val="true" data-val-required="Please enter a valid email address" id="Email" name="Email" placeholder="john@somecompany.com" type="email" value="">
+          <input class="input-validation-error form-control" data-val="true" data-val-required="Please enter a valid email address" id="Email" name="email" placeholder="john@somecompany.com" type="email" value="{{user.email}}">
           <span class="label label-default">Required</span>
           <span class="help-block">
             <span class="field-validation-error" data-valmsg-for="Email" data-valmsg-replace="true">
@@ -62,7 +67,7 @@
       <div class="form-group">
         <label for="Password" class="col-md-3 control-label">Password</label>
         <div class="col-md-6">
-          <input class="input-validation-error form-control" data-val="true" data-val-length="The Password must be at least 6 characters long." data-val-length-max="100" data-val-length-min="6" data-val-required="The Password field is required." id="Password" name="Password" placeholder="Password" type="password">
+          <input class="input-validation-error form-control" data-val="true" data-val-length="The Password must be at least 6 characters long." data-val-length-max="100" data-val-length-min="6" data-val-required="The Password field is required." id="Password" name="password" placeholder="Password" type="password">
           <span class="label label-default">Required</span>
           <span class="help-block"><span class="field-validation-error" data-valmsg-for="Password" data-valmsg-replace="true"> <!--validation message--></span></span>
         </div>
@@ -70,7 +75,7 @@
       <div class="form-group">
         <label for="ConfirmPassword" class="col-md-3 control-label">Confirm password</label>
         <div class="col-md-6">
-          <input class="input-validation-error form-control" data-val="true" data-val-equalto="The password and confirmation password do not match." data-val-equalto-other="*.Password" data-val-required="The Confirm password field is required." id="ConfirmPassword" name="ConfirmPassword" placeholder="Confirm your password" type="password">
+          <input class="input-validation-error form-control" data-val="true" data-val-equalto="The password and confirmation password do not match." data-val-equalto-other="*.Password" data-val-required="The Confirm password field is required." id="ConfirmPassword" name="confirmPassword" placeholder="Confirm your password" type="password">
           <span class="label label-default">Required</span>
           <span class="help-block"><span class="field-validation-error" data-valmsg-for="ConfirmPassword" data-valmsg-replace="true"> <!--validation message--></span></span>
         </div>

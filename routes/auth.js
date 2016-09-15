@@ -6,6 +6,7 @@ var express = require('express');
 var router = express.Router();
 
 var domain = require('../appDomain');
+var User = domain.dataRepository.User;
 var passport = domain.authentication.passport;
 
 
@@ -85,12 +86,6 @@ router.post('/signup', function(req, res, next) {
         err: validationError //show all error messages
       });
     } else {
-      req.logIn(user, function(err) { //on save, login
-        if (err) {
-          req.flash('loginMessage', "Error logging in. Please try again!");
-          res.redirect('login'); //couldn't log in so redirect to login
-        }
-      }); //End req.logIn
       //redirect to profile page (home page for  now)      
       res.redirect('/');
     }
@@ -101,27 +96,27 @@ router.post('/signup', function(req, res, next) {
     if (err) {
       //error occur
       req.flash('signupMessage', 'An error has occured while processing. Please try again!');
-      done(true, null);
+      return done(true, null);
+
     }
     if (user) {
       req.flash('signupMessage', "That email is already taken. Please try again!");
-      done(true, newUser);
+      return done(true, newUser);
     } else {
       //newUser.password = newUser.generateHash(password); Need to check password first! Hash after validate
 
-      //First check if all feilds are there
-      var confirmPass = req.body.confirmPassword;
       //check if password == confirmPass
-      if (confirmPass != password) {
+      if (data.confirmPassword != data.password) {
         req.flash('signupMessage', "Confirmation password does not match. Please try again!");
-        done(true, newUser);
+        return done(true, newUser);
       }
       //now validate the model
       var validateErr = newUser.validateSync();
       //validation errors occur
-      if (err) {
+      if (typeof validateErr != 'undefined') {
+        console.log(validateErr);
         req.flash('signupMessage', "Data entered is invalid. Please try again!");
-        done(true, newUser, validateErr); //pass validation errors to re-display
+        return done(true, newUser, validateErr); //pass validation errors to re-display
       }
       //everything is good now save the user
       newUser.save(function(err) { // save
@@ -129,8 +124,14 @@ router.post('/signup', function(req, res, next) {
           req.flash('signupMessage', "Error saving data to the database. Please try again!");
           return done(true, newUser);
         } else
-        //every worked so call done
-          return done(false, newUser);
+          req.logIn(newUser, function(err) { //on save, login
+            // if (err){
+            //   //req.flash('loginMessage', "Error logging in. Please try again!");
+            //   done(true, newUser)
+            // }
+            //every worked so call done
+            return done(false, newUser);
+          }); //End req.logIn
       }); //End newUser.save
     } //End else
 

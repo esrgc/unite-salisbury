@@ -5,7 +5,6 @@ var router = express.Router();
 router.get('/', function(req, res) {
   res.render('index', {
     title: "What's Up",
-    req: req,
     message: req.flash('loginMessage')
   });
 });

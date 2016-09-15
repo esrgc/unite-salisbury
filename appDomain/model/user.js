@@ -54,7 +54,7 @@ var UserSchema = new Schema({
     validate: passwordValidators
   },
   firstName: { type: String, required: [true, 'First name is required'] },
-  lastName: { type: String, required: [true, 'Lirst name is required'] },
+  lastName: { type: String, required: [true, 'Last name is required'] },
   role: String,
   events: [{ type: Schema.Types.ObjectId, ref: 'Event' }] //populated fields
 });
