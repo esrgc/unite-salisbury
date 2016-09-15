@@ -21,7 +21,6 @@ passport.deserializeUser(function(id, done) {
 });
 
 passport.use('local-login', new LocalStrategy({
-  // by default, local strategy uses username and password, we will override with email
   usernameField: 'email',
   passwordField: 'password',
   passReqToCallback: true // allows us to pass back the entire request to the callback
@@ -35,7 +34,7 @@ passport.use('local-login', new LocalStrategy({
     User.findOne({ 'email': email }, function(err, user) {
       // console.log(user);
       // if there are any errors, return the error before anything else
-      console.log("Finding user");
+      console.log("Finding user");//this is not finding user. At this step either already found or not found
       if (err) {
         console.log(err);
         return done(err);

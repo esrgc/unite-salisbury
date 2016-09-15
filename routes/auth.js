@@ -25,9 +25,10 @@ router.get('/login', function(req, res) {
 //  res.send('OK');
 // });
 router.post('/login', passport.authenticate('local-login', {
+  failureRedirect: 'login',
   failureFlash: true // allow flash messages
 }), function(req, res) {
-  console.log("Mystery function");
+  // console.log("This mystery function is only invoked after successfully logged in");
   var user = req.user;
   var returnUrl = req.body.returnUrl || '';
   // all is well, log the user in
@@ -59,7 +60,7 @@ router.get('/signup', function(req, res) {
     rootPath: '../'
   });
 });
-
+//sign up post
 router.post('/signup', function(req, res, next) {
   //create a new user
   var data = req.body;
