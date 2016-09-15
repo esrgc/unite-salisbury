@@ -13,7 +13,7 @@ var profile = require('./profile');
 //this middleware is to detect user
 router.use(function(req, res, next) {
   if (req.isAuthenticated()) {
-  	console.log("there's a logged in user");
+  	console.log("router middleware: there's a logged in user");
     res.locals.user = req.user;
   }
   next();

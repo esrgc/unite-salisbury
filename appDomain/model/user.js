@@ -10,20 +10,20 @@ var bcrypt = require('bcrypt-nodejs');
 //
 //
 var passwordLength = function(password) {
-  if( this.hashed )
-    return true;
+  // if( this.hashed )
+  //   return true;
   return password.length > 7;
 }
 
 var passwordCaps = function(password) {
-  if( this.hashed )
-    return true;
+  // if( this.hashed )
+  //   return true;
   return /[^A-Z]/g.test(password);
 }
 
 var passwordNum = function(password) {
-    if( this.hashed )
-      return true;
+    // if( this.hashed )
+    //   return true;
     return /[0-9]/.test(password);
 }
   //Multiple validators with different error messages
@@ -62,8 +62,10 @@ var UserSchema = new Schema({
   firstName: { type: String, required: [true, 'First name is required'] },
   lastName: { type: String, required: [true, 'Last name is required'] },
   role: String,
-  hashed: { type: Boolean, default: false },
+  // hashed: { type: Boolean, default: false },
   events: [{ type: Schema.Types.ObjectId, ref: 'Event' }] //populated fields
+}, {
+  validateBeforeSave: false//prevent pre-save validation
 });
 
 
@@ -72,10 +74,11 @@ var UserSchema = new Schema({
 //
 //This method makes validation cleaner, ( new User( {email: ...., password: [password, confirmPassword] }) to constructor
 UserSchema.post('validate', function() { //middleware to fire after validating, and before saving!
-  if(! this.hashed ){ 
-    this.password = this.generateHash(this.password);
-    this.hashed = true;
-  }
+  // if(! this.hashed ){ 
+  //   this.password = this.generateHash(this.password);
+  //   this.hashed = true;
+  // } //again this is not recommened to hash the password here
+  //after validation is done in the router handler hash it there
 
 });
 // checking if password is valid

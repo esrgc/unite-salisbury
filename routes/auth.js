@@ -64,7 +64,7 @@ router.get('/signup', function(req, res) {
 router.post('/signup', function(req, res, next) {
   //create a new user
   var data = req.body;
-
+  //bind post data to model instance (document)
   var newUser = new User({
     email: data.email,
     password: data.password,
@@ -117,6 +117,10 @@ router.post('/signup', function(req, res, next) {
         req.flash('signupMessage', "Data entered is invalid. Please try again!");
         return done(true, newUser, validateErr); //pass validation errors to re-display
       }
+
+      //no validation error -> now hash the password
+      newUser.password = newUser.generateHash(newUser.password);
+
       //everything is good now save the user
       newUser.save(function(err) { // save
         if (err) {
