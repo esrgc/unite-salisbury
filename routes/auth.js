@@ -12,7 +12,7 @@ var passport = domain.authentication.passport;
 /* sign in*/
 router.get('/login', function(req, res) {
   var returnUrl = req.query.returnUrl || '';
-  res.render('login', {
+  res.render('auth/login', {
     title: 'Please log in',
     message: req.flash('loginMessage'),
     rootPath: '../',
@@ -53,7 +53,7 @@ router.get('/logout', function(req, res) {
 
 /*sign up*/
 router.get('/signup', function(req, res) {
-  res.render('signup', {
+  res.render('auth/signup', {
     title: 'Singup',
     message: req.flash('signupMessage'),
     rootPath: '../'
@@ -76,7 +76,7 @@ router.post('/signup', function(req, res, next) {
   var done = function(err, user, validationError) {
     //if error render the sign up page again
     if (err) {
-      res.render('signup', {
+      res.render('auth/signup', {
         title: 'Singup',
         message: req.flash('signupMessage'),
         rootPath: '../',
