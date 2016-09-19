@@ -3,6 +3,11 @@ var router = express.Router();
 var domain = require('../appDomain');
 var User = domain.dataRepository.User;
 
+var isLoggedIn = domain.authentication.isLoggedIn;
+
+//middleware makes sure user is logged in before proceeding.
+router.use(isLoggedIn);
+
 router.get('/edit', function(req, res) {
   var done = function(err, user) {
     res.render('profile', { user: user, rootPath: '../' });

@@ -8,11 +8,6 @@ var router = express.Router();
 var domain = require('../appDomain');
 var User = domain.dataRepository.User;
 var passport = domain.authentication.passport;
-var isLoggedIn = domain.authentication.isLoggedIn;
-
-//middleware makes sure user is logged in before proceeding.
-router.use(isLoggedIn);
-
 
 /* sign in*/
 router.get('/login', function(req, res) {
