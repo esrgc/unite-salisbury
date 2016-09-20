@@ -71,22 +71,60 @@ router.post('/edit', function(req, res) {
     if (err) {
       console.log("There was an error updating data");
       req.flash('profileMessage', 'Error updating your profile');
-      done(err, req.user);
-    } else {
+      return done(err, req.user);
+    } else
       req.flash('profileMessage', "Profile updated successfuly");
-      done(null, user);
-    }
+    done(null, user);
+
   });
 });
 
-router.post('/password', function(req,res) {
+router.post('/changePassword', function(req,res) {
   var done = function( err, user ){
-    console.log("Password update finished");
-    res.render("<p>:)</p>");
+    console.log("Done change password post", err );
+    if( err )
+      res.render('profile/changePassword', { 
+        message: req.flash('profileMessage') ,
+        err: err, 
+        rootPath: '../' }
+      );
+    else
+      res.render("profile/changePassword",{
+        message: req.flash('profileMessage'),
+        rootPath: '../' }
+      );
   }
-  console.log("Got post");
-  done();
+
+  var data = req.body;
+
+  if (data.confirmPassword != data.password) {//Confirm
+    req.flash('profileMessage', "Confirmation password does not match. Please try again!");
+    return done(true);
+  }
+  User.findOne({ email: req.user.email }, function( err, user ){
+    if( err){
+      console.log("Error updating password");
+      req.flash('profileMessage','Error updating your profile');
+      return done( err, req.user );
+    }
+    if( user ){
+      user.password = data.password;
+      var validateErr = user.validateSync();
+      if( validateErr ){
+        req.flash('profileMessage', "Error updating password")
+        done( validateErr );
+        console.log("Err");
+      }
+      else{
+        user.password = user.generateHash( data.password );
+        user.save();
+        req.flash('profileMessage', "Password changed successfuly!");
+        done(false);
+      } 
+    }
+
+  });
+
 });
 
-
-module.exports = router;
+  module.exports = router;
