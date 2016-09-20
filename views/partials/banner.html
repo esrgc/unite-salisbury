@@ -11,7 +11,7 @@
     <div class="collapse navbar-collapse" id="collapseables">
       <ul class="nav navbar-nav navbar-left">
         <li>
-          <a href="{{rootPath}}event"> <span class="fa fa-globe"></span> Events</a>
+          <a href="{{rootPath}}event/map"> <span class="fa fa-globe"></span> Events</a>
         </li>
         {{#unless user }}
         <li>
@@ -20,7 +20,7 @@
         {{/unless}} 
         {{#if user }}
         <li>
-          <a href="{{rootPath}}event/create">Create Event</a>
+          <a href="{{rootPath}}event">Manage Event</a>
         </li>
         {{/if}}
         <li>
