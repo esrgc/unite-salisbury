@@ -43,9 +43,7 @@ router.get('/edit', function(req, res) {
     });
   }
 });
-router.get('/changePassword', function( req, res ){
-  res.render('profile/changePassword', {rootPath: '../'});
-});
+
 
 //POST...............................................................................
 router.post('/edit', function(req, res) {
@@ -77,6 +75,10 @@ router.post('/edit', function(req, res) {
       done(null, user);
     }
   });
+});
+
+router.get('/changePassword', function( req, res ){
+  res.render('profile/changePassword', {rootPath: '../'});
 });
 
 router.post('/changePassword', function(req,res) {
