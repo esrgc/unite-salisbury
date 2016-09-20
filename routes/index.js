@@ -3,7 +3,7 @@ var router = express.Router();
 
 var home = require('./home');
 var admin = require('./admin');
-var eventMap = require('./eventMap');
+var event = require('./event');
 var auth = require('./auth');
 var user = require('./user');
 var event = require('./event');
@@ -27,7 +27,7 @@ router.use(function(req, res, next) {
 router.use('/', home);
 router.use('/index', home);
 router.use('/admin', admin);
-router.use('/eventMap', eventMap);
+router.use('/event', event);
 router.use('/auth', auth);
 router.use('/profile', profile);
 //Api routes
