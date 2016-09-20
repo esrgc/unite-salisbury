@@ -1,10 +1,12 @@
 var express = require('express');
 var router = express.Router();
-
+var appDomain = require('../appDomain');
 //is admin middleware (already checks for authentication)
-var isLoggedIn = require('../appDomain').authentication.isLoggedIn;
+var isLoggedIn = appDomain.authentication.isLoggedIn;
+var authorized = appDomain.authorization;
 
 router.use(isLoggedIn);
+router.use(authorized.can('access admin'));
 
 /* GET home page. */
 router.get('/', function(req, res) {
