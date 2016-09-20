@@ -5,8 +5,8 @@ var home = require('./home');
 var admin = require('./admin');
 var event = require('./event');
 var auth = require('./auth');
-var user = require('./user');
-var event = require('./event');
+var users = require('./users');
+var events = require('./events');
 var profile = require('./profile');
 // var create = require('./create');
 
@@ -31,8 +31,8 @@ router.use('/event', event);
 router.use('/auth', auth);
 router.use('/profile', profile);
 //Api routes
-router.use('/event', event);
-router.use('/user', user);
+router.use('/events', events);
+router.use('/users', users);
 
 //authorized error handler
 router.use(function(err, req, res, next) {
