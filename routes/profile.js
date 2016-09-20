@@ -52,7 +52,7 @@ router.get('/edit', function(req, res) {
 });
 
 router.get('/changePassword', function( req, res ){
-  res.render('profile/changePassword', {rootPath: '../'});
+  res.render('profile/changePassword');
 });
 
 //POST...............................................................................
@@ -93,14 +93,12 @@ router.post('/changePassword', function(req,res) {
     if( err )
       res.render('profile/changePassword', { 
         message: req.flash('profileMessage') ,
-        err: err, 
-        rootPath: '../' }
-      );
+        err: err 
+      });
     else
       res.render("profile/changePassword",{
-        message: req.flash('profileMessage'),
-        rootPath: '../' }
-      );
+        message: req.flash('profileMessage')
+      });
   }
 
   var data = req.body;
