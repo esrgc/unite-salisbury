@@ -4,6 +4,7 @@ Code to handle authentication and authorization
 middlewares for authentication
 */
 var passport = require('./passport');
+
 var isLoggedIn = function(req, res, next) {
   // if user is authenticated in the session, carry on 
   if (req.isAuthenticated())

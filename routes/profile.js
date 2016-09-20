@@ -7,10 +7,17 @@ var isLoggedIn = domain.authentication.isLoggedIn;
 
 //middleware makes sure user is logged in before proceeding.
 router.use(isLoggedIn);
+
+//set root path
+router.use(function(req, res, next) {
+  res.locals.rootPath = '../';
+  next();
+});
+
 //GET..............................................................................
 router.get('/', function( req, res ) {
   var done = function( err, user ){
-    res.render('profile/index', { user: user, rootPath: '../' });
+    res.render('profile/index', { user: user });
   };//add for lookup error
 
   User.findOne({ email: req.user.email }, function( err, user ){
@@ -26,7 +33,7 @@ router.get('/', function( req, res ) {
 
 router.get('/edit', function(req, res) {
   var done = function(err, user) {
-    res.render('profile/edit', { user: user, rootPath: '../' });
+    res.render('profile/edit', { user: user });
   };//Add for lookup error
 
   if (!req.user)
@@ -43,6 +50,7 @@ router.get('/edit', function(req, res) {
     });
   }
 });
+
 router.get('/changePassword', function( req, res ){
   res.render('profile/changePassword', {rootPath: '../'});
 });
@@ -53,8 +61,7 @@ router.post('/edit', function(req, res) {
     res.render('profile', {
       user: user,
       message: req.flash('profileMessage'),
-      err: err,
-      rootPath: '../'
+      err: err
     });
   }
 
@@ -79,6 +86,7 @@ router.post('/edit', function(req, res) {
   });
 });
 
+
 router.post('/changePassword', function(req,res) {
   var done = function( err, user ){
     console.log("Done change password post", err );
@@ -97,10 +105,11 @@ router.post('/changePassword', function(req,res) {
 
   var data = req.body;
 
-  if (data.confirmPassword != data.password) {//Confirm
+  if (data.confirmPassword != data.password) {//Confirm new password
     req.flash('profileMessage', "Confirmation password does not match. Please try again!");
     return done(true);
   }
+
   User.findOne({ email: req.user.email }, function( err, user ){
     if( err){
       console.log("Error updating password");
@@ -108,23 +117,23 @@ router.post('/changePassword', function(req,res) {
       return done( err, req.user );
     }
     if( user ){
-      user.password = data.password;
+      if( !user.validPassword( data.origPassword ) ){//Check current password
+        req.flash('profileMessage', "Invalid current password");
+        return done(true);
+      }
+
+      user.password = data.password;//Set new password
       var validateErr = user.validateSync();
       if( validateErr ){
         req.flash('profileMessage', "Error updating password")
-        done( validateErr );
-        console.log("Err");
+        return done( validateErr );
       }
-      else{
-        user.password = user.generateHash( data.password );
-        user.save();
-        req.flash('profileMessage', "Password changed successfuly!");
-        done(false);
-      } 
+      user.password = user.generateHash( data.password );
+      user.save();
+      req.flash('profileMessage', "Password changed successfuly!");
+      done(false);
     }
-
   });
-
 });
 
-  module.exports = router;
+module.exports = router;

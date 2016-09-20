@@ -1,13 +1,19 @@
+
 /*
-This is where restFul API for events is implemented
+Event map page
 */
 
 var express = require('express');
 var router = express.Router();
 
-/* GET listing of events */
+/* GET index page. */
 router.get('/', function(req, res) {
-  res.send('Some json data ')
+  res.render('index', { title: 'Express' });
+});
+
+/* GET home page. */
+router.get('/map', function(req, res) {
+  res.render('map', { title: 'Express' });
 });
 
 module.exports = router;
