@@ -117,7 +117,7 @@ router.post('/changePassword', function(req,res) {
       return done( err, req.user );
     }
     if( user ){
-      if( !user.validPassword( data.origPassword ) ){//Check current password
+      if( !user.validPassword( data.currentPassword ) ){//Check current password
         req.flash('profileMessage', "Invalid current password");
         return done(true);
       }
