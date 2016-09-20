@@ -8,12 +8,12 @@ var router = express.Router();
 
 /* GET index page. */
 router.get('/', function(req, res) {
-  res.render('index', { title: 'Express' });
+  res.render('event/index', { title: 'Express' });
 });
 
 /* GET home page. */
 router.get('/map', function(req, res) {
-  res.render('map', { title: 'Express' });
+  res.render('event/map', { title: 'Express' });
 });
 
 module.exports = router;
