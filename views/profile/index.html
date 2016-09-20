@@ -1,42 +1,50 @@
 <div class="page-wrap">
   <div class="container">
+    <h3>Profile</h3>
+    <hr>
     <div class="row">
-      {{#if message}}
-      {{#unless err}}
-      <div class="alert alert-success text-center">
-        {{message}}
-      </div>
-      {{/unless}}
-      {{#if err}}
-      <div class="alert alert-danger text-center">
-        {{message}}
-        <div class="validation-summary-errors">
-          <ul class="list-unstyled">
-            {{#each err.errors}}
-            <li>{{message}}</li>
-            {{/each}}
-          </ul>
+      {{#if message}} 
+        {{#unless err}}
+        <div class="alert alert-success text-center">
+          {{message}}
         </div>
-      </div>
+        {{/unless}} 
+        {{#if err}}
+          <div class="alert alert-danger text-center">
+            {{message}}
+            <div class="validation-summary-errors">
+              <ul class="list-unstyled">
+                {{#each err.errors}}
+                <li>{{message}}</li>
+                {{/each}}
+              </ul>
+            </div>
+          </div>
+        {{/if}} 
       {{/if}}
-      {{/if}}
-      <div class="col-md-12">
-        </div>
-        <div>
+      <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-default">
-          <div class="panel-heading"><h4>Profile Information</h4></div>
+          <div class="panel-heading">
+            <strong>Profile Information</strong>
+            &nbsp;
+            <a href="/profile/edit"><span class="fa fa-pencil"></span></a>
+          </div>
           <div class="panel-body">
             <dl class="dl-horizontal">
-              <dt>Email</dt><dd>{{user.email}}</dd>
-              <dt>First Name</dt> <dd>{{user.firstName}}</dd>
-              <dt>Last Name</dt> <dd>{{user.lastName}}</dd>
+              <dt>Email</dt>
+              <dd>{{user.email}}</dd>
+              <dt>First Name</dt>
+              <dd>{{user.firstName}}</dd>
+              <dt>Last Name</dt>
+              <dd>{{user.lastName}}</dd>
             </dl>
           </div>
           <div class="panel-footer">
-          <a href="/profile/edit"> <span class="fa fa-pencil"></span>&nbsp;Edit Profile</a>
-          <a href="/profile/changePassword"> <span class="fa fa-key"></span>&nbsp;Change Password</a>
+            <a href="/profile/changePassword"> 
+              <span class="fa fa-key"></span>&nbsp;Change Password
+            </a>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
