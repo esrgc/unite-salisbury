@@ -79,7 +79,7 @@ router.post('/edit', function(req, res) {
   });
 });
 
-router.post('/password', function(req,res) {
+router.post('/changePassword', function(req,res) {
   var done = function( err, user ){
     console.log("Password update finished");
     res.render("<p>:)</p>");
