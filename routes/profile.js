@@ -7,10 +7,17 @@ var isLoggedIn = domain.authentication.isLoggedIn;
 
 //middleware makes sure user is logged in before proceeding.
 router.use(isLoggedIn);
+
+//set root path
+router.use(function(req, res, next) {
+  res.locals.rootPath = '../';
+  next();
+});
+
 //GET..............................................................................
 router.get('/', function( req, res ) {
   var done = function( err, user ){
-    res.render('profile/index', { user: user, rootPath: '../' });
+    res.render('profile/index', { user: user });
   };//add for lookup error
 
   User.findOne({ email: req.user.email }, function( err, user ){
@@ -26,7 +33,7 @@ router.get('/', function( req, res ) {
 
 router.get('/edit', function(req, res) {
   var done = function(err, user) {
-    res.render('profile/edit', { user: user, rootPath: '../' });
+    res.render('profile/edit', { user: user });
   };//Add for lookup error
 
   if (!req.user)
@@ -51,8 +58,7 @@ router.post('/edit', function(req, res) {
     res.render('profile', {
       user: user,
       message: req.flash('profileMessage'),
-      err: err,
-      rootPath: '../'
+      err: err
     });
   }
 

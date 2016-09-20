@@ -9,13 +9,17 @@ var domain = require('../appDomain');
 var User = domain.dataRepository.User;
 var passport = domain.authentication.passport;
 
+router.use(function(req, res, next) {
+  res.locals.rootPath = '../';
+  next();
+});
+
 /* sign in*/
 router.get('/login', function(req, res) {
   var returnUrl = req.query.returnUrl || '';
   res.render('auth/login', {
     title: 'Please log in',
     message: req.flash('loginMessage'),
-    rootPath: '../',
     returnUrl: returnUrl
   });
 });
@@ -56,7 +60,6 @@ router.get('/signup', function(req, res) {
   res.render('auth/signup', {
     title: 'Singup',
     message: req.flash('signupMessage'),
-    rootPath: '../'
   });
 });
 //sign up post
@@ -79,7 +82,6 @@ router.post('/signup', function(req, res, next) {
       res.render('auth/signup', {
         title: 'Singup',
         message: req.flash('signupMessage'),
-        rootPath: '../',
         newUser: user, //user model that contains previous user data
         err: validationError //show all error messages
       });

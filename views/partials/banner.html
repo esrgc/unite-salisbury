@@ -15,29 +15,29 @@
         </li>
         {{#unless user }}
         <li>
-          <a href="{{rootPath}}/auth/signUp"> <span class="fa fa-key"></span> Register </a>
+          <a href="{{rootPath}}auth/signUp"> <span class="fa fa-key"></span> Register </a>
         </li>
         {{/unless}} 
         {{#if user }}
         <li>
-          <a href="{{rootPath}}/event/create">Create Event</a>
+          <a href="{{rootPath}}event/create">Create Event</a>
         </li>
         {{/if}}
         <li>
-          <a href="{{rootPath}}/"> <span class="fa fa-home"></span>Home</a>
+          <a href="{{rootPath}}"> <span class="fa fa-home"></span>Home</a>
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {{#if user }}
         <li>
-          <a href="{{rootPath}}/profile">Logged in as <strong>{{user.email}}</strong></a>
+          <a href="{{rootPath}}profile">Logged in as <strong>{{user.email}}</strong></a>
         </li>
         <li>
-          <a href="{{rootPath}}/auth/logout"> <span class="fa fa-sign-out"></span>&nbsp;logout</a>
+          <a href="{{rootPath}}auth/logout"> <span class="fa fa-sign-out"></span>&nbsp;logout</a>
         </li>
         {{else}}
         <li>
-          <a href="{{rootPath}}/auth/login"> <span class="fa fa-sign-in"></span>&nbsp;Login </a>
+          <a href="{{rootPath}}auth/login"> <span class="fa fa-sign-in"></span>&nbsp;Login </a>
         </li>
         {{/if}}
       </ul>
