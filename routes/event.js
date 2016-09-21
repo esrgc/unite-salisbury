@@ -44,8 +44,8 @@ router.get('/', function(req, res) {//Lookup users events and load them into pan
 });
 
 //Get add event page
-router.get('/addEvent', function( req, res ){
-  res.render('event/addEvent');
+router.get('/add', function( req, res ){
+  res.render('event/add');
 }); 
 
 
