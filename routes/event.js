@@ -22,8 +22,41 @@ router.use(function(req, res, next) {
 
 /* GET index page. */
 router.get('/', function(req, res) {
-  res.render('event/index', { title: 'Express' });
+  var done = function( err, events ){
+     if( err )
+       return res.render('event/index', { title: "Express", message: req.flash('eventsMessage') });
+      res.render('event/index', {title: "Express", message : req.flash('eventsMessage')});
+  }
+    
+  User.findOne({ email: req.user.email }, function( err, user ){
+      if( err ){
+          req.flash('eventsMessage', "Error loading your events");
+          return done( true );
+      }
+     req.flash('eventsMessage', "Error loading your events");
+     return done(false);
+  });
+      
 });
+
+router.get('/addEvent', function( req, res ){
+    res.render('event/addEvent');
+}); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* GET home page. */
 router.get('/map', function(req, res) {
