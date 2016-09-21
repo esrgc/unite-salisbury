@@ -21,38 +21,32 @@ router.use(function(req, res, next) {
 
 
 /* GET index page. */
-router.get('/', function(req, res) {
+router.get('/', function(req, res) {//Lookup users events and load them into panels with edit pencil?
   var done = function( err, events ){
-     if( err )
-       return res.render('event/index', { title: "Express", message: req.flash('eventsMessage') });
-      res.render('event/index', {title: "Express", message : req.flash('eventsMessage')});
+    if( err ){
+      return res.render('event/index', { title: "Express",
+        message: req.flash('eventsMessage') 
+      });
+    }
+    res.render('event/index', { title: "Express", 
+      message : req.flash('eventsMessage')
+    });
   }
-    
+  //Find user and use the populate to grab the users event models too
   User.findOne({ email: req.user.email }, function( err, user ){
-      if( err ){
-          req.flash('eventsMessage', "Error loading your events");
-          return done( true );
-      }
-     req.flash('eventsMessage', "Error loading your events");
-     return done(false);
+    if( err ){
+      req.flash('eventsMessage', "Error loading your events");
+      return done( true );
+    }
+    return done(false);
   });
-      
+
 });
 
+//Get add event page
 router.get('/addEvent', function( req, res ){
-    res.render('event/addEvent');
+  res.render('event/addEvent');
 }); 
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -61,6 +55,17 @@ router.get('/addEvent', function( req, res ){
 /* GET home page. */
 router.get('/map', function(req, res) {
   res.render('event/map', { title: 'Express' });
+});
+
+
+
+
+//POST routes.........................................................
+//Get data from add event page, validate and save
+router.post('/addEvent', function( req, res ){
+  console.log("Got post for add event");
+  var data = req.body;
+  console.log( "Data is", data );
 });
 
 module.exports = router;
