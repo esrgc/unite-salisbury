@@ -12,9 +12,14 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           {{this.name}}
+            &nbsp;
+            <a href="/profile/edit"><span class="fa fa-pencil"></span></a>
+            <a href="/profile/edit"><span class="fa fa-trash-o pull-right"></span></a>
         </div>          
         <div class="panel-body">
-          {{this.description}} 
+          <dl class="dl-horizontal">
+            <dt>Start Date</dt>
+            <dd>{{this.description.startDate}}</dd> 
         </div>
       </div>
       {{/each}}
