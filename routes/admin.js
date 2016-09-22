@@ -18,4 +18,14 @@ router.get('/', function(req, res) {
   res.render('admin/index', { title: 'Administration' });
 });
 
+router.get('/manage', function(req, res) {
+  res.render('admin/manage', { title: 'Administration' });
+});
+router.get('/addUser', function(req, res) {
+  res.render('admin/addUser', { title: 'Administration' });
+});
+
+router.get('/manageEvent', function(req, res) {
+  res.render('admin/manageEvent', { title: 'Administration' });
+});
 module.exports = router;
