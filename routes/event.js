@@ -8,6 +8,8 @@ var router = express.Router();
 var domain = require('../appDomain');
 var User = domain.dataRepository.User;
 var Event = domain.dataRepository.Event;
+var geoCoder = require('mdimapgeocoder');
+
 
 var isLoggedIn = domain.authentication.isLoggedIn;
 

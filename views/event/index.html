@@ -17,9 +17,7 @@
             <a href="/profile/edit"><span class="fa fa-trash-o pull-right"></span></a>
         </div>          
         <div class="panel-body">
-          <dl class="dl-horizontal">
-            <dt>Start Date</dt>
-            <dd>{{this.description.startDate}}</dd> 
+          {{{parseEvent this}}}
         </div>
       </div>
       {{/each}}
