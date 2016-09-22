@@ -23,23 +23,29 @@ router.use(function(req, res, next) {
 
 /* GET index page. */
 router.get('/', function(req, res) {//Lookup users events and load them into panels with edit pencil?
-  var done = function( err, events ){
+  var done = function( err, user ){
     if( err ){
       return res.render('event/index', { title: "Express",
-        message: req.flash('eventsMessage') 
+        message: req.flash('eventsMessage'),
+        err: err
       });
     }
     res.render('event/index', { title: "Express", 
-      message : req.flash('eventsMessage')
+      message : req.flash('eventsMessage'),
+      user: user
     });
   }
-  //Find user and use the populate to grab the users event models too
-  User.findOne({ email: req.user.email }, function( err, user ){
-    if( err ){
-      req.flash('eventsMessage', "Error loading your events");
-      return done( true );
-    }
-    return done(false);
+  User.findOne({ email: req.user.email }).populate('events').exec( function( err, user ){
+      if( err){
+        req.flash('eventsMesssage','Error retrieving events' );
+        return done( err );
+        }
+      if( !user ){
+        req.flash('eventsMesssage','Error retrieving events' );
+        return done( err ); 
+      }
+      else
+        return done( false, user );
   });
 
 });
@@ -65,28 +71,46 @@ router.get('/map', function(req, res) {
 //Get data from add event page, validate and save
 router.post('/add', function( req, res ){
   console.log("Got post for add event");
+  var done = function( err ){
+    if( err )
+      return res.render('event/add');
+    res.redirect('/event');
+  }
+
   var data = req.body;
-  var newEvent = new Event({
-    name: data.eventTitle,  
-    date: new Date(),
-    detail:{
+  User.findOne({ email: req.user.email }, function( err, user ){
+    if( err )
+      return done( true );
+    if( !user )
+      return done( true );
+    var newEvent = new Event({
+      name: data.eventTitle,  
+      date: new Date(),
+      detail:{
         description: data.description,
         startDate: data.startDate,
         startTime: data.startTime,
         endDate: data.endDate,
         endTime: data.endTime
-        }
+      }
+    });
+    newEvent.save(function( err ){
+      if( err)
+        console.log("Error saving", err )
+    });
+    user.pushEvent( newEvent._id );
+    user.save();
+    done( false );
   });
-  console.log( "Data is", data, req.user, newEvent );
 });
 
 router.post('/update', function( req, res ){
-    console.log("Got POST for event update");
+  console.log("Got POST for event update");
 
 });
 
 router.post('/delete', function( req, res ){
-    console.log("Got POST for event delete");
+  console.log("Got POST for event delete");
 });
 
 

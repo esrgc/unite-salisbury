@@ -5,7 +5,21 @@
       {{message}}
     </div>
     {{/if}}
-    <h3 class="text-center">Comming Soon </h3>
+    {{#if user}}
+    <h3> {{user.email}}'s Events </h3>
+    <div class="panel-group">
+      {{#each user.events}}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          {{this.name}}
+        </div>          
+        <div class="panel-body">
+          {{this.description}} 
+        </div>
+      </div>
+      {{/each}}
+    </div>
+    {{/if}}
     <a href="{{rootPath}}event/add">
       <button class="btn btn-primary" id="proceedBtn">
         Add Event
@@ -13,3 +27,4 @@
     </a>
   </div>
 </div>
+

@@ -74,5 +74,9 @@ UserSchema.methods.generateHash = function(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
+//to add an event reference
+UserSchema.methods.pushEvent = function( eventID ){
+  this.events.push( eventID );
+}
 
 module.exports = mongoose.model('User', UserSchema);

@@ -1,8 +1,6 @@
 /*
 This defines schema for model Event
 */
-
-
 // var connectionStr = require('../../config').database.mongodb;
 
 var mongoose = require('mongoose');
