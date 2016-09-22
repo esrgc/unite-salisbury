@@ -7,6 +7,7 @@ var express = require('express');
 var router = express.Router();
 var domain = require('../appDomain');
 var User = domain.dataRepository.User;
+var Event = domain.dataRepository.Event;
 
 var isLoggedIn = domain.authentication.isLoggedIn;
 
@@ -44,8 +45,8 @@ router.get('/', function(req, res) {//Lookup users events and load them into pan
 });
 
 //Get add event page
-router.get('/addEvent', function( req, res ){
-  res.render('event/addEvent');
+router.get('/add', function( req, res ){
+  res.render('event/add');
 }); 
 
 
@@ -62,10 +63,33 @@ router.get('/map', function(req, res) {
 
 //POST routes.........................................................
 //Get data from add event page, validate and save
-router.post('/addEvent', function( req, res ){
+router.post('/add', function( req, res ){
   console.log("Got post for add event");
   var data = req.body;
-  console.log( "Data is", data );
+  var newEvent = new Event({
+    name: data.eventTitle,  
+    date: new Date(),
+    detail:{
+        description: data.description,
+        startDate: data.startDate,
+        startTime: data.startTime,
+        endDate: data.endDate,
+        endTime: data.endTime
+        }
+  });
+  console.log( "Data is", data, req.user, newEvent );
 });
+
+router.post('/update', function( req, res ){
+    console.log("Got POST for event update");
+
+});
+
+router.post('/delete', function( req, res ){
+    console.log("Got POST for event delete");
+});
+
+
+
 
 module.exports = router;
