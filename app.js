@@ -18,17 +18,14 @@ var passport = require('./appDomain/authentication').passport;
 
 var routes = require('./routes');
 var config = require('./config');
-hbs.registerHelper('parseEvent', function( object ){
-    console.log("got object", object);
-    
-    return "<dt> Date Created: </dt>" +
-           "<dd> " + object.date.getFullYear() + "</dd>";
-});
+
 //connect to mongo database
 mongoose.connect(config.database.mongodb);
 
 var app = express();
 
+//hook helpers to hbs instance
+hbs = require('./helper').hbsHelpers(hbs);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
