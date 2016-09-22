@@ -1,30 +1,31 @@
 <div class="page-wrap">
   <div class="container">
-  	<h3>Administration</h3>
-  	<hr>
+    <h3>Administration</h3>
+    <hr>
     <div class="row">
       <div class="col-md-6">
-      	<div class="panel panel-default">
-      		<div class="panel-body">
-      			<h3>Users</h3>
+        {{#if message}}
+          <div class="alert alert-success">{{message}}</div>
+        {{/if}}
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <h3>Users</h3>
             <ul>
-              <li><a href="#">Add a user</a></li>
-              <li><a href="#">Manage users</a></li>
-              <li></li>
+              <li><a href="{{rootPath}}admin/addUser">Add a user</a></li>
+              <li><a href="{{rootPath}}admin/manageUser">Manage users</a></li>
             </ul>
-      		</div>
-      	</div>
+          </div>
+        </div>
       </div>
       <div class="col-md-6">
-      	<div class="panel panel-default">
-      		<div class="panel-body">
-      			<h3>Events</h3>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <h3>Events</h3>
             <ul>
-              <li><a href="#">Manage events</a></li>
-              <li></li>
+              <li><a href="{{rootPath}}admin/manageEvent">Manage events</a></li>
             </ul>
-      		</div>
-      	</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

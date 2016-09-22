@@ -1,0 +1,110 @@
+<div class="page-wrap">
+  <div class="container">
+    <h3>Administration</h3>
+    <hr>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <h3>Add a user</h3>
+            <div>
+              <form action="addUser" class="form-horizontal" method="post" role="form">
+                {{#if message}}
+                <div class="alert alert-danger text-center">
+                  {{message}}
+                  <!--if there are validation error show them-->
+                  {{#if valErr}}
+                  <div class="validation-summary-errors">
+                    <ul class="list-unstyled">
+                      {{#each valErr.errors}}
+                        <li>{{message}}</li>
+                      {{/each}}
+                    </ul>
+                  </div>
+                  {{/if}}
+                </div>
+                {{/if}}
+                <div class="form-group">
+                  <label for="firstName" class="col-md-3 control-label">First Name</label>
+                  <div class="col-md-6">
+                    <input class="form-control" id="firstName" name="firstName" placeholder="John" type="text" value="{{newUser.firstName}}">
+                    <span class="label label-default">Required</span>
+                    <span class="help-block">
+                      <span class="">
+                        <!--validation message-->
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="lastName" class="col-md-3 control-label">Last Name</label>
+                  <div class="col-md-6">
+                    <input class="form-control" id="lastName" name="lastName" placeholder="Doe" type="text" value="{{newUser.lastName}}">
+                    <span class="label label-default">Required</span>
+                    <span class="help-block">
+                      <span class="">
+                         <!--validation message-->
+                      </span>
+
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="Email" class="col-md-3 control-label">Email</label>
+                  <div class="col-md-6">
+                    <input class="form-control" id="Email" name="email" placeholder="john@somecompany.com" type="email" value="{{newUser.email}}">
+                    <span class="label label-default">Required</span>
+                    <span class="help-block">
+                     <span class="">
+                         <!--validation message-->
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="Password" class="col-md-3 control-label">Password</label>
+                  <div class="col-md-6">
+                    <input class="form-control"id="Password" name="password" placeholder="Password" type="password">
+                    <span class="label label-default">Required</span>
+                    <span class="help-block"><span class=""> <!--validation message--></span></span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="ConfirmPassword" class="col-md-3 control-label">Confirm password</label>
+                  <div class="col-md-6">
+                    <input class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" type="password">
+                    <span class="label label-default">Required</span>
+                    <span class="help-block"><span class="" > <!--validation message--></span></span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="firstName" class="col-md-3 control-label">Role</label>
+                  <div class="col-md-2">
+                    <select name="role" id="role" class="form-control">
+                      <option value="user">User</option>
+                      <option value="admin">Admin</option>
+                    </select>
+                    <span class="label label-default">Admin role allows this user to access administration</span>
+                    <span class="help-block">
+                      <span class="">
+                        <!--validation message-->
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-6 col-md-offset-3">
+                    <button class="btn btn-primary" id="proceedBtn" type="submit">
+                      Add
+                    </button>
+                    <a class="btn btn-default" href="{{rootPath}}admin">Cancel</a>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
