@@ -38,16 +38,16 @@ router.get('/', function(req, res) {//Lookup users events and load them into pan
     });
   }
   User.findOne({ email: req.user.email }).populate('events').exec( function( err, user ){
-      if( err){
-        req.flash('eventsMesssage','Error retrieving events' );
-        return done( err );
-        }
-      if( !user ){
-        req.flash('eventsMesssage','Error retrieving events' );
-        return done( err ); 
-      }
-      else
-        return done( false, user );
+    if( err){
+      req.flash('eventsMesssage','Error retrieving events' );
+      return done( err );
+    }
+    if( !user ){
+      req.flash('eventsMesssage','Error retrieving events' );
+      return done( err ); 
+    }
+    else
+      return done( false, user );
   });
 
 });
@@ -75,34 +75,52 @@ router.post('/add', function( req, res ){
   console.log("Got post for add event");
   var done = function( err ){
     if( err )
-      return res.render('event/add');
-    res.redirect('/event');
+      return res.render('event/add', { message: req.flash('eventsMessage') } );
+    res.redirect('/event', { message: req.flash('eventsMessage') } );
   }
 
   var data = req.body;
   User.findOne({ email: req.user.email }, function( err, user ){
+    var location;
     if( err )
       return done( true );
     if( !user )
       return done( true );
-    var newEvent = new Event({
-      name: data.eventTitle,  
-      date: new Date(),
-      detail:{
-        description: data.description,
-        startDate: data.startDate,
-        startTime: data.startTime,
-        endDate: data.endDate,
-        endTime: data.endTime
+    console.log( data );
+    //Geocode
+    geoCoder.search({
+      Street: data.street,
+      City: data.city,
+      State: data.state,
+      ZIP: data.zip
+    }, function( err, res ){
+      if( err )
+        return done( err );
+      if( res.candidates.length == 0 ){
+        req.flash('eventsMessage', 'Could not find that address, please try agian.');
+        return done( true );
       }
-    });
-    newEvent.save(function( err ){
-      if( err)
-        console.log("Error saving", err )
-    });
-    user.pushEvent( newEvent._id );
-    user.save();
-    done( false );
+      location = res.candidates[0].location;
+
+      var newEvent = new Event({
+        name: data.eventTitle,  
+        date: new Date(),
+        detail:{
+          description: data.description,
+          startDate: data.startDate,
+          startTime: data.startTime,
+          endDate: data.endDate,
+          endTime: data.endTime
+        }
+      });
+      newEvent.save(function( err ){
+        if( err)
+          console.log("Error saving", err )
+      });
+      user.pushEvent( newEvent._id );
+      user.save();
+      done( false );
+    });     
   });
 });
 

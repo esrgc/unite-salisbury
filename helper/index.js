@@ -4,9 +4,17 @@ module.exports = {
 
     hbs.registerHelper('parseEvent', function(object) {
       console.log("got object", object);
-
+      var detail = object.detail;
       return "<dt> Date Created: </dt>" +
-        "<dd> " + object.date.getFullYear() + "</dd>";
+        "<dd> " + parseDate( object.date ) + "</dd>" +
+        "<dt> Description </dt>" +
+        "<dd> " + detail.description + "</dd>" +
+        "<dt> Start Date </dt>" +
+        "<dd> " + parseDate( detail.startDate ) + "</dd>" +
+        "<dt> End Date </dt>" +
+        "<dd> " + parseDate( detail.endDate ) + "</dd>" +
+        "<dt> Address </dt>" +
+        "<dd> " + detail.address + "</dd>";
     });
     return hbs;
   },
@@ -23,3 +31,6 @@ module.exports = {
     return dest;
   }
 };
+function parseDate( d ){
+    return (d.getMonth()+1) + "/" + (d.getDay()+1) + "/" + d.getFullYear();
+}

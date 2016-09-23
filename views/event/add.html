@@ -1,5 +1,10 @@
 <div class="page-wrap">
   <div class="container">
+    {{#if message}}
+      <div class="alert alert-danger text-center">
+        {{message}}
+      </div>
+    {{/if}}
     <form action="add" class="form-horizontal" method="post">
       <div class = "form-group">
         <div class= "col-md-10 col-md-offset-1">
@@ -16,7 +21,7 @@
       <div class = "form-group">
         <label class="col-md-3 control-label" > Start Date </label>
         <div class= "col-md-6">
-          <input class="input-validation-error form-control"id="startDate" name="startDate"/>
+          <input class="input-validation-error form-control"id="startDate" name="startDate" type="date"/><!-- puttin type date will make chrome add in a datepicker but not firefox. Should we use this -->
           <span class="label label-default">Required</span>
         </div>
       </div>
@@ -30,7 +35,7 @@
       <div class = "form-group">
         <label class="col-md-3 control-label" > End Date </label>
         <div class= "col-md-6">
-          <input class="input-validation-error form-control"id="endDate" name="endDate" />
+          <input class="input-validation-error form-control"id="endDate" name="endDate" type="date" />
           <span class="label label-default">Required</span>
         </div>
       </div>
@@ -51,21 +56,21 @@
       <div class = "form-group">
         <label class="col-md-3 control-label" > City </label>
         <div class= "col-md-6">
-          <input class="input-validation-error form-control"id="streetAddress" name="streetAddress" />
+          <input class="input-validation-error form-control"id="city" name="city" />
           <span class="label label-default">Required</span>
         </div>
       </div>
       <div class = "form-group">
         <label class="col-md-3 control-label" > State </label>
         <div class= "col-md-6">
-          <input class="input-validation-error form-control"id="streetAddress" name="streetAddress" />
+          <input class="input-validation-error form-control"id="state" name="state" />
           <span class="label label-default">Required</span>
         </div>
       </div>
       <div class = "form-group">
         <label class="col-md-3 control-label" > ZIP </label>
         <div class= "col-md-6">
-          <input class="input-validation-error form-control"id="streetAddress" name="streetAddress" />
+          <input class="input-validation-error form-control"id="zip" name="zip" />
           <span class="label label-default">Required</span>
         </div>
       </div>
