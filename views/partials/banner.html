@@ -11,21 +11,20 @@
     <div class="collapse navbar-collapse" id="collapseables">
       <ul class="nav navbar-nav navbar-left">
         <li>
+          <a href="{{rootPath}}"> <span class="fa fa-home"></span>&nbsp;Home</a>
+        </li>
+        <li>
           <a href="{{rootPath}}event/map"> <span class="fa fa-globe"></span>&nbsp;Events</a>
         </li>
         {{#unless user }}
         <li>
           <a href="{{rootPath}}auth/signUp"> <span class="fa fa-key"></span>&nbsp;Register</a>
         </li>
-        {{/unless}} 
-        {{#if user }}
+        {{/unless}} {{#if user }}
         <li>
           <a href="{{rootPath}}event"><i class="fa fa-calendar"></i>&nbsp;Manage Event</a>
         </li>
         {{/if}}
-        <li>
-          <a href="{{rootPath}}"> <span class="fa fa-home"></span>&nbsp;Home</a>
-        </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {{#if user }}
