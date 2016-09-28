@@ -1,19 +1,41 @@
 <div class="page-wrap">
   <div class="container">
-  	<h3>Administration</h3>
-  	<hr>
+    <div class="page-header"><h3>Administration - <small>Manage Users</small></h3></div>
     <div class="row">
-      <div class="col-md-8 col-md-offset-2">
-      	<div class="panel panel-default">
-      		<div class="panel-body">
-      			<h3>Manage user</h3>
-            <div>
-              
-
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            
+            <div id="user-table">
+              <table class="table table-hover">
+                <thead>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th></th>
+                </thead>
+                <tbody>
+                  {{#each data}}
+                  <tr>
+                    <td>{{firstName}}</td>
+                    <td>{{lastName}}</td>
+                    <td>{{email}}</td>
+                    <td>{{role}}</td>
+                    <td>
+                      <div class="btn-group" role="group" aria-label="actions">
+                        <a href="#" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+                        <a href="#" class="btn btn-default"><i class="fa fa-trash-o"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
             </div>
-      		</div>
-      	</div>
-      </div>      
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

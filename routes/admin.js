@@ -19,7 +19,7 @@ router.use(function(req, res, next) {
 
 /* GET admin home page. */
 router.get('/', function(req, res) {
-  res.render('admin/index', { title: 'Administration', message: req.flash('flashMessage')});
+  res.render('admin/index', { title: 'Administration', message: req.flash('flashMessage') });
 });
 //add user route
 router.get('/addUser', function(req, res) {
@@ -92,7 +92,7 @@ router.post('/addUser', function(req, res, next) {
             newUser: newUser
           };
         } else {
-          
+
           req.result = {
             err: false,
             newUser: newUser
@@ -112,7 +112,7 @@ router.post('/addUser', function(req, res, next) {
   if (result.err) {
     res.render('admin/addUser', result);
   } else {
-  	req.flash('flashMessage', "User has been added successfully!");
+    req.flash('flashMessage', "User has been added successfully!");
     //redirect to addmin page   
     res.redirect('/admin');
   }
@@ -120,7 +120,58 @@ router.post('/addUser', function(req, res, next) {
 
 
 router.get('/manageUser', function(req, res) {
-  res.render('admin/manageUser', { title: 'Administration' });
+  //grab data with paging
+  //data at first page
+  //get query strings
+  var data = req.query;
+
+  //params setup
+  var pageIndex = (data.page - 1) || 0,
+    pageSize = data.size || 20,
+    sortBy = data.sortBy || '',
+    order = data.order || 'asc',
+    searchBy = data.searchBy || '',
+    search = data.search || '';
+
+  //setup sortby order for query criteria
+  if (order == 'desc')
+    sortBy = '-' + sortBy;
+
+  //retrieve users
+  var query = null;
+
+  if (searchBy != '') //search
+    query = User.where(searchBy).equals(search);
+  else
+  	query = User.find();
+
+  //paging and sort then executes
+  query.skip(pageIndex * pageSize)
+    .limit(pageSize)
+    .sort(sortBy)
+    .exec(function(err, result) {
+      if (err) {
+      	req.flash('flashMessage', 'Error reading data from database. Please try again!');
+      	res.redirect('/admin');
+      }
+      //if nothing is wrong render the results
+      console.log('Data returned...');
+      // console.log(result);
+      //render
+      res.render('admin/manageUser', {
+        title: 'Administration',
+        message: req.flash('flashMessage'),
+        data: result,
+        pageSize: pageSize,
+        page: pageIndex + 1,
+        sortBy: sortBy,
+        order: order,
+        searchBy: searchBy,
+        search: search
+      });
+    });
+
+
 });
 
 

@@ -39,7 +39,7 @@ var emailValidate = function(email) {
 //
 //
 var UserSchema = new Schema({
-  id: String,
+  // id: String,
   email: {
     type: String,
     required: [true, 'A valid email address is required.'],

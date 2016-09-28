@@ -9,7 +9,7 @@ var Schema = mongoose.Schema;
 // mongoose.connect(connectionStr);
 
 var EventSchema = new Schema({
-	id: String,
+	// id: String,
 	_creator: { type: Number, ref: 'User'},//populated field
 	name: String,
 	date: Date,
