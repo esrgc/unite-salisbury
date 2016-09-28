@@ -10,7 +10,7 @@ var Schema = mongoose.Schema;
 
 var EventSchema = new Schema({
 	id: String,
-	_creator: { type: Number, ref: 'User'},//populated field
+	_creator: Schema.Types.ObjectId,//{ type: Number, ref: 'User'},//populated field
 	name: String,
 	date: Date,
 	detail: {
