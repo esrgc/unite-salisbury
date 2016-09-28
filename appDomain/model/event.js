@@ -9,19 +9,19 @@ var Schema = mongoose.Schema;
 // mongoose.connect(connectionStr);
 
 var EventSchema = new Schema({
-	// id: String,
-	_creator: Schema.Types.ObjectId,//{ type: Number, ref: 'User'},//populated field
-	name: String,
-	date: Date,
-	detail: {
-		description: String,
-		startDate: Date,
-		endDate: Date,
-		address: String,
-		x: Number,
-		y: Number
-		//other details can be added here
-	}
+  // id: String,
+  _creator: { type: Schema.Types.ObjectId, ref: 'User' }, //populated field
+  name: String,
+  date: Date,
+  detail: {
+    description: String,
+    startDate: Date,
+    endDate: Date,
+    address: String,
+    x: Number,
+    y: Number
+      //other details can be added here
+  }
 });
 
 module.exports = mongoose.model('Event', EventSchema);
