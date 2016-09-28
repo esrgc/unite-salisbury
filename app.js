@@ -25,7 +25,7 @@ mongoose.connect(config.database.mongodb);
 var app = express();
 
 //hook helpers to hbs instance
-hbs = require('./helper').hbsHelpers(hbs);
+hbs = require('./helper').registerHelpers(hbs);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');

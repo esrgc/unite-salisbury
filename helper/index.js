@@ -1,5 +1,5 @@
 module.exports = {
-  hbsHelpers: function(hbs) {
+  registerHelpers: function(hbs) {
     //register all helpers here
 
     hbs.registerHelper('parseEvent', function(object) {
