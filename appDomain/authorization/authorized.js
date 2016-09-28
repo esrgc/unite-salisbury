@@ -6,7 +6,8 @@ Authorized module
 
 */
 var authorized = require('authorized');
-
+var dataRepository = require('../dataRepository');
+var Event = dataRepository.Event;
 
 //getter for 'admin role'
 authorized.role('admin', function(req, done) {
@@ -26,8 +27,23 @@ authorized.role('admin', function(req, done) {
     }
   }
 });
-
+//getter for 'owner role'
+authorized.role('owner', function( req, done ){
+  var user = req.user;
+  var eventId = req.params.id;
+  console.log( eventId );
+  if( typeof user == 'undefined' )
+    done( new Error('User was not found') );
+  else{
+    console.log("Getting owner info", user );
+    for( i in user.events )//For each event id with user
+      if( user.events[i] == eventId ) //Check if match to id requested
+        return done( null , true );//If yes return authorized
+    
+    done( null, false );//Else not authorized
+  }
+});      
 //action for admin
 authorized.action('access admin', ['admin']);
-
+authorized.action('manage event', ['owner']);
 module.exports = authorized;
