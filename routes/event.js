@@ -85,7 +85,27 @@ router.get('/delete/:id',
         return done( );
       }
       console.log( "Event ", event );
-      return done( false );
+      console.log( req.user );
+      User.findOne({ _id: req.user._id }, function( err, user ){
+        if( err ){
+          req.flash("eventsMessage", "Error deleting event");
+          return done( err );
+        }
+        if( ! user ){
+          req.flash('eventsMessage', "Error deleting event");
+          return done( true );
+        }
+        var index = user.events.indexOf( id );
+        if( index > -1 ){
+          user.events.splice( index, 1 );
+          user.save();
+          return done( false );
+        }
+        else{
+          req.flash('eventMessage', "Error deleting event");
+          return done( true );
+        }
+      });
     });
   });
 //POST routes.........................................................
