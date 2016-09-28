@@ -118,7 +118,7 @@ router.post('/addUser', function(req, res, next) {
   }
 });
 
-
+//get user managing page
 router.get('/manageUser', function(req, res) {
   //grab data with paging
   //data at first page
@@ -128,14 +128,17 @@ router.get('/manageUser', function(req, res) {
   //params setup
   var pageIndex = (data.page - 1) || 0,
     pageSize = data.size || 20,
-    sortBy = data.sortBy || '',
+    sortBy = data.sortBy || 'firstName',
     order = data.order || 'asc',
     searchBy = data.searchBy || '',
-    search = data.search || '';
+    search = data.search || ''
+
+    sortOrder = '';
 
   //setup sortby order for query criteria
   if (order == 'desc')
-    sortBy = '-' + sortBy;
+    sortOrder = '-' + sortBy;
+
 
   //retrieve users
   var query = null;
@@ -143,31 +146,35 @@ router.get('/manageUser', function(req, res) {
   if (searchBy != '') //search
     query = User.where(searchBy).equals(search);
   else
-  	query = User.find();
+    query = User.find();
 
   //paging and sort then executes
   query.skip(pageIndex * pageSize)
     .limit(pageSize)
-    .sort(sortBy)
+    .sort(sortOrder)
     .exec(function(err, result) {
       if (err) {
-      	req.flash('flashMessage', 'Error reading data from database. Please try again!');
-      	res.redirect('/admin');
+        req.flash('flashMessage', 'Error reading data from database. Please try again!');
+        res.redirect('/admin');
       }
       //if nothing is wrong render the results
       console.log('Data returned...');
       // console.log(result);
-      //render
-      res.render('admin/manageUser', {
-        title: 'Administration',
-        message: req.flash('flashMessage'),
-        data: result,
-        pageSize: pageSize,
-        page: pageIndex + 1,
-        sortBy: sortBy,
-        order: order,
-        searchBy: searchBy,
-        search: search
+      User.count(function(err, count) {
+      	console.log(count);
+        //render
+        res.render('admin/manageUser', {
+          title: 'Administration',
+          message: req.flash('flashMessage'),
+          data: result,
+          pageSize: pageSize,
+          page: pageIndex + 1,
+          sortBy: sortBy,
+          order: order,
+          searchBy: searchBy,
+          search: search,
+          pageCount: parseInt(count/pageSize) || 1
+        });
       });
     });
 
