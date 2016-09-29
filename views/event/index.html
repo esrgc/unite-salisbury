@@ -14,7 +14,11 @@
           {{this.name}}
             &nbsp;
             <a href="/profile/edit/{{this._id}}"><span class="fa fa-pencil"></span></a>
-            <a href="/event/delete/{{this._id}}"><span class="fa fa-trash-o pull-right"></span></a>
+            <form action="/event/delete" method="post">
+              <input type="hidden" name="id" id="id" value="{{this._id}}">
+              <button type="submit" class="fa fa-trash-o pull-right">
+              </button>
+            </form>
         </div>          
         <div class="panel-body">
           <dl class="dl-horizontal">

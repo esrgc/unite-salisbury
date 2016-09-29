@@ -29,9 +29,9 @@ authorized.role('admin', function(req, done) {
 });
 //getter for 'owner role'
 authorized.role('owner', function( req, done ){
+  console.log( req.body );
   var user = req.user;
-  var eventId = req.params.id;
-  console.log( eventId );
+  var eventId = req.body.id;
   if( typeof user == 'undefined' )
     done( new Error('User was not found') );
   else{

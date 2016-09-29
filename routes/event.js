@@ -68,10 +68,12 @@ router.get('/update/:id', function( req, res ){
   console.log("Got POST for event update", id);
 
 });
-//Make DELETE
-router.get('/delete/:id', 
+//Delete event
+router.post('/delete', 
+
   auth.can('manage event'), function( req, res ){
-    var id = req.params.id;
+    var id = req.body.id;
+    console.log( req.body );
     var done = function( err ){
       res.redirect('/event');
     }
@@ -115,7 +117,7 @@ router.post('/add', function( req, res ){
   var done = function( err ){
     if( err )
       return res.render('event/add', { message: req.flash('eventsMessage') } );
-    res.render('event/index', { message: req.flash('eventsMessage') } );
+    res.redirect('/');
 
   }
 
@@ -126,7 +128,6 @@ router.post('/add', function( req, res ){
       return done( true );
     if( !user )
       return done( true );
-    console.log( data );
     //Geocode
     geoCoder.search({//Use geocoder to lookup
       Street: data.street,
@@ -140,18 +141,23 @@ router.post('/add', function( req, res ){
         req.flash('eventsMessage', 'Could not find that address, please try agian.');
         return done( true );
       }
-      location = res.candidates[0].location;//Else select first candidate
-
+      for( i in res.candidates  ){
+        var place = res.candidates[i];
+        if( res.score > 79 ) {
+          location = res.candidates[i].location;//Else select first candidate
+          break;
+        }
+      }
+      console.log( "Data is", data );
+      console.log( data );
       var newEvent = new Event({//Create new event model
         name: data.eventTitle,  
         _creator: user._id,
         date: new Date(),
         detail:{
           description: data.description,
-          startDate: data.startDate,
-          startTime: data.startTime,
-          endDate: data.endDate,
-          endTime: data.endTime
+          startDate: data.startDate + " " + data.startTime,
+          endDate: data.endDate + " " + data.endTime
         }
       });
       //Add validation step

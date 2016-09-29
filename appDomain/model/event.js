@@ -7,16 +7,53 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 // mongoose.connect(connectionStr);
+// Validators ============================================
+
+var nameValidator = function( name ){
+    //Capitalize
+    console.log( "Validate", name );
+    return true;
+}
+
+var startDateValidator = function( startDate ){
+  console.log( "Validate", startDate );
+  return true;
+}
+
+var endDateValidator = function( endDate ){
+  console.log( "Validate", endDate );
+  return true;
+}
 
 var EventSchema = new Schema({
+
   // id: String,
   _creator: { type: Schema.Types.ObjectId, ref: 'User' }, //populated field
-  name: String,
+  name:{
+    type: String,
+    required: [true, "Event name is required"],
+    validate: {
+        validator: nameValidator,
+        message: "Name entered is invalid"
+    }
+  },
   date: Date,
   detail: {
     description: String,
-    startDate: Date,
-    endDate: Date,
+    startDate:{
+      type: Date,
+      validate:{
+          validator: startDateValidator,
+          message: "Start date is invalid"
+      }
+    },      
+    endDate:{
+      type: Date,
+      validate:{
+        validator: endDateValidator,
+        message: "End date is invalid"
+      }
+    },
     address: String,
     x: Number,
     y: Number

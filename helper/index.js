@@ -1,18 +1,18 @@
 module.exports = {
   registerHelpers: function(hbs) {
     //register all helpers here
-
+    var scope = this;
     hbs.registerHelper('parseEvent', function(object) {
       console.log("got object", object);
       var detail = object.detail;
       return "<dt> Date Created: </dt>" +
-        "<dd> " + parseDate(object.date) + "</dd>" +
+        "<dd> " + scope.parseDate(object.date) + "</dd>" +
         "<dt> Description </dt>" +
         "<dd> " + detail.description + "</dd>" +
         "<dt> Start Date </dt>" +
-        "<dd> " + parseDate(detail.startDate) + "</dd>" +
+        "<dd> " + scope.parseDate(detail.startDate) + "</dd>" +
         "<dt> End Date </dt>" +
-        "<dd> " + parseDate(detail.endDate) + "</dd>" +
+        "<dd> " + scope.parseDate(detail.endDate) + "</dd>" +
         "<dt> Address </dt>" +
         "<dd> " + detail.address + "</dd>";
     });
