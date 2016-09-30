@@ -16,7 +16,12 @@ module.exports = {
         "<dt> Address </dt>" +
         "<dd> " + detail.address + "</dd>";
     });
-
+    hbs.registerHelper('parseDateForEdit', function( d ){
+      return d.getFullYear() + "-" + scope.pad(d.getMonth() + 1) + "-" + scope.pad(d.getDay() + 1);
+    });
+    hbs.registerHelper('parseTimeForEdit', function( d ){
+      return scope.pad(d.getHours()) + ":" + scope.pad( d.getMinutes() ) + ":" + scope.pad( d.getSeconds() );
+    }); 
     //generate listing link
     hbs.registerHelper('generateSortUrl', function(data, baseUrl, sortBy, label) {
       var url = baseUrl + '?' + [
@@ -97,7 +102,7 @@ module.exports = {
         '</a>',
         '</li>'
       ];
-       //merge to html
+      //merge to html
       html = html.concat(nextBtn);
       //last btn
       var lastBtn = [
@@ -108,7 +113,7 @@ module.exports = {
         '</li>'
       ];
       html = html.concat(lastBtn);
-     
+
       //closing tags
       html = html.concat([
         '</ul>',
@@ -134,5 +139,10 @@ module.exports = {
   },
   parseDate: function(d) {
     return (d.getMonth() + 1) + "/" + (d.getDay() + 1) + "/" + d.getFullYear();
-  }
+  },
+  pad: function( str ){
+    if( String(str).length == 1 )
+      return "0" + str;
+    return str;
+  }  
 };

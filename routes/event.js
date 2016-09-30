@@ -57,25 +57,32 @@ router.get('/add', function( req, res ){
   res.render('event/add');
 }); 
 
-
 /* GET home page. */
 router.get('/map', function(req, res) {
   res.render('event/map', { title: 'Express' });
 });
 
-router.get('/update/:id', function( req, res ){
+router.get('/edit/:id', function( req, res ){
   var id = req.params.id;
-  console.log("Got POST for event update", id);
-
+  console.log("Got GET for event update", id);
+  Event.findOne({ _id: id}, function( err, event ){
+      res.render('event/edit',{ rootPath:"../../",event: event, detail: event.detail } );
+  });
+  
 });
+//
+//POST routes.........................................................
 //Delete event
 router.post('/delete', 
-
-  auth.can('manage event'), function( req, res ){
+  auth.can('manage event'), function( req, res ){//Authorize as user for event management
+    console.log("User authorized, delete event");
     var id = req.body.id;
-    console.log( req.body );
-    var done = function( err ){
-      res.redirect('/event');
+    var done = function( err, updatedUser ){
+      if( err )
+        res.render('event/index', { message: req.flash('eventsMessage'), err: err } );
+      else
+        res.redirect('/events');
+        //res.render('event/index', { message: req.flash('eventsMessage'), user: updatedUser } );
     }
     Event.remove({ _id: id }, function( err, event ){
       if( err ){
@@ -86,9 +93,7 @@ router.post('/delete',
         req.flash('eventsMessage', "Could not find event");
         return done( );
       }
-      console.log( "Event ", event );
-      console.log( req.user );
-      User.findOne({ _id: req.user._id }, function( err, user ){
+      User.findOne({ _id: req.user._id }, function( err, user ){//Find user and delete event id
         if( err ){
           req.flash("eventsMessage", "Error deleting event");
           return done( err );
@@ -100,8 +105,10 @@ router.post('/delete',
         var index = user.events.indexOf( id );
         if( index > -1 ){
           user.events.splice( index, 1 );
-          user.save();
-          return done( false );
+          user.save( function( updatedUser ){
+            req.flash('eventsMessage', 'Event deleted successfully');
+            return done( false, updatedUser );
+          });
         }
         else{
           req.flash('eventMessage', "Error deleting event");
@@ -110,14 +117,19 @@ router.post('/delete',
       });
     });
   });
-//POST routes.........................................................
+//
+//
+router.post('/edit', function( req, res ){
+    console.log("Got post for edit");
+});
+  //
 //Get data from add event page, validate and save
 router.post('/add', function( req, res ){
   console.log("Got post for add event");
   var done = function( err ){
     if( err )
       return res.render('event/add', { message: req.flash('eventsMessage') } );
-    res.redirect('/');
+    res.redirect('/event');
 
   }
 
