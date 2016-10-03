@@ -128,15 +128,15 @@ router.post('/add', function( req, res ){
   console.log("Got post for add event");
   var done = function( err, event ){
     console.log("Done add");
+    console.log(err);
     if( err )
-      return res.render('event/add', { message: req.flash('eventsMessage'), event: event, detail: event.detail } );
+      return res.render('event/add', { message: req.flash('eventsMessage'), err: err, event: event, detail: event.detail } );
     res.redirect('/event');
 
   }
 
   var data = req.body;
   var user = req.user;
-  console.log("ADD DATA", req.body );
   var newEvent = new Event({//Create new event model
     name: data.eventTitle,  
     _creator: user._id,
@@ -151,15 +151,13 @@ router.post('/add', function( req, res ){
       ZIP: data.zip
     }
   });
-  console.log("Done creating new event");
+
   User.findOne({ email: req.user.email }, function( err, user ){//Find user
     var location;
-   console.log("Done find one");
     if( err )
       return done( true );
     if( !user )
       return done( true );
-    console.log("Geo coding");
     //Geocode
     geoCoder.search({//Use geocoder to lookup
       Street: data.street,
@@ -167,7 +165,6 @@ router.post('/add', function( req, res ){
       State: data.state,
       ZIP: data.zip
     }, function( err, res ){
-      console.log("Done geocoding")
       if( err )
         return done( err, newEvent );
       if( res.candidates.length == 0 ){//If no candidates
@@ -181,12 +178,12 @@ router.post('/add', function( req, res ){
           break;
         }
       }
-      console.log( "Data is", data );
-      console.log( data );
       //Add validation step
       newEvent.save(function( err ){//Save new event
-        if( err)
+        if( err){
+          req.flash('eventsMessage','Error adding event');
           return done( err, newEvent );
+        }
       user.pushEvent( newEvent._id );//push event to user
       user.save();//Save user
       done( false );

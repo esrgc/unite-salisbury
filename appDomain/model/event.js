@@ -15,20 +15,28 @@ var nameValidator = function( name ){
     return true;
 }
 
-var startDateValidator = function( startDate ){
-  var now = new Date();
-    console.log( "Validate", startDate );
-  return true;
-}
 
-var endDateValidator = function( endDate ){
+var endDateAfterToday = function( endDate ){
   var now = new Date();
   if( endDate < now )
     return false
-  console.log( "Validate", endDate );
   return true;
 }
 
+var endDateAfterStartDate = function( endDate ){
+  console.log("Start date end datae .............");
+  console.log( this );
+  console.log( this.startDate, endDate );
+  console.log( this.startDate > endDate );
+  if( this.detail.startDate > endDate )
+      return false
+  return true
+}
+
+var endDateValidators = [
+  { validator: endDateAfterToday, message: 'End date cannot be before today' },
+  { validator: endDateAfterStartDate, message: 'End date cannot be before start date' }
+];
 var EventSchema = new Schema({
 
   // id: String,
@@ -44,19 +52,10 @@ var EventSchema = new Schema({
   date: Date,
   detail: {
     description: String,
-    startDate:{
-      type: Date,
-      validate:{
-          validator: startDateValidator,
-          message: "Start date is invalid"
-      }
-    },      
+    startDate: Date,      
     endDate:{
       type: Date,
-      validate:{
-        validator: endDateValidator,
-        message: "End date is invalid"
-      }
+      validate: endDateValidators
     },
     address: String,
     city: String,

@@ -2,10 +2,21 @@
 <div class="page-wrap">
   <div class="container">
     {{#if message}}
-      <div class="alert alert-danger text-center">
+      {{#unless err}}
+      <div class="alert alert-success text-center">
         {{message}}
       </div>
+      {{/unless}}
+      {{#if err}}
+        <div class="alert alert-danger text-center">
+          {{message}}
+          {{#each err.errors}}
+          <li>{{message}}</li>
+          {{/each}}
+        </div>
+        {{/if}}
     {{/if}}
+    
     <form action="add" class="form-horizontal" method="post">
       <div class = "form-group">
         <div class= "col-md-10 col-md-offset-1">
