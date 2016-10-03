@@ -143,7 +143,7 @@ router.get('/manageUser', function(req, res) {
   //retrieve users
   var query = null;
 
-  if (searchBy != '') { //search
+  if (search != '') { //search
     var criteria = {};
     criteria[searchBy] = new RegExp('^' + search + '$', "i");
     query = User.find(criteria);
