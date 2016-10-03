@@ -51,16 +51,34 @@ var EventSchema = new Schema({
   },
   date: Date,
   detail: {
-    description: String,
-    startDate: Date,      
+    description:{
+      type: String,
+      required: [true, 'Description required']
+    },
+    startDate:{
+      type:Date,
+      required: [true, 'Description required']
+    },      
     endDate:{
       type: Date,
       validate: endDateValidators
     },
-    address: String,
-    city: String,
-    state: String,
-    ZIP: Number,
+    address: {
+      type:String,
+      required: [true,'Street Address required']
+    },
+    city:{
+      type: String,
+      required: [true, 'City is required']
+    },
+    state:{
+      type:String,
+      required: [true,'State is required']
+    },
+    ZIP:{
+      type:Number,
+      required: [true, 'ZIP is required']
+    },
     x: Number,
     y: Number
       //other details can be added here

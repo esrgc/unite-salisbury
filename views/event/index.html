@@ -1,9 +1,9 @@
 <div class="page-wrap">
   <div class="container">
     {{#if message}}
-      {{#unless err}}
-        <div class="alert alert-success text-center">
-          {{message}}
+    {{#unless err}}
+    <div class="alert alert-success text-center">
+      {{message}}
     </div>
     {{/unless}}
     {{#if err}}
@@ -15,6 +15,13 @@
     {{#if user}}
     <h3> {{user.email}}'s Events </h3>
     <div class="panel-group">
+      {{#unless user.events}}
+      <div class="panel panel-default">
+        <dl class="dl-horizontal">
+          <dt>No events found.</dt>
+        </dl>
+      </div>
+      {{/unless}}
       {{#each user.events}}
       <div class="panel panel-default">
         <div class="panel-heading">

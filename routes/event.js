@@ -119,8 +119,22 @@ router.post('/delete',
   });
 //
 //
-router.post('/edit', function( req, res ){
-  console.log("Got post for edit");
+router.post('/edit',
+ auth.can('manage event'), function( req, res ){
+  var id = req.body.id;
+   console.log( req.body );
+  var done = function( err, newModel ){
+    console.log( 'edit done');
+    if( err )
+      return res.render('event/edit',{message:" Failure" } );
+  }
+  Event.findOneAndUpdate({ _id: id }, updateInstructions, updateOptions, function( err, event ){
+      if( err ){
+        req.flash('eventsMessage','Error updating your profile');
+        return done( err );
+      }
+      done( false );
+  });
 });
 //
 //Get data from add event page, validate and save
