@@ -7,6 +7,11 @@
       <div class="col-md-12">
         <div class="panel panel-default">
           <div class="panel-body">
+            <span class="pull-right">
+              <a href="{{rootPath}}admin/addUser">
+                <i class="fa fa-plus"></i>&nbsp;Add New User
+              </a>
+            </span>
             <form class="form-horizontal" action="manageUser" method="GET">
               <input type="hidden" value="{{pageSize}}" name="pageSize">
               <input type="hidden" value="{{page}}" name="page">
@@ -62,14 +67,15 @@
                 <tbody>
                   {{#each data}}
                   <tr>
+                    <!-- <td>{{id}}</td> -->
                     <td>{{firstName}}</td>
                     <td>{{lastName}}</td>
                     <td>{{email}}</td>
                     <td>{{role}}</td>
                     <td>
                       <div class="btn-group" role="group" aria-label="actions">
-                        <a href="#" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-                        <a href="#" class="btn btn-default"><i class="fa fa-trash-o"></i></a>
+                        <a href="{{rootPath}}/admin/editUser/{{id}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+                        <a href="{{rootPath}}/admin/deleteUser/{{id}}" class="btn btn-default"><i class="fa fa-trash-o"></i></a>
                       </div>
                     </td>
                   </tr>
