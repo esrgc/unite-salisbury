@@ -25,6 +25,11 @@
           <a href="{{rootPath}}event"><i class="fa fa-calendar"></i>&nbsp;Manage Event</a>
         </li>
         {{/if}}
+        {{#ifCond user.role 'admin'}}
+          <li>
+          <a href="{{rootPath}}admin"><i class="fa fa-cogs"></i>&nbsp;Administration</a>
+        </li>
+        {{/ifCond}}
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {{#if user }}
