@@ -91,8 +91,8 @@ module.exports = {
         if (i > 0 && i <= data.pageCount) {
           html = html.concat([
             '<li class="' + (i != data.page ? '' : 'disabled') + '"">',
-            '<a href="' + url + '&page=' + i + '" aria-label="page '+ i +'">',
-            '<span aria-hidden="true">'+ i +'</span>',
+            '<a href="' + url + '&page=' + i + '" aria-label="page ' + i + '">',
+            '<span aria-hidden="true">' + i + '</span>',
             '</a>',
             '</li>'
           ]);
@@ -127,6 +127,13 @@ module.exports = {
       return html.join('');
     });
 
+    hbs.registerHelper('ifCond', function(v1, v2, options) {
+      if (v1 === v2) {
+        return options.fn(this);
+      }
+      return options.inverse(this);
+    });
+
     return hbs;
   },
   copy: function(dest, source) {
@@ -144,9 +151,9 @@ module.exports = {
   parseDate: function(d) {
     return (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear();
   },
-  pad: function( str ){
-    if( String(str).length == 1 )
+  pad: function(str) {
+    if (String(str).length == 1)
       return "0" + str;
     return str;
-  }  
+  }
 };

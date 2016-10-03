@@ -133,7 +133,7 @@ router.get('/manageUser', function(req, res) {
     searchBy = data.searchBy || '',
     search = data.search || ''
 
-    sortOrder = '';
+  sortOrder = '';
 
   //setup sortby order for query criteria
   if (order == 'desc')
@@ -143,9 +143,11 @@ router.get('/manageUser', function(req, res) {
   //retrieve users
   var query = null;
 
-  if (searchBy != '') //search
-    query = User.where(searchBy).equals(search);
-  else
+  if (search != '') { //search
+    var criteria = {};
+    criteria[searchBy] = new RegExp('^' + search + '$', "i");
+    query = User.find(criteria);
+  } else
     query = User.find();
 
   //paging and sort then executes
@@ -161,7 +163,7 @@ router.get('/manageUser', function(req, res) {
       console.log('Data returned...');
       // console.log(result);
       User.count(function(err, count) {
-      	console.log(count);
+        console.log(count);
         //render
         res.render('admin/manageUser', {
           title: 'Administration',
@@ -173,7 +175,7 @@ router.get('/manageUser', function(req, res) {
           order: order,
           searchBy: searchBy,
           search: search,
-          pageCount: parseInt(count/pageSize) || 1
+          pageCount: parseInt(count / pageSize) || 1
         });
       });
     });
