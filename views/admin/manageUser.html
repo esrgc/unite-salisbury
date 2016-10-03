@@ -16,9 +16,9 @@
                 <div class="col-md-2">
                   <select class="form-control" id="searchBy" name="searchBy" title="Search by">
                     <option>Search by..</option>
-                    <option value="firstName" selected="">First Name</option>
-                    <option value="lastName">Last Name</option>
-                    <option value="email">Email</option>
+                    <option value="firstName" {{#ifCond searchBy 'firstName'}}selected{{/ifCond}}>First Name</option>
+                    <option value="lastName"{{#ifCond searchBy 'lastName'}}selected{{/ifCond}}>Last Name</option>
+                    <option value="email"{{#ifCond searchBy 'email'}}selected{{/ifCond}}>Email</option>
                   </select>
                 </div>
                 <div class="col-md-6">
