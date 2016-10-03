@@ -66,9 +66,9 @@ router.get('/edit/:id', function( req, res ){
   var id = req.params.id;
   console.log("Got GET for event update", id);
   Event.findOne({ _id: id}, function( err, event ){
-      res.render('event/edit',{ rootPath:"../../",event: event, detail: event.detail } );
+    res.render('event/edit',{ rootPath:"../../",event: event, detail: event.detail } );
   });
-  
+
 });
 //
 //POST routes.........................................................
@@ -81,8 +81,8 @@ router.post('/delete',
       if( err )
         res.render('event/index', { message: req.flash('eventsMessage'), err: err } );
       else
-        res.redirect('/events');
-        //res.render('event/index', { message: req.flash('eventsMessage'), user: updatedUser } );
+        res.redirect('/event');
+      //res.render('event/index', { message: req.flash('eventsMessage'), user: updatedUser } );
     }
     Event.remove({ _id: id }, function( err, event ){
       if( err ){
@@ -120,26 +120,46 @@ router.post('/delete',
 //
 //
 router.post('/edit', function( req, res ){
-    console.log("Got post for edit");
+  console.log("Got post for edit");
 });
-  //
+//
 //Get data from add event page, validate and save
 router.post('/add', function( req, res ){
   console.log("Got post for add event");
-  var done = function( err ){
+  var done = function( err, event ){
+    console.log("Done add");
     if( err )
-      return res.render('event/add', { message: req.flash('eventsMessage') } );
+      return res.render('event/add', { message: req.flash('eventsMessage'), event: event, detail: event.detail } );
     res.redirect('/event');
 
   }
 
   var data = req.body;
+  var user = req.user;
+  console.log("ADD DATA", req.body );
+  var newEvent = new Event({//Create new event model
+    name: data.eventTitle,  
+    _creator: user._id,
+    date: new Date(),
+    detail:{
+      address: data.streetAddress,
+      description: data.description,
+      startDate: data.startDate + " " + data.startTime,
+      endDate: data.endDate + " " + data.endTime,
+      city: data.city,
+      state: data.state,
+      ZIP: data.zip
+    }
+  });
+  console.log("Done creating new event");
   User.findOne({ email: req.user.email }, function( err, user ){//Find user
     var location;
+   console.log("Done find one");
     if( err )
       return done( true );
     if( !user )
       return done( true );
+    console.log("Geo coding");
     //Geocode
     geoCoder.search({//Use geocoder to lookup
       Street: data.street,
@@ -147,11 +167,12 @@ router.post('/add', function( req, res ){
       State: data.state,
       ZIP: data.zip
     }, function( err, res ){
+      console.log("Done geocoding")
       if( err )
-        return done( err );
+        return done( err, newEvent );
       if( res.candidates.length == 0 ){//If no candidates
         req.flash('eventsMessage', 'Could not find that address, please try agian.');
-        return done( true );
+        return done( true, newEvent );
       }
       for( i in res.candidates  ){
         var place = res.candidates[i];
@@ -162,24 +183,14 @@ router.post('/add', function( req, res ){
       }
       console.log( "Data is", data );
       console.log( data );
-      var newEvent = new Event({//Create new event model
-        name: data.eventTitle,  
-        _creator: user._id,
-        date: new Date(),
-        detail:{
-          description: data.description,
-          startDate: data.startDate + " " + data.startTime,
-          endDate: data.endDate + " " + data.endTime
-        }
-      });
       //Add validation step
       newEvent.save(function( err ){//Save new event
         if( err)
-          console.log("Error saving", err )
-      });
+          return done( err, newEvent );
       user.pushEvent( newEvent._id );//push event to user
       user.save();//Save user
       done( false );
+      });
     });     
   });
 });

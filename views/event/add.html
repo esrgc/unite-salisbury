@@ -1,3 +1,4 @@
+
 <div class="page-wrap">
   <div class="container">
     {{#if message}}
@@ -14,70 +15,70 @@
       <div class = "form-group">
         <label class="col-md-3 control-label" =""> Event Title </label>
         <div class= "col-md-6">
-          <input class="input-validation-error form-control"id="eventTitle" name="eventTitle" />
+          <input class="input-validation-error form-control"id="eventTitle" name="eventTitle" value="{{event.name}}"/>
           <span class="label label-default">Required</span>
         </div>
       </div>
       <div class = "form-group">
         <label class="col-md-3 control-label" > Start Date </label>
         <div class= "col-md-6">
-          <input class="input-validation-error form-control"id="startDate" name="startDate" type="date"/><!-- puttin type date will make chrome add in a datepicker but not firefox. Should we use this -->
+          <input class="input-validation-error form-control"id="startDate" name="startDate" type="date" value="{{parseDateForEdit detail.startDate}}"/><!-- puttin type date will make chrome add in a datepicker but not firefox. Should we use this -->
           <span class="label label-default">Required</span>
         </div>
       </div>
       <div class = "form-group">
         <label class="col-md-3 control-label" > Start Time </label>
         <div class= "col-md-6">
-          <input class="input-validation-error form-control"id="startTime" name="startTime" type="time"/>
+          <input class="input-validation-error form-control"id="startTime" name="startTime" type="time" value="{{parseTimeForEdit detail.startDate}}"/>
           <span class="label label-default">Required</span>
         </div>
       </div>
       <div class = "form-group">
         <label class="col-md-3 control-label" > End Date </label>
         <div class= "col-md-6">
-          <input class="input-validation-error form-control"id="endDate" name="endDate" type="date" />
+          <input class="input-validation-error form-control"id="endDate" name="endDate" type="date" value="{{parseDateForEdit detail.endDate}}" />
           <span class="label label-default">Required</span>
         </div>
       </div>
       <div class = "form-group">
         <label class="col-md-3 control-label" > End Time </label>
         <div class= "col-md-6">
-          <input class="input-validation-error form-control"id="endTime" name="endTime" type="time" />
+          <input class="input-validation-error form-control"id="endTime" name="endTime" type="time" value="{{parseTimeForEdit detail.endDate}}" />
           <span class="label label-default">Required</span>
         </div>
       </div>
       <div class = "form-group">
         <label class="col-md-3 control-label" > Street Address </label>
         <div class= "col-md-6">
-          <input class="input-validation-error form-control"id="streetAddress" name="streetAddress" />
+          <input class="input-validation-error form-control"id="streetAddress" name="streetAddress" value="{{detail.address}}"/>
           <span class="label label-default">Required</span>
         </div>
       </div>
       <div class = "form-group">
         <label class="col-md-3 control-label" > City </label>
         <div class= "col-md-6">
-          <input class="input-validation-error form-control"id="city" name="city" />
+          <input class="input-validation-error form-control"id="city" name="city" value="{{detail.city}}"/>
           <span class="label label-default">Required</span>
         </div>
       </div>
       <div class = "form-group">
         <label class="col-md-3 control-label" > State </label>
         <div class= "col-md-6">
-          <input class="input-validation-error form-control"id="state" name="state" />
+          <input class="input-validation-error form-control"id="state" name="state" value="{{detail.state}}"/>
           <span class="label label-default">Required</span>
         </div>
       </div>
       <div class = "form-group">
         <label class="col-md-3 control-label" > ZIP </label>
         <div class= "col-md-6">
-          <input class="input-validation-error form-control"id="zip" name="zip" />
+          <input class="input-validation-error form-control"id="zip" name="zip" value="{{detail.ZIP}}" />
           <span class="label label-default">Required</span>
         </div>
       </div>
       <div class = "form-group">
         <label class="col-md-3 control-label" > Description </label>
         <div class= "col-md-6">
-          <input class="input-validation-error form-control"id="description" name="description" />
+          <input class="input-validation-error form-control"id="description" name="description" value="{{detail.description}}" />
           <span class="label label-default">Required</span>
         </div>
       </div>

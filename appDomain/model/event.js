@@ -16,11 +16,15 @@ var nameValidator = function( name ){
 }
 
 var startDateValidator = function( startDate ){
-  console.log( "Validate", startDate );
+  var now = new Date();
+    console.log( "Validate", startDate );
   return true;
 }
 
 var endDateValidator = function( endDate ){
+  var now = new Date();
+  if( endDate < now )
+    return false
   console.log( "Validate", endDate );
   return true;
 }
@@ -55,6 +59,9 @@ var EventSchema = new Schema({
       }
     },
     address: String,
+    city: String,
+    state: String,
+    ZIP: Number,
     x: Number,
     y: Number
       //other details can be added here

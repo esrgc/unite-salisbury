@@ -17,9 +17,13 @@ module.exports = {
         "<dd> " + detail.address + "</dd>";
     });
     hbs.registerHelper('parseDateForEdit', function( d ){
-      return d.getFullYear() + "-" + scope.pad(d.getMonth() + 1) + "-" + scope.pad(d.getDay() + 1);
+      if( typeof d == 'undefined' )
+        return null
+      return d.getFullYear() + "-" + scope.pad(d.getMonth() + 1) + "-" + scope.pad( d.getDate() );
     });
     hbs.registerHelper('parseTimeForEdit', function( d ){
+      if( typeof d == 'undefined' )
+        return null
       return scope.pad(d.getHours()) + ":" + scope.pad( d.getMinutes() ) + ":" + scope.pad( d.getSeconds() );
     }); 
     //generate listing link
@@ -138,7 +142,7 @@ module.exports = {
     return dest;
   },
   parseDate: function(d) {
-    return (d.getMonth() + 1) + "/" + (d.getDay() + 1) + "/" + d.getFullYear();
+    return (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear();
   },
   pad: function( str ){
     if( String(str).length == 1 )

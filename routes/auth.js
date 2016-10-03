@@ -80,7 +80,7 @@ router.post('/signup', function(req, res, next) {
     //if error render the sign up page again
     if (err) {
       res.render('auth/signup', {
-        title: 'Singup',
+        title: 'Signup',
         message: req.flash('signupMessage'),
         newUser: user, //user model that contains previous user data
         err: validationError //show all error messages
