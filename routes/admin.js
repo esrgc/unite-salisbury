@@ -183,6 +183,55 @@ router.get('/manageUser', function(req, res) {
 
 });
 
+//edit user 
+router.get('/editUser/:id', function(req, res) {
+  var id = req.params.id;
+  if (typeof id == 'undefined') {
+  	console.log('Invalid id');
+  	req.flash('flashMessage', 'Invalid user id!');
+  	res.redirect('manageUser');
+  }
+
+  //id is valid now find the user
+  User.findById(id, function(err, result){
+  	if(err){
+  		req.flash('flashMessage', 'Error finding user.');
+  		res.redirect('manageUser');
+  	}
+
+  	console.log('User found!')
+  	console.log(result);
+
+  	res.render('admin/editUser', {
+  		title: 'Administration',
+  		user: result,
+  		rootPath: '../../'
+  	});
+  });
+
+});
+
+router.post('/editUser', function(req, res){
+	var data = req.body;
+	console.log('Updating user');
+	console.log(data);
+	User.findByIdAndUpdate(data.id, data, {
+		runValidators: true,
+		new: true
+	}, function(err, result){
+		if(err){
+  		req.flash('flashMessage', 'Error updating user.');
+  		res.redirect('manageUser');
+  	}
+
+  	console.log('User found!')
+  	console.log(result);
+  	req.flash('flashMessage', 'User info has been updated successfully!');
+  	res.redirect('manageUser');
+
+	});
+});
+
 
 router.get('/manageEvent', function(req, res) {
   res.render('admin/manageEvent', { title: 'Administration' });

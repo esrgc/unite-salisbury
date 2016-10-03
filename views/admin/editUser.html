@@ -2,7 +2,7 @@
   <div class="container">
    <div class="page-header">
     <h3>
-      <a href="{{rootPath}}admin">Administration</a> - <small>Add User</small>
+      <a href="{{rootPath}}admin">Administration</a> - <small>Edit User</small>
     </h3>
     </div>
     <div class="row">
@@ -10,9 +10,10 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <div>
-              <form action="addUser" class="form-horizontal" method="post" role="form">
+              <form action="{{rootPath}}admin/editUser" class="form-horizontal" method="post" role="form">
+                <input type="hidden" value="{{user._id}}" name="id"/>
                 {{#if message}}
-                <div class="alert alert-danger text-center">
+                <div class="alert alert-warning text-center">
                   {{message}}
                   <!--if there are validation error show them-->
                   {{#if valErr}}
@@ -29,7 +30,7 @@
                 <div class="form-group">
                   <label for="firstName" class="col-md-3 control-label">First Name</label>
                   <div class="col-md-6">
-                    <input class="form-control" id="firstName" name="firstName" placeholder="John" type="text" value="{{newUser.firstName}}">
+                    <input class="form-control" id="firstName" name="firstName" placeholder="John" type="text" value="{{user.firstName}}">
                     <span class="label label-default">Required</span>
                     <span class="help-block">
                       <span class="">
@@ -41,7 +42,7 @@
                 <div class="form-group">
                   <label for="lastName" class="col-md-3 control-label">Last Name</label>
                   <div class="col-md-6">
-                    <input class="form-control" id="lastName" name="lastName" placeholder="Doe" type="text" value="{{newUser.lastName}}">
+                    <input class="form-control" id="lastName" name="lastName" placeholder="Doe" type="text" value="{{user.lastName}}">
                     <span class="label label-default">Required</span>
                     <span class="help-block">
                       <span class="">
@@ -54,7 +55,7 @@
                 <div class="form-group">
                   <label for="Email" class="col-md-3 control-label">Email</label>
                   <div class="col-md-6">
-                    <input class="form-control" id="Email" name="email" placeholder="john@somecompany.com" type="email" value="{{newUser.email}}">
+                    <input class="form-control" id="Email" name="email" placeholder="john@somecompany.com" type="email" value="{{user.email}}">
                     <span class="label label-default">Required</span>
                     <span class="help-block">
                      <span class="">
@@ -63,13 +64,13 @@
                     </span>
                   </div>
                 </div>
-                <div class="form-group">
+               <!--  <div class="form-group">
                   <label for="Password" class="col-md-3 control-label">Password</label>
                   <div class="col-md-6">
                     <input class="form-control"id="Password" name="password" placeholder="Password" type="password">
                     <span class="label label-default">Required</span>
                     <span class="help-block"><span class=""> <!--validation message--></span></span>
-                  </div>
+                <!-- </div>
                 </div>
                 <div class="form-group">
                   <label for="ConfirmPassword" class="col-md-3 control-label">Confirm password</label>
@@ -77,8 +78,8 @@
                     <input class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" type="password">
                     <span class="label label-default">Required</span>
                     <span class="help-block"><span class="" > <!--validation message--></span></span>
-                  </div>
-                </div>
+                <!--  </div>
+                </div> -->
                 <div class="form-group">
                   <label for="firstName" class="col-md-3 control-label">Role</label>
                   <div class="col-md-2">
@@ -97,9 +98,9 @@
                 <div class="form-group">
                   <div class="col-md-6 col-md-offset-3">
                     <button class="btn btn-primary" id="proceedBtn" type="submit">
-                      Add
+                      Submit
                     </button>
-                    <a class="btn btn-default" href="{{rootPath}}admin">Cancel</a>
+                    <a class="btn btn-default" href="{{rootPath}}admin/manageUser">Cancel</a>
                   </div>
                 </div>
               </form>

@@ -5,11 +5,21 @@
     </div>
     <div class="row">
       <div class="col-md-12">
+        {{#if message}}
+        <div class="alert alert-success">{{message}}</div>
+        {{/if}}
         <div class="panel panel-default">
           <div class="panel-body">
             <span class="pull-right">
               <a href="{{rootPath}}admin/addUser">
                 <i class="fa fa-plus"></i>&nbsp;Add New User
+              </a>
+
+            </span>
+
+            <span class="pull-left">
+              <a href="{{rootPath}}admin/manageUser">
+                <i class="fa fa-close"></i>&nbsp;Clear Search
               </a>
             </span>
             <form class="form-horizontal" action="manageUser" method="GET">
@@ -20,10 +30,9 @@
               <div class="form-group">
                 <div class="col-md-2">
                   <select class="form-control" id="searchBy" name="searchBy" title="Search by">
-                    <option>Search by..</option>
                     <option value="firstName" {{#ifCond searchBy 'firstName'}}selected{{/ifCond}}>First Name</option>
-                    <option value="lastName"{{#ifCond searchBy 'lastName'}}selected{{/ifCond}}>Last Name</option>
-                    <option value="email"{{#ifCond searchBy 'email'}}selected{{/ifCond}}>Email</option>
+                    <option value="lastName" {{#ifCond searchBy 'lastName'}}selected{{/ifCond}}>Last Name</option>
+                    <option value="email" {{#ifCond searchBy 'email'}}selected{{/ifCond}}>Email</option>
                   </select>
                 </div>
                 <div class="col-md-6">
