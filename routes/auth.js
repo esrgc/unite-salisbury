@@ -9,8 +9,9 @@ var domain = require('../appDomain');
 var User = domain.dataRepository.User;
 var passport = domain.authentication.passport;
 
+var rootPath = '../';
 router.use(function(req, res, next) {
-  res.locals.rootPath = '../';
+  res.locals.rootPath = rootPath;
   next();
 });
 
@@ -43,16 +44,16 @@ router.post('/login', passport.authenticate('local-login', {
   });
 
   if (returnUrl === '')
-    res.redirect('/');
+    res.redirect(rootPath);
   else
-    res.redirect(returnUrl);
+    res.redirect(rootPath + returnUrl.slice(1));//slice(1) gets rid of the '/' in returnUrl
 });
 
 //logout
 router.get('/logout', function(req, res) {
   req.logout();
   req.flash('loginMessage', 'You have successfully logged out.')
-  res.redirect('/');
+  res.redirect(rootPath);
 });
 
 /*sign up*/
@@ -87,7 +88,7 @@ router.post('/signup', function(req, res, next) {
       });
     } else {
       //redirect to profile page (home page for  now)      
-      res.redirect('/');
+      res.redirect(rootPath);
     }
   };
 
