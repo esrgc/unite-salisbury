@@ -13,7 +13,7 @@ var isLoggedIn = function(req, res, next) {
   console.log(req.get('host'));
   // if they aren't redirect them to the home page
   req.flash('loginMessage', 'Please login to access this page!');
-  res.redirect(config.mountedPath + 'auth/login?returnUrl=' + req.originalUrl);
+  res.redirect(config.mountedPath + '/auth/login?returnUrl=' + req.originalUrl);
 };
 
 //now export to middlewares
