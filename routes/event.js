@@ -9,9 +9,9 @@ var domain = require('../appDomain');
 var User = domain.dataRepository.User;
 var Event = domain.dataRepository.Event;
 var geoCoder = require('mdimapgeocoder');
-
-
 var isLoggedIn = domain.authentication.isLoggedIn;
+
+geoCoder.browser = false; //for windows
 
 //middleware makes sure user is logged in before proceeding.
 router.use(isLoggedIn);
@@ -120,35 +120,91 @@ router.post('/delete',
 //
 //
 router.post('/edit',
- auth.can('manage event'), function( req, res ){
-  var id = req.body.id;
-   console.log( req.body );
-  var done = function( err, newModel ){
-    console.log( 'edit done');
-    if( err )
-      return res.render('event/edit',{message:" Failure" } );
-  }
-  Event.findOneAndUpdate({ _id: id }, updateInstructions, updateOptions, function( err, event ){
-      if( err ){
-        req.flash('eventsMessage','Error updating your profile');
-        return done( err );
+  auth.can('manage event'), function( req, res ){
+    console.log("Got post for edit")
+    var data = req.body;
+    var user = req.user;
+    var id = data.id;
+    console.log( req.body );
+    //Done callback
+    var done = function( err, event ){
+        return res.render('event/edit',{message: req.flash('eventsMessage'), err: err, event: event, detail: event.detail } );
+    }
+    //For update
+    var update = function( coordinates ){
+      console.log( "updating");
+      var detail = {
+        address: data.streetAddress,
+        description: data.description,
+        startDate: data.startDate + " " + data.startTime,
+        endDate: data.endDate + " " + data.endTime,
+        city: data.city,
+        state: data.state,
+        ZIP: data.zip
       }
-      done( false );
+      var updateInstructions = {
+        $set: {
+          name: data.eventTitler,
+          _creator: user._id,
+          date: new Date(),
+          detail: detail
+        }
+      }
+        
+      //Do not try findOneAndUpdate here, validators cannot access model properly
+      //Must first pull model, change attriutes and save
+      Event.findOne({ _id: id }, function( err, event ){
+          if( err || !event){
+            req.flash('eventsMessage','Error updating your profile');
+            return done( err, event );
+          }
+          event.name = data.eventTitle;
+          event._creator = user._id;
+          event.date = new Date();
+          event.detail = detail;
+          event.save( function( err, event ){
+              if( err ){
+                  req.flash('eventsMessage','Error updating your profile');
+                  return done( err, event );
+              }
+              return done( false, event );
+          });
+      });
+
+    }    
+    //First step, geocode
+    geoCoder.search({//Use geocoder to lookup
+      Street: data.streetAddress,
+      City: data.city,
+      State: data.state,
+      ZIP: data.zip
+    }, function( err, res ){
+      if( err )
+        return done( err );
+      if( res.candidates.length == 0 ){//If no candidates
+        req.flash('eventsMessage', 'Could not find that address, please try agian.');
+        return done( true );
+      }
+      for( i in res.candidates  ){
+        var place = res.candidates[i];
+        if( place.score > 79 ) {
+          return update( place.location );//Else select first candidate
+          
+        }
+      }
+      req.flash('eventsMessage', 'Could not find that address, please try agian.');
+      done( true );
   });
-});
+  });
 //
 //Get data from add event page, validate and save
 router.post('/add', function( req, res ){
-  console.log("Got post for add event");
   var done = function( err, event ){
-    console.log("Done add");
-    console.log(err);
     if( err )
       return res.render('event/add', { message: req.flash('eventsMessage'), err: err, event: event, detail: event.detail } );
     res.redirect('/event');
 
   }
-
   var data = req.body;
   var user = req.user;
   var newEvent = new Event({//Create new event model
@@ -187,8 +243,8 @@ router.post('/add', function( req, res ){
       }
       for( i in res.candidates  ){
         var place = res.candidates[i];
-        if( res.score > 79 ) {
-          location = res.candidates[i].location;//Else select first candidate
+        if( place.score > 79 ) {
+          location = place.location;//Else select first candidate
           break;
         }
       }
@@ -198,9 +254,9 @@ router.post('/add', function( req, res ){
           req.flash('eventsMessage','Error adding event');
           return done( err, newEvent );
         }
-      user.pushEvent( newEvent._id );//push event to user
-      user.save();//Save user
-      done( false );
+        user.pushEvent( newEvent._id );//push event to user
+        user.save();//Save user
+        done( false );
       });
     });     
   });

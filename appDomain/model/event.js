@@ -25,9 +25,6 @@ var endDateAfterToday = function( endDate ){
 
 var endDateAfterStartDate = function( endDate ){
   console.log("Start date end datae .............");
-  console.log( this );
-  console.log( this.startDate, endDate );
-  console.log( this.startDate > endDate );
   if( this.detail.startDate > endDate )
       return false
   return true
