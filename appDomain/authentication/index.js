@@ -9,10 +9,10 @@ var isLoggedIn = function(req, res, next) {
   // if user is authenticated in the session, carry on 
   if (req.isAuthenticated())
     return next();
-
+  console.log(req.get('host'));
   // if they aren't redirect them to the home page
   req.flash('loginMessage', 'Please login to access this page!');
-  res.redirect('/auth/login?returnUrl=' + req.originalUrl);
+  res.redirect('auth/login?returnUrl=' + req.originalUrl);
 };
 
 //now export to middlewares
