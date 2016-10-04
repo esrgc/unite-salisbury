@@ -17,8 +17,9 @@ geoCoder.browser = false; //for windows
 router.use(isLoggedIn);
 
 //set root path
+var rootPath = '../'
 router.use(function(req, res, next) {
-  res.locals.rootPath = '../';
+  res.locals.rootPath = rootPath;
   next();
 });
 
@@ -75,13 +76,12 @@ router.get('/edit/:id', function( req, res ){
 //Delete event
 router.post('/delete', 
   auth.can('manage event'), function( req, res ){//Authorize as user for event management
-    console.log("User authorized, delete event");
     var id = req.body.id;
     var done = function( err, updatedUser ){
       if( err )
         res.render('event/index', { message: req.flash('eventsMessage'), err: err } );
       else
-        res.redirect('/event');
+        res.redirect(rootPath + 'event' );
       //res.render('event/index', { message: req.flash('eventsMessage'), user: updatedUser } );
     }
     Event.remove({ _id: id }, function( err, event ){
@@ -125,14 +125,20 @@ router.post('/edit',
     var data = req.body;
     var user = req.user;
     var id = data.id;
-    console.log( req.body );
     //Done callback
     var done = function( err, event ){
+      if( err )
         return res.render('event/edit',{message: req.flash('eventsMessage'), err: err, event: event, detail: event.detail } );
+      res.redirect( rootPath + 'event' );
     }
     //For update
-    var update = function( coordinates ){
-      console.log( "updating");
+    //Do not try findOneAndUpdate here, validators cannot access model properly
+    //Must first pull model, change attriutes and save
+    Event.findOne({ _id: id }, function( err, event ){
+      if( err || !event){
+        req.flash('eventsMessage','Error updating your profile');
+        return done( err, event );
+      }
       var detail = {
         address: data.streetAddress,
         description: data.description,
@@ -142,67 +148,56 @@ router.post('/edit',
         state: data.state,
         ZIP: data.zip
       }
-      var updateInstructions = {
-        $set: {
-          name: data.eventTitler,
-          _creator: user._id,
-          date: new Date(),
-          detail: detail
-        }
-      }
-        
-      //Do not try findOneAndUpdate here, validators cannot access model properly
-      //Must first pull model, change attriutes and save
-      Event.findOne({ _id: id }, function( err, event ){
-          if( err || !event){
-            req.flash('eventsMessage','Error updating your profile');
-            return done( err, event );
-          }
-          event.name = data.eventTitle;
-          event._creator = user._id;
-          event.date = new Date();
-          event.detail = detail;
-          event.save( function( err, event ){
-              if( err ){
-                  req.flash('eventsMessage','Error updating your profile');
-                  return done( err, event );
-              }
-              return done( false, event );
-          });
-      });
 
-    }    
-    //First step, geocode
-    geoCoder.search({//Use geocoder to lookup
-      Street: data.streetAddress,
-      City: data.city,
-      State: data.state,
-      ZIP: data.zip
-    }, function( err, res ){
-      if( err )
-        return done( err );
-      if( res.candidates.length == 0 ){//If no candidates
-        req.flash('eventsMessage', 'Could not find that address, please try agian.');
-        return done( true );
-      }
-      for( i in res.candidates  ){
-        var place = res.candidates[i];
-        if( place.score > 79 ) {
-          return update( place.location );//Else select first candidate
-          
+      event.name = data.eventTitle;
+      event._creator = user._id;
+      event.date = new Date();
+      event.detail = detail;
+
+      geoCoder.search({//Use geocoder to lookup
+        Street: data.streetAddress,
+        City: data.city,
+        State: data.state,
+        ZIP: data.zip
+      }, function( err, res ){
+        if( err )
+          return done( err, event );
+        if( res.candidates.length == 0 ){//If no candidates
+          req.flash('eventsMessage', 'Could not find that address, please try agian.');
+          return done( true , event );
         }
-      }
-      req.flash('eventsMessage', 'Could not find that address, please try agian.');
-      done( true );
+        var found = false;
+        for( i in res.candidates  ){
+          var place = res.candidates[i];
+          if( place.score > 79 ) {
+            found = true;
+            event.x = place.location
+            event.save( function( err, event ){
+              if( err ){
+                req.flash('eventsMessage','Error updating your profile');
+                return done( err, event );
+              }
+              req.flash('eventsMessage','Event updated successfully');
+              return done( false, event );
+            });
+            break;
+          }
+        }
+        if( !found ){
+          req.flash('eventsMessage', 'Could not find that address, please try agian.');
+          done( true, event );
+        }
+      });
+    });
   });
-  });
+//
 //
 //Get data from add event page, validate and save
 router.post('/add', function( req, res ){
   var done = function( err, event ){
     if( err )
       return res.render('event/add', { message: req.flash('eventsMessage'), err: err, event: event, detail: event.detail } );
-    res.redirect('/event');
+    res.redirect( rootPath + 'event' );
 
   }
   var data = req.body;
@@ -261,6 +256,5 @@ router.post('/add', function( req, res ){
     });     
   });
 });
-
 
 module.exports = router;
