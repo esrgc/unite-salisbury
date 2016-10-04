@@ -15,43 +15,43 @@ router.use(function(req, res, next) {
 });
 
 //GET..............................................................................
-router.get('/', function( req, res ) {
-  var done = function( err, user ){
-    res.render('profile/index', { user: user });
-  };//add for lookup error
+router.get('/', function(req, res) {
+  var done = function(err, user) {
+    res.render('profile/index', { user: user, rootPath: '/' });
+  }; //add for lookup error
 
-  User.findOne({ email: req.user.email }, function( err, user ){
-    if( err ){
-      req.flash('profileMessage','Could not find your profile');
-      return done( true, null );
+  User.findOne({ email: req.user.email }, function(err, user) {
+    if (err) {
+      req.flash('profileMessage', 'Could not find your profile');
+      return done(true, null);
     }
-    if( user ){
-      return done( false, user );
+    if (user) {
+      return done(false, user);
     }
-  }); 
+  });
 });
 
 router.get('/edit', function(req, res) {
   var done = function(err, user) {
     res.render('profile/edit', { user: user });
-  };//Add for lookup error
+  }; //Add for lookup error
 
-  if (!req.user)
-    res.redirect('/'); //use isLoggedIn middleware to check for loggin in user
-  else {
-    User.findOne({ email: req.user.email }, function(err, user) {
-      if (err) {
-        req.flash('profileMessage', 'Could not find your profile');
-        return done(true, null);
-      }
-      if (user) {
-        return done(false, user);
-      }
-    });
-  }
+  // if (!req.user)
+  //   res.redirect('/'); //use isLoggedIn middleware to check for loggin in user
+  // else {
+  User.findOne({ email: req.user.email }, function(err, user) {
+    if (err) {
+      req.flash('profileMessage', 'Could not find your profile');
+      return done(true, null);
+    }
+    if (user) {
+      return done(false, user);
+    }
+  });
+  // }
 });
 
-router.get('/changePassword', function( req, res ){
+router.get('/changePassword', function(req, res) {
   res.render('profile/changePassword');
 });
 
@@ -87,46 +87,46 @@ router.post('/edit', function(req, res) {
 });
 
 
-router.post('/changePassword', function(req,res) {
-  var done = function( err, user ){
-    console.log("Done change password post", err );
-    if( err )
-      res.render('profile/changePassword', { 
-        message: req.flash('profileMessage') ,
-        err: err 
+router.post('/changePassword', function(req, res) {
+  var done = function(err, user) {
+    console.log("Done change password post", err);
+    if (err)
+      res.render('profile/changePassword', {
+        message: req.flash('profileMessage'),
+        err: err
       });
     else
-      res.render("profile/changePassword",{
+      res.render("profile/changePassword", {
         message: req.flash('profileMessage')
       });
   }
 
   var data = req.body;
 
-  if (data.confirmPassword != data.password) {//Confirm new password
+  if (data.confirmPassword != data.password) { //Confirm new password
     req.flash('profileMessage', "Confirmation password does not match. Please try again!");
     return done(true);
   }
 
-  User.findOne({ email: req.user.email }, function( err, user ){
-    if( err){
+  User.findOne({ email: req.user.email }, function(err, user) {
+    if (err) {
       console.log("Error updating password");
-      req.flash('profileMessage','Error updating your profile');
-      return done( err, req.user );
+      req.flash('profileMessage', 'Error updating your profile');
+      return done(err, req.user);
     }
-    if( user ){
-      if( !user.validPassword( data.currentPassword ) ){//Check current password
+    if (user) {
+      if (!user.validPassword(data.currentPassword)) { //Check current password
         req.flash('profileMessage', "Invalid current password");
         return done(true);
       }
 
-      user.password = data.password;//Set new password
+      user.password = data.password; //Set new password
       var validateErr = user.validateSync();
-      if( validateErr ){
+      if (validateErr) {
         req.flash('profileMessage', "Error updating password")
-        return done( validateErr );
+        return done(validateErr);
       }
-      user.password = user.generateHash( data.password );
+      user.password = user.generateHash(data.password);
       user.save();
       req.flash('profileMessage', "Password changed successfuly!");
       done(false);

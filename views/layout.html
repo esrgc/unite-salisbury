@@ -21,8 +21,10 @@
   {{{block 'customCss' }}}
   <!-- Custom styles for this template -->
   {{#if PROD_MODE }}
-  <link href="{{rootPath}}build/style-whatsup.min.css" rel="stylesheet"> {{else}}
-  <link href="{{rootPath}}build/style-whatsup.css" rel="stylesheet"> {{/if}}
+  <link href="{{rootPath}}build/style-whatsup.min.css" rel="stylesheet"> 
+  {{else}}
+  <link href="{{rootPath}}build/style-whatsup.css" rel="stylesheet"> 
+  {{/if}}
   <!--Google analytics-->
   <!--  
   analytics script goes here
@@ -39,7 +41,6 @@
     ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.1/jquery.validate.min.js"></script>
   <script src="{{rootPath}}lib/bootstrap-3.3.6-dist/js/bootstrap.js"></script>
   <!--MD Template code-->
   <!-- <script src="{{rootPath}}js/util/MDSiteSearch.js"></script> -->
