@@ -89,5 +89,6 @@ app.use(function(err, req, res, next) {
   });
 });
 
-
+//production mode is read by node environment variable
+app.locals.PROD_MODE = 'production' === app.get('env');
 module.exports = app;

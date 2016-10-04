@@ -233,6 +233,10 @@ router.post('/editUser', function(req, res){
 });
 
 
+router.get('/deleteUser/:id', function(req, res){
+	
+});
+
 router.get('/manageEvent', function(req, res) {
   res.render('admin/manageEvent', { title: 'Administration' });
 });
