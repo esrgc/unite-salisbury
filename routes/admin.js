@@ -22,7 +22,7 @@ router.get('/', function(req, res) {
   res.render('admin/index', {
     title: 'Administration',
     message: req.flash('flashMessage'),
-    rootPath: '/'
+    rootPath: ''
   });
 });
 //add user route

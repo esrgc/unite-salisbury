@@ -17,7 +17,7 @@ router.use(function(req, res, next) {
 //GET..............................................................................
 router.get('/', function(req, res) {
   var done = function(err, user) {
-    res.render('profile/index', { user: user, rootPath: '/' });
+    res.render('profile/index', { user: user, rootPath: '' });
   }; //add for lookup error
 
   User.findOne({ email: req.user.email }, function(err, user) {

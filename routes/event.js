@@ -36,7 +36,7 @@ router.get('/', function(req, res) {//Lookup users events and load them into pan
     res.render('event/index', { title: "Express", 
       message : req.flash('eventsMessage'),
       user: user,
-      rootPath: '/'//this is because the path is at whatsup/event no need to go back 1 level
+      rootPath: ''//this is because the path is at whatsup/event no need to go back 1 level
     });
   }
   User.findOne({ email: req.user.email }).populate('events').exec( function( err, user ){
