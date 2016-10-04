@@ -4,6 +4,7 @@ Code to handle authentication and authorization
 middlewares for authentication
 */
 var passport = require('./passport');
+var config = require('../../config');
 
 var isLoggedIn = function(req, res, next) {
   // if user is authenticated in the session, carry on 
@@ -12,7 +13,7 @@ var isLoggedIn = function(req, res, next) {
   console.log(req.get('host'));
   // if they aren't redirect them to the home page
   req.flash('loginMessage', 'Please login to access this page!');
-  res.redirect('auth/login?returnUrl=' + req.originalUrl);
+  res.redirect(config.mountedPath + 'auth/login?returnUrl=' + req.originalUrl);
 };
 
 //now export to middlewares

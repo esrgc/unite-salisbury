@@ -58,7 +58,7 @@ router.get('/changePassword', function(req, res) {
 //POST...............................................................................
 router.post('/edit', function(req, res) {
   var done = function(err, user) {
-    res.render('profile', {
+    res.render('profile/edit', {
       user: user,
       message: req.flash('profileMessage'),
       err: err

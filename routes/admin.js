@@ -215,25 +215,68 @@ router.get('/editUser/:id', function(req, res) {
 
 });
 
-router.post('/editUser', function(req, res) {
+router.post('/editUser/:id', function(req, res) {
+	var id = req.params.id;
   var data = req.body;
   console.log('Updating user');
   console.log(data);
-  User.findByIdAndUpdate(data.id, data, {
-    runValidators: true,
-    new: true
-  }, function(err, result) {
+
+  //done callback
+  var done = function(err, user, validationError) {
+    res.render('admin/editUser', {
+      title: 'Administration',
+      message: req.flash('flashMessage'),
+      user: user, //user model that contains previous user data
+      valErr: validationError, //show all error messages
+      rootPath: '../../'
+    });
+  };
+
+  User.findById(id, function(err, user) {
     if (err) {
-      req.flash('flashMessage', 'Error updating user.');
+      req.flash('flashMessage', 'Error finding user.');
       res.redirect('manageUser');
     }
-
-    console.log('User found!')
-    console.log(result);
-    req.flash('flashMessage', 'User info has been updated successfully!');
-    res.redirect('manageUser');
+    //no error now bind new updated data
+    helpers.copy(user, data);
+    //validate
+    var validateErr = user.validateSync();
+    //validation errors occur
+    if (typeof validateErr != 'undefined') {
+    	console.log('validation error in admin/editUser:');
+      console.log(validateErr);
+      req.flash('flashMessage', "Data entered is invalid. Please try again!");
+      return done(true, user, validateErr);
+    }
+    //if no error save
+    user.save(function(err) {
+      if (err) {
+        req.flash('flashMessage', "Error saving data. Please try again!");
+        return done(true, user, null);
+      } else{
+      	req.flash('flashMessage', "User has been updated successfully!");
+        return done(false, user);
+      }
+    });
 
   });
+
+  // User.findByIdAndUpdate(data.id, data, {
+  //   runValidators: true,
+  //   new: true
+  // }, function(err, result) {
+  //   if (err) {
+  //     req.flash('flashMessage', 'Error updating user.');
+  //     res.redirect('manageUser');
+  //   }
+
+  //   console.log('User found!')
+  //   console.log(result);
+  //   req.flash('flashMessage', 'User info has been updated successfully!');
+  //   res.redirect('manageUser');
+
+  // });
+  //}
 });
 
 

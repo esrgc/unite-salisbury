@@ -10,8 +10,8 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <div>
-              <form action="{{rootPath}}admin/editUser" class="form-horizontal" method="post" role="form">
-                <input type="hidden" value="{{user._id}}" name="id"/>
+              <form action="{{user._id}}" class="form-horizontal" method="post" role="form">
+                <!-- <input type="hidden" value="" name="id"/> -->
                 {{#if message}}
                 <div class="alert alert-warning text-center">
                   {{message}}
@@ -84,8 +84,8 @@
                   <label for="firstName" class="col-md-3 control-label">Role</label>
                   <div class="col-md-2">
                     <select name="role" id="role" class="form-control">
-                      <option value="user">User</option>
-                      <option value="admin">Admin</option>
+                      <option value="user" {{#ifCond user.role 'user'}}selected{{/ifCond}}>User</option>
+                      <option value="admin" {{#ifCond user.role 'admin'}}selected{{/ifCond}}>Admin</option>
                     </select>
                     <span class="label label-default">Admin role allows this user to access administration</span>
                     <span class="help-block">
@@ -100,7 +100,7 @@
                     <button class="btn btn-primary" id="proceedBtn" type="submit">
                       Submit
                     </button>
-                    <a class="btn btn-default" href="{{rootPath}}admin/manageUser">Cancel</a>
+                    <a class="btn btn-default" href="{{rootPath}}admin/manageUser">Back</a>
                   </div>
                 </div>
               </form>
