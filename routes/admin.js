@@ -118,7 +118,7 @@ router.post('/addUser', function(req, res, next) {
   } else {
     req.flash('flashMessage', "User has been added successfully!");
     //redirect to addmin page   
-    res.redirect('../');
+    res.redirect('manageUser');
   }
 });
 
@@ -183,8 +183,6 @@ router.get('/manageUser', function(req, res) {
         });
       });
     });
-
-
 });
 
 //edit user 
