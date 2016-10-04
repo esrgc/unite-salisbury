@@ -118,7 +118,7 @@ router.post('/addUser', function(req, res, next) {
   } else {
     req.flash('flashMessage', "User has been added successfully!");
     //redirect to addmin page   
-    res.redirect('/admin');
+    res.redirect('../');
   }
 });
 
