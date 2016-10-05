@@ -1,1 +1,19 @@
-<h3 class="text-center">Comming Soon </h3>
+<link href="{{rootPath}}lib/leaflet-0.7.3/leaflet.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{{rootPath}}lib/leaflet-cluster/markerCluster.css">
+<div class="page-wrap">
+<div class="map-container" id="mapArea">
+</div>
+</div>
+{{#contentFor "scripts"}}
+<script type="text/javascript" src="{{rootPath}}lib/backbone-addon/application.js"></script>
+<script type="text/javascript" src="{{rootPath}}lib/leaflet-0.7.3/leaflet.js"></script>
+<script type="text/javascript" src="{{rootPath}}lib/leaflet-cluster/leaflet.markercluster.js"></script>
+<script type="text/javascript" src="{{rootPath}}build/whatsup-map.js"></script>
+<script>
+$(function(){
+    if( typeof startup == 'function' )
+      startup();
+    });
+</script>
+{{/contentFor}}
+

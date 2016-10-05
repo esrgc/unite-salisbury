@@ -83,6 +83,15 @@
   color: #333345;
   text-decoration: none;
 }
+.deleteButtonForm {
+  display: inline-block;
+  float: right;
+}
+.map-container {
+  min-height: 85vh;
+  width: 100%;
+  border: thin;
+}
 html {
   min-height: 100%;
   width: 100%;

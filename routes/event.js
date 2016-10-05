@@ -10,7 +10,7 @@ var User = domain.dataRepository.User;
 var Event = domain.dataRepository.Event;
 var geoCoder = require('mdimapgeocoder');
 var isLoggedIn = domain.authentication.isLoggedIn;
-
+var http = require('http');
 geoCoder.browser = false; //for windows
 
 //middleware makes sure user is logged in before proceeding.
@@ -172,7 +172,7 @@ router.post('/edit',
           var place = res.candidates[i];
           if( place.score > 79 ) {
             found = true;
-            event.x = place.location
+            event.location = place.location
             event.save( function( err, event ){
               if( err ){
                 req.flash('eventsMessage','Error updating your profile');
@@ -241,6 +241,7 @@ router.post('/add', function( req, res ){
         var place = res.candidates[i];
         if( place.score > 79 ) {
           location = place.location;//Else select first candidate
+          newEvent.location = location;
           break;
         }
       }

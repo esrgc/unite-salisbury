@@ -47,6 +47,7 @@ var EventSchema = new Schema({
     }
   },
   date: Date,
+  location: Object,
   detail: {
     description:{
       type: String,
