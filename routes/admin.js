@@ -214,7 +214,7 @@ router.get('/editUser/:id', function(req, res) {
 });
 
 router.post('/editUser/:id', function(req, res) {
-	var id = req.params.id;
+  var id = req.params.id;
   var data = req.body;
   console.log('Updating user');
   console.log(data);
@@ -241,7 +241,7 @@ router.post('/editUser/:id', function(req, res) {
     var validateErr = user.validateSync();
     //validation errors occur
     if (typeof validateErr != 'undefined') {
-    	console.log('validation error in admin/editUser:');
+      console.log('validation error in admin/editUser:');
       console.log(validateErr);
       req.flash('flashMessage', "Data entered is invalid. Please try again!");
       return done(true, user, validateErr);
@@ -251,35 +251,80 @@ router.post('/editUser/:id', function(req, res) {
       if (err) {
         req.flash('flashMessage', "Error saving data. Please try again!");
         return done(true, user, null);
-      } else{
-      	req.flash('flashMessage', "User has been updated successfully!");
+      } else {
+        req.flash('flashMessage', "User has been updated successfully!");
         return done(false, user);
       }
     });
 
   });
-
-  // User.findByIdAndUpdate(data.id, data, {
-  //   runValidators: true,
-  //   new: true
-  // }, function(err, result) {
-  //   if (err) {
-  //     req.flash('flashMessage', 'Error updating user.');
-  //     res.redirect('manageUser');
-  //   }
-
-  //   console.log('User found!')
-  //   console.log(result);
-  //   req.flash('flashMessage', 'User info has been updated successfully!');
-  //   res.redirect('manageUser');
-
-  // });
-  //}
 });
 
 
-router.get('/deleteUser/:id', function(req, res) {
+router.get('/deleteUser/:id', function(req, res, next) {
+  var id = req.params.id;
+  if (typeof id == 'undefined') {
+    req.flash('flashMessage', 'Invalid user id!');
+    return res.redirect('../manageUser');
+  }
+  var result = req.result = {};
+  User.findById(id, function(err, user) {
+    if (err) {
+      result.err = err;
+      return next();
+    }
+    result.err = null;
+    result.user = user;
+    next();
+  });
+}, function(req, res) {
+  var result = req.result;
+  if (result.err) {
+    console.log(err);
+    req.flash('flashMessage', err.message);
+    return res.redirect('../manageUser');
+  } else {
+    res.render('admin/deleteUser', {
+      title: 'Administration',
+      user: result.user,
+      rootPath: '../../'
+    });
+  }
+});
 
+router.post('/deleteUser/:id', function(req, res, next) {
+  var id = req.params.id;
+  if (typeof id == 'undefined') {
+    req.flash('flashMessage', 'Invalid user id!');
+    return res.redirect('../manageUser');
+  }
+  var result = req.result = {};
+  User.findById(id, function(err, user) {
+    if (err) {
+      result.err = err;
+      return next();
+    }
+    result.err = null;
+    //delete the user
+    user.remove(function(err, user){
+      if(err){
+        req.flash('flashMessage', 'Error deleting user!');
+        result.err = err;
+      }
+      else
+        next();
+    });
+  });
+}, function(req, res) {
+  var result = req.result;
+   if (result.err) {
+    console.log(err);
+    req.flash('flashMessage', err.message);
+    return res.redirect('../manageUser');
+  } else {
+    req.flash('flashMessage', 'User has been deleted!');
+    res.redirect('../manageUser');
+  }
 });
 
 router.get('/manageEvent', function(req, res) {

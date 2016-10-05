@@ -1,0 +1,52 @@
+<div class="page-wrap">
+  <div class="container">
+   <div class="page-header">
+    <h3>
+      <a href="{{rootPath}}admin">Administration</a> - <small>Delete User</small>
+    </h3>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div>
+              <form action="{{user._id}}" class="form-horizontal" method="post" role="form">
+                <!-- <input type="hidden" value="" name="id"/> -->
+                {{#if message}}
+                <div class="alert alert-warning text-center">
+                  {{message}}
+                  <!--if there are validation error show them-->
+                  {{#if valErr}}
+                  <div class="validation-summary-errors">
+                    <ul class="list-unstyled">
+                      {{#each valErr.errors}}
+                        <li>{{message}}</li>
+                      {{/each}}
+                    </ul>
+                  </div>
+                  {{/if}}
+                </div>
+                {{/if}}
+                <div class="form-group ">
+                  <div class="col-md-10 col-md-offset-1 alert alert-warning">
+                    <span>Are you sure you want to delete this user <strong>{{user.firstName}}&nbsp;{{user.lastName}}</strong> ({{user.email}})?</span>
+                  </div>
+
+                </div>
+
+                <div class="form-group">
+                  <div class="col-md-12 text-center">
+                    <button class="btn btn-primary" id="proceedBtn" type="submit">
+                      Yes
+                    </button>
+                    <a class="btn btn-default" href="{{rootPath}}admin/manageUser">Back</a>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
