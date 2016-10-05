@@ -28,7 +28,7 @@
           {{this.name}}
           &nbsp;
           <a href="/event/edit/{{this._id}}"><span class="fa fa-pencil"></span></a>
-          <form action="/event/delete" method="post">
+          <form class="deleteButtonForm" action="/event/delete" method="post">
             <input type="hidden" name="id" id="id" value="{{this._id}}">
             <button type="submit" class="fa fa-trash-o pull-right">
             </button>

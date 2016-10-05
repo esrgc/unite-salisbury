@@ -89,6 +89,21 @@ var copy = function(dest, source) {
   }
   return dest;
 };
+console.log(" Hello world" );
+var startup = function(){ 
+  app.application({
+    name: "WhatsUp-Map",
+    views: [
+      'MapView'
+    ],
+    launch: function(){
+      
+    }
+  });
+}
+
+
+
 /*
 Author: Tu hoang
 ESRGC
@@ -120,7 +135,7 @@ app.Map.LeafletViewer = define({
     this.geoJsonFeatures = L.geoJson();
     this.clusterGroup = new L.MarkerClusterGroup(this.clusterOptions);
 
-    var overlayMaps = {
+   var overlayMaps = {
       //'State': stateBoundary,
       //'Counties': counties,
       'Overlays': this.geoJsonFeatures

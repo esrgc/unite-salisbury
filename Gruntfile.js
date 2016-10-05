@@ -62,6 +62,16 @@ module.exports = function(grunt) {
           ],
           'public/build/<%= pkg.name %>-signup.js':[
             'public/js/signup/*.js'
+          ],
+          'public/build/<%= pkg.name %>-map.js':[
+            'public/js/util/*.js',
+            'public/js/map/*.js',
+            'public/js/map/models/*.js',
+            'public/js/map/collections/*.js',
+            'public/js/map/router/*.js',
+            'public/js/map/views/*.js',
+            'public/js/shared/*.js',
+            'public/js/shared/**/*.js'
           ]
         }
       }
