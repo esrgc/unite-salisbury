@@ -5,6 +5,10 @@ var startup = function(){
     views: [
       'MapView'
     ],
+    collections: [
+      'EventCollection'
+    ],
+    routers: ['Map'],
     launch: function(){
       
     }

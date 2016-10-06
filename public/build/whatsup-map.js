@@ -96,6 +96,10 @@ var startup = function(){
     views: [
       'MapView'
     ],
+    collections: [
+      'EventCollection'
+    ],
+    routers: ['Map'],
     launch: function(){
       
     }
@@ -227,6 +231,10 @@ app.Map.LeafletViewer = define({
   createMarker: function(lat, lng, options) {
     return L.marker(L.latLng(lat, lng), options);
   },
+  addMarker: function( lat, lng, options ){
+      var marker = this.createMarker( lat, lng, options );
+      marker.addTo( this.map );
+  },
   addClusterMarker: function(marker) {
     if (typeof this.clusterGroup == 'undefined')
       return;
@@ -343,6 +351,51 @@ app.Map.MapViewer = define({
 });
 
 
+app.Collection.EventCollection = Backbone.Collection.extend({
+    name: 'EventCollection',
+    url: '../events',
+    initialize: function(){
+    },
+    fetchEvents: function(){
+      var that = this;
+      this.fetch({
+          success: function( colleciton, response, options ){
+              if( typeof that.onDataLoaded == 'function' )
+                that.onDataLoaded();
+          },
+          error: function( collection, respose, options ){
+            if( typeof that.onDataCollectionError == 'function' )
+              that.onDataCollectionError();
+          }
+      });
+    }
+  
+    
+});
+
+app.Router.Map = Backbone.Router.extend({
+  name: 'Map',
+  routes: {
+      '': 'runMap'
+  },
+  runMap: function(){
+    console.log("Running map");
+    var eventCollection = app.getCollection('EventCollection');
+    var mapView = app.getView('MapView');
+    
+    eventCollection.onDataLoaded = function(){
+        console.log( "Data is loaded" );
+        mapView.loadEvents( this );
+    }
+    eventCollection.onDataCollectionError = function(){
+        console.log( "Data is collected" );
+    }
+
+    eventCollection.fetchEvents();
+    
+  }
+});
+
 app.View.MapView = Backbone.View.extend({
   name: "MapView",
   el:'#mapArea',
@@ -357,5 +410,16 @@ app.View.MapView = Backbone.View.extend({
       center: new L.LatLng( 38.3607, -75.5994 ),
       zoomLevel: 10,
     });
+  },
+  loadEvents: function( collection ){
+    console.log( "Unloading collection", collection.length );
+    var i = 0;
+    while( i < collection.length ){
+      var event = collection.at( i );
+      var location = event.get('location');
+      console.log( location );
+      this.mapViewer.addMarker( location.y, location.x ); 
+      i++;
+    }
   }
 });

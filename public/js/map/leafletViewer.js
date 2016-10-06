@@ -121,6 +121,10 @@ app.Map.LeafletViewer = define({
   createMarker: function(lat, lng, options) {
     return L.marker(L.latLng(lat, lng), options);
   },
+  addMarker: function( lat, lng, options ){
+      var marker = this.createMarker( lat, lng, options );
+      marker.addTo( this.map );
+  },
   addClusterMarker: function(marker) {
     if (typeof this.clusterGroup == 'undefined')
       return;

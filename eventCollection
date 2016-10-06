@@ -1,0 +1,4 @@
+app.MapCollection = Backbone.Collection.extend({
+    url: 'events',
+    
+});
