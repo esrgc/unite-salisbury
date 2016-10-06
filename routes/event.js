@@ -226,7 +226,7 @@ router.post('/add', function( req, res ){
       return done( true );
     //Geocode
     geoCoder.search({//Use geocoder to lookup
-      Street: data.street,
+      Street: data.streetAddress,
       City: data.city,
       State: data.state,
       ZIP: data.zip
