@@ -9,24 +9,24 @@ var Schema = mongoose.Schema;
 // mongoose.connect(connectionStr);
 // Validators ============================================
 
-var nameValidator = function( name ){
-    //Capitalize
-    console.log( "Validate", name );
-    return true;
+var nameValidator = function(name) {
+  //Capitalize
+  console.log("Validate", name);
+  return true;
 }
 
 
-var endDateAfterToday = function( endDate ){
+var endDateAfterToday = function(endDate) {
   var now = new Date();
-  if( endDate < now )
+  if (endDate < now)
     return false
   return true;
 }
 
-var endDateAfterStartDate = function( endDate ){
+var endDateAfterStartDate = function(endDate) {
   console.log("Start date end datae .............");
-  if( this.detail.startDate > endDate )
-      return false
+  if (this.detail.startDate > endDate)
+    return false
   return true
 }
 
@@ -38,48 +38,47 @@ var EventSchema = new Schema({
 
   // id: String,
   _creator: { type: Schema.Types.ObjectId, ref: 'User' }, //populated field
-  name:{
+  name: {
     type: String,
     required: [true, "Event name is required"],
     validate: {
-        validator: nameValidator,
-        message: "Name entered is invalid"
+      validator: nameValidator,
+      message: "Name entered is invalid"
     }
   },
   date: Date,
   location: Object,
   detail: {
-    description:{
+    description: {
       type: String,
       required: [true, 'Description required']
     },
-    startDate:{
-      type:Date,
+    startDate: {
+      type: Date,
       required: [true, 'Description required']
-    },      
-    endDate:{
+    },
+    endDate: {
       type: Date,
       validate: endDateValidators
     },
     address: {
-      type:String,
-      required: [true,'Street Address required']
+      type: String,
+      required: [true, 'Street Address required']
     },
-    city:{
+    city: {
       type: String,
       required: [true, 'City is required']
     },
-    state:{
-      type:String,
-      required: [true,'State is required']
+    state: {
+      type: String,
+      required: [true, 'State is required']
     },
-    ZIP:{
-      type:Number,
+    ZIP: {
+      type: Number,
       required: [true, 'ZIP is required']
-    },
-    x: Number,
-    y: Number
-      //other details can be added here
+    }
+
+    //other details can be added here
   }
 });
 
