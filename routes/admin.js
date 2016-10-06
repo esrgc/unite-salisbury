@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var appDomain = require('../appDomain');
 var User = appDomain.dataRepository.User;
+var Event = appDomain.dataRepository.Event;
 
 var helpers = require('../helper');
 
@@ -135,9 +136,8 @@ router.get('/manageUser', function(req, res) {
     sortBy = data.sortBy || 'firstName',
     order = data.order || 'asc',
     searchBy = data.searchBy || '',
-    search = data.search || ''
-
-  sortOrder = '';
+    search = data.search || '',
+    sortOrder = '';
 
   //setup sortby order for query criteria
   if (order == 'desc')
@@ -149,11 +149,12 @@ router.get('/manageUser', function(req, res) {
 
   if (search != '') { //search
     var criteria = {};
-    criteria[searchBy] = new RegExp('^' + search + '$', "i");
+    //criteria[searchBy] = new RegExp('^' + search + '$', "i");
+    criteria[searchBy] =  { '$regex': search, '$options': 'i' }
     query = User.find(criteria);
   } else
     query = User.find();
-
+    
   //paging and sort then executes
   query.skip(pageIndex * pageSize)
     .limit(pageSize)
@@ -306,18 +307,17 @@ router.post('/deleteUser/:id', function(req, res, next) {
     }
     result.err = null;
     //delete the user
-    user.remove(function(err, user){
-      if(err){
+    user.remove(function(err, user) {
+      if (err) {
         req.flash('flashMessage', 'Error deleting user!');
         result.err = err;
-      }
-      else
+      } else
         next();
     });
   });
 }, function(req, res) {
   var result = req.result;
-   if (result.err) {
+  if (result.err) {
     console.log(err);
     req.flash('flashMessage', err.message);
     return res.redirect('../manageUser');
@@ -328,7 +328,66 @@ router.post('/deleteUser/:id', function(req, res, next) {
 });
 
 router.get('/manageEvent', function(req, res) {
-  res.render('admin/manageEvent', { title: 'Administration' });
+
+  //grab data with paging
+  //data at first page
+  //get query strings
+  var data = req.query;
+
+  //params setup
+  var pageIndex = (data.page - 1) || 0,
+    pageSize = data.size || 20,
+    sortBy = data.sortBy || 'name',
+    order = data.order || 'asc',
+    searchBy = data.searchBy || '',
+    search = data.search || '',
+    sortOrder = '';
+
+  //setup sortby order for query criteria
+  if (order == 'desc')
+    sortOrder = '-' + sortBy;
+
+  //retrieve users
+  var query = null;
+
+  if (search != '') { //search
+    var criteria = {};
+    // criteria[searchBy] = new RegExp('^' + search + '$', "i");
+    criteria[searchBy] =  { '$regex': search, '$options': 'i' }
+    query = Event.find(criteria);
+  } else
+    query = Event.find();
+
+  //paging and sort then executes
+  query.skip(pageIndex * pageSize)
+    .limit(pageSize)
+    .populate('_creator')
+    .sort(sortOrder)
+    .exec(function(err, result) {
+      if (err) {
+        req.flash('flashMessage', 'Error reading data from database. Please try again!');
+        res.redirect('/admin');
+      }
+      //if nothing is wrong render the results
+      console.log('Data returned successfully...');
+      // console.log(result);
+      Event.count(function(err, count) {
+        // console.log(count);
+        //render
+        res.render('admin/manageEvent', {
+          title: 'Administration',
+          message: req.flash('flashMessage'),
+          data: result,
+          pageSize: pageSize,
+          page: pageIndex + 1,
+          sortBy: sortBy,
+          order: order,
+          searchBy: searchBy,
+          search: search,
+          pageCount: parseInt(count / pageSize) || 1
+        });
+      });
+    });
 });
 
 module.exports = router;

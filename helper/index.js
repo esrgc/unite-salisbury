@@ -134,6 +134,10 @@ module.exports = {
       return options.inverse(this);
     });
 
+    hbs.registerHelper('parseDateTime', function(d) {
+      return d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
+    });
+
     return hbs;
   },
   copy: function(dest, source) {
@@ -149,7 +153,11 @@ module.exports = {
     return dest;
   },
   parseDate: function(d) {
-    return (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear();
+    return d.toLocaleDateString();
+    //return (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear();
+  },
+  paseTime: function(d){
+    return d.toLocaleTimeString();
   },
   pad: function(str) {
     if (String(str).length == 1)
