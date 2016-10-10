@@ -89,23 +89,54 @@ var copy = function(dest, source) {
   }
   return dest;
 };
-console.log(" Hello world" );
-var startup = function(){ 
-  app.application({
-    name: "WhatsUp-Map",
-    views: [
-      'MapView'
-    ],
-    collections: [
-      'EventCollection'
-    ],
-    routers: ['Map'],
-    launch: function(){
-      
-    }
-  });
+var parseDate = function(d) {
+  var date = new Date(d);
+  return date.toLocaleDateString() +" "+ date.toLocaleTimeString();
+
+
+
+ // return (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear();
+}
+var parseTime = function(d){
+  var time = new Date(d);
+  return time.toLocaleTimeString();
+}
+var pad = function(str) {
+  if (String(str).length == 1)
+    return "0" + str;
+  return str;
 }
 
+
+Handlebars.registerHelper('parseEvent', function(object) {
+  console.log("got object", object);
+  var detail = object.detail;
+  return new Handlebars.SafeString( 
+    "<dt> Description: </dt>" +
+    "<dd> " + detail.description + "</dd>" +
+    "<dt> Start Date: </dt>" +
+    "<dd> " + parseDate(detail.startDate) + "</dd>" +
+    "<dt> End Date: </dt>" +
+    "<dd> " + parseDate(detail.endDate) + "</dd>" +
+    "<dt> Address: </dt>" +
+    "<dd> " + detail.address + "</dd>" +
+    "<dt> Date Created: </dt>" +
+    "<dd> " + parseDate(object.date) + "</dd>" 
+  );
+});
+
+/*Handlebars.registerHelper('parseDateForEdit', function( d ){
+  if( typeof d == 'undefined' )
+    return null
+  return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad( d.getDate() );
+});
+
+Handlebars.registerHelper('parseTimeForEdit', function( d ){
+  if( typeof d == 'undefined' )
+    return null
+  return pad(d.getHours()) + ":" + pad( d.getMinutes() ) + ":" + pad( d.getSeconds() );
+});
+*/ 
 
 
 /*
@@ -228,13 +259,6 @@ app.Map.LeafletViewer = define({
     var f = wkt.toObject();
     return f;
   },
-  createMarker: function(lat, lng, options) {
-    return L.marker(L.latLng(lat, lng), options);
-  },
-  addMarker: function( lat, lng, options ){
-      var marker = this.createMarker( lat, lng, options );
-      marker.addTo( this.map );
-  },
   addClusterMarker: function(marker) {
     if (typeof this.clusterGroup == 'undefined')
       return;
@@ -351,6 +375,45 @@ app.Map.MapViewer = define({
 });
 
 
+console.log(" Hello world" );
+var startup = function(){ 
+  app.application({
+    name: "WhatsUp-Map",
+    views: [
+      'MapView'
+    ],
+    collections: [
+      'EventCollection'
+    ],
+    routers: ['Map'],
+    launch: function(){
+      
+    }
+  });
+}
+
+
+
+app.Map.LeafletViewerForEvents = define({
+  name: 'LeafletViewerWithEvents',
+  extend: app.Map.LeafletViewer,
+  _className: 'LeafletViewerWithEvents',
+  initialize: function( options ){
+    app.Map.LeafletViewer.prototype.initialize.apply( this, arguments );
+    console.log( "Map view for events initialized" );
+  },
+  createMarker: function(lat, lng, options) {
+    
+    return L.marker(L.latLng(lat, lng), options);
+
+  },
+  addMarker: function( lat, lng, popup, options ){
+      var marker = this.createMarker( lat, lng, options );
+      marker.bindPopup( popup );
+      marker.addTo( this.map );
+  },
+});
+
 app.Collection.EventCollection = Backbone.Collection.extend({
     name: 'EventCollection',
     url: '../events',
@@ -400,15 +463,15 @@ app.View.MapView = Backbone.View.extend({
   name: "MapView",
   el:'#mapArea',
   initialize: function(){
-    console.log("Hello");
     this.makeMap();
   },
   makeMap: function(){  
     console.log("Rendering map");
-    this.mapViewer = new app.Map.LeafletViewer({
+    this.mapViewer = new app.Map.LeafletViewerForEvents({
       el: this.el,
       center: new L.LatLng( 38.3607, -75.5994 ),
       zoomLevel: 10,
+      scrollZoom: true
     });
   },
   loadEvents: function( collection ){
@@ -418,8 +481,18 @@ app.View.MapView = Backbone.View.extend({
       var event = collection.at( i );
       var location = event.get('location');
       console.log( location );
-      this.mapViewer.addMarker( location.y, location.x ); 
+      this.mapViewer.addMarker( location.y, location.x, this.renderPopupHTML( event ) ); 
       i++;
     }
+  },
+  renderPopupHTML: function( obj ){
+    console.log( "Rendering HTML", obj.toJSON() );
+    
+    var source = $('#popupTemplate').html(); 
+    var template = Handlebars.compile( source );
+    return template( obj.toJSON() );
+
+
   }
+
 });

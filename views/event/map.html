@@ -5,6 +5,7 @@
 </div>
 </div>
 {{#contentFor "scripts"}}
+
 <script type="text/javascript" src="{{rootPath}}lib/backbone-addon/application.js"></script>
 <script type="text/javascript" src="{{rootPath}}lib/leaflet-0.7.3/leaflet.js"></script>
 <script type="text/javascript" src="{{rootPath}}lib/leaflet-cluster/leaflet.markercluster.js"></script>
@@ -16,4 +17,4 @@ $(function(){
     });
 </script>
 {{/contentFor}}
-
+{{> popupTemplate }}
