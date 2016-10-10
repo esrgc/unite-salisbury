@@ -1,6 +1,7 @@
 <div class="page-wrap">
   <div class="container">
     <form action="signUp" class="form-horizontal" method="post" role="form" novalidate="novalidate">
+      <div class="panel panel-defualt">
       {{#if message}}
       <div class="alert alert-danger text-center">
         {{message}} 
@@ -82,7 +83,9 @@
           <span><a href="login">Already a member? Sign In</a></span>
         </div>
       </div>
+    </div>
     </form>
+
     <!-- <div class="col-md-2"></div> Please use offset if you need to set blank col -->
   </div>
 </div>
