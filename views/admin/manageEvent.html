@@ -21,15 +21,15 @@
               <input type="hidden" value="{{sortBy}}" name="sortBy">
               <input type="hidden" value="{{order}}" name="order">
               <div class="form-group">
-                <div class="col-md-2">
+                <!-- <div class="col-md-2">
                   <select class="form-control" id="searchBy" name="searchBy" title="Search by">
                     <option value="name" {{#ifCond searchBy 'name'}}selected{{/ifCond}}>Name</option>
                     <!-- <option value="_creator.firstName" {{#ifCond searchBy '_creator.firstName'}}selected{{/ifCond}}>Creator</option> -->
-                  </select>
-                </div>
+                  <!-- </select>
+                </div> -->
                 <div class="col-md-6">
                   <div class="input-group">
-                    <input value="{{search}}" type="text" class="form-control" placeholder="Search..." name="search">
+                    <input value="{{search}}" type="text" class="form-control" placeholder="Event Name" name="search">
                     <span class="input-group-btn">
                       <button class="btn btn-default" type="submit" >
                         <i class="fa fa-search"></i>
@@ -67,7 +67,7 @@
                   {{#each data}}
                   <tr>
                     <!-- <td>{{id}}</td> -->
-                    <td><a href="viewEvent?id={{_id}}">{{name}}</a></td>
+                    <td><a href="editEvent?id={{_id}}">{{name}}</a></td>
                     <td>{{parseDateTime date}}</td>
                     <td>{{_creator.firstName}}&nbsp;{{_creator.lastName}}</td>
                     <!-- <td>{{role}}</td> -->

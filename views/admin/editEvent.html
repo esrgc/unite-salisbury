@@ -1,0 +1,119 @@
+<div class="page-wrap">
+  <div class="container">
+    <div class="page-header">
+      <h3>
+      <a href="{{rootPath}}admin">Administration</a> - <small>Edit Event</small>
+    </h3>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            {{#if message}}              
+              {{#if err}}
+              <div class="alert alert-danger text-center">
+                {{message}} 
+                {{#each valErr.errors}}
+                <li>{{message}}</li>
+                {{/each}}
+              </div>
+              {{else}}
+                <div class="alert alert-success text-center">
+                {{message}}
+              </div>
+              {{/if}}
+
+            {{/if}}
+            <div>
+              {{#with event}}
+              <form action="editEvent" class="form-horizontal" method="post">
+                <div class="form-group">
+                  <label class="col-md-3 control-label">Name</label>
+                  <div class="col-md-6">
+                    <input class="form-control" id="eventTitle" name="name" value="{{name}}" />
+                    <span class="label label-default">Required</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label"> Start Date </label>
+                  <div class="col-md-6">
+                    <input class="form-control" id="startDate" name="startDate" type="date" value="{{parseDateForEdit detail.startDate}}" />
+                    <!-- puttin type date will make chrome add in a datepicker but not firefox. Should we use this -->
+                    <span class="label label-default">Required</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label"> Start Time </label>
+                  <div class="col-md-6">
+                    <input class="form-control" id="startTime" name="startTime" type="time" value="{{parseTimeForEdit detail.startDate}}" />
+                    <span class="label label-default">Required</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label"> End Date </label>
+                  <div class="col-md-6">
+                    <input class="form-control" id="endDate" name="endDate" type="date" value="{{parseDateForEdit detail.endDate}}" />
+                    <span class="label label-default">Required</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label"> End Time </label>
+                  <div class="col-md-6">
+                    <input class="form-control" id="endTime" name="endTime" type="time" value="{{parseTimeForEdit detail.endDate}}" />
+                    <span class="label label-default">Required</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label"> Street Address </label>
+                  <div class="col-md-6">
+                    <input class="form-control" id="streetAddress" name="streetAddress" value="{{detail.address}}" />
+                    <span class="label label-default">Required</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label"> City </label>
+                  <div class="col-md-6">
+                    <input class="form-control" id="city" name="city" value="{{detail.city}}" />
+                    <span class="label label-default">Required</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label"> State </label>
+                  <div class="col-md-6">
+                    <input class="form-control" id="state" name="state" value="{{detail.state}}" />
+                    <span class="label label-default">Required</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label"> ZIP </label>
+                  <div class="col-md-6">
+                    <input class="form-control" id="zip" name="zip" value="{{detail.ZIP}}" />
+                    <span class="label label-default">Required</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label"> Description </label>
+                  <div class="col-md-6">
+                    <textarea class="form-control" id="description" name="description" value="{{detail.description}}"/>{{detail.description}}</textarea>
+                    <span class="label label-default">Required</span>
+                  </div>
+                </div>
+                <input class="form-control" id="id" name="id" type="hidden" value="{{_id}}" />
+                <!-- puttin type date will make chrome add in a datepicker but not firefox. Should we use this -->
+                <div class="form-group">
+                  <div class="col-md-6 col-md-offset-3">
+                    <button class="btn btn-primary" id="proceedBtn" type="submit">
+                      Submit
+                    </button>
+                    <a class="btn btn-default" href="manageEvent">Back</a>
+                  </div>
+                </div>
+              </form>
+              {{/with}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
