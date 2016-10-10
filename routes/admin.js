@@ -4,6 +4,8 @@ var appDomain = require('../appDomain');
 var User = appDomain.dataRepository.User;
 var Event = appDomain.dataRepository.Event;
 
+var geoCoder = require('../appDomain/mdimapgeocoder');
+
 var helpers = require('../helper');
 
 //is admin middleware (already checks for authentication)
@@ -150,11 +152,11 @@ router.get('/manageUser', function(req, res) {
   if (search != '') { //search
     var criteria = {};
     //criteria[searchBy] = new RegExp('^' + search + '$', "i");
-    criteria[searchBy] =  { '$regex': search, '$options': 'i' }
+    criteria[searchBy] = { '$regex': search, '$options': 'i' }
     query = User.find(criteria);
   } else
     query = User.find();
-    
+
   //paging and sort then executes
   query.skip(pageIndex * pageSize)
     .limit(pageSize)
@@ -292,7 +294,7 @@ router.get('/deleteUser/:id', function(req, res, next) {
     });
   }
 });
-
+//Delete event post
 router.post('/deleteUser/:id', function(req, res, next) {
   var id = req.params.id;
   if (typeof id == 'undefined') {
@@ -353,7 +355,7 @@ router.get('/manageEvent', function(req, res) {
   if (search != '') { //search
     var criteria = {};
     // criteria[searchBy] = new RegExp('^' + search + '$', "i");
-    criteria[searchBy] =  { '$regex': search, '$options': 'i' }
+    criteria[searchBy] = { '$regex': search, '$options': 'i' }
     query = Event.find(criteria);
   } else
     query = Event.find();
@@ -388,6 +390,137 @@ router.get('/manageEvent', function(req, res) {
         });
       });
     });
+});
+//EDIT event 
+router.get('/editEvent', function(req, res, next) {
+  var id = req.query.id;
+
+  if (typeof id == 'undefined') {
+    req.flash('flashMessage', 'Invalid event ID. ');
+    res.redirect('manageEvent');
+    return;
+  }
+  var result = req.result = {};
+  Event.findById(id, function(err, event) {
+    if (err) {
+      result.error = err;
+      console.log(err);
+      return next();
+    }
+    result.error = false;
+    result.event = event;
+    console.log('event found');
+    console.log(event);
+
+    next();
+  });
+}, function(req, res) {
+  var result = req.result;
+  if (result.error) {
+    req.flash('flashMessage', 'Error reading event...');
+    return res.redirect('manageEvent');
+  }
+  console.log('Rendering event');
+  console.log(result.event);
+  res.render('admin/editEvent', { title: 'Administration', event: result.event });
+
+});
+//Edit event post
+router.post('/editEvent', function(req, res, next) {
+  var id = req.body.id;
+  var data = req.body;
+
+  var detail = {
+    address: data.streetAddress,
+    description: data.description,
+    startDate: data.startDate + " " + data.startTime,
+    endDate: data.endDate + " " + data.endTime,
+    city: data.city,
+    state: data.state,
+    ZIP: data.zip
+  };
+
+  console.log('Updating event...');
+  console.log(data);
+  var result = req.result = {};
+
+  Event.findById(id, function(err, event) {
+    if (err) {
+      result.err = err;
+      req.flash('flashMessage', 'Error finding Event.');
+      res.redirect('manageEvent');
+    }
+
+    result.event = event;
+    //no error now bind new updated data
+    event.name = data.name;
+    event.date = new Date();
+    event.detail = detail;
+
+    geoCoder.search({ //Use geocoder to lookup
+      Street: data.streetAddress,
+      City: data.city,
+      State: data.state,
+      ZIP: data.zip
+    }, function(err, resp) {
+      if (err){
+        result.err = err;
+        req.flash('flashMessage', 'Error geocoding event.');
+        return next();
+      }
+      if (resp.candidates.length == 0) { //If no candidates
+        result.err = true;
+        req.flash('flashMessage', 'Could not find that address, please try agian.');
+        return next();
+      }
+      var found = false;
+      for (i in resp.candidates) {
+        var place = resp.candidates[i];
+        if (place.score > 79) {
+          found = true;
+          event.location = place.location;
+
+          //validate
+          var validateErr = event.validateSync();
+          //validation errors occur
+          if (typeof validateErr != 'undefined') {
+            console.log('validation error in admin/editEvent:');
+            console.log(validateErr);
+            req.flash('flashMessage', "Data entered is invalid. Please try again!");
+            result.validateErr = validateErr;
+            result.err = true;
+            return next();
+          }
+          
+          //if no error save
+          event.save(function(err) {
+            if (err) {
+              req.flash('flashMessage', "Error saving data. Please try again!");
+              result.err = err;
+              return next();
+            } else {
+              req.flash('flashMessage', "Event has been updated successfully!");
+              return next();
+            }
+          });
+          break;
+        }
+      }
+      if (!found) {
+        req.flash('flashMessage', 'Could not find that address, please try agian.');
+        next();
+      }
+    });
+  });
+}, function(req, res) {
+  var result = req.result;
+  res.render('admin/editEvent', {
+    title: 'Administration',
+    message: req.flash('flashMessage'),
+    event: result.event, //event model that contains previous user data
+    valErr: result.validateErr, //show all error messages
+    err: result.err
+  });
 });
 
 module.exports = router;
