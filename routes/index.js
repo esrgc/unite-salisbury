@@ -8,6 +8,7 @@ var auth = require('./auth');
 var users = require('./users');
 var events = require('./events');
 var profile = require('./profile');
+var map = require('./map');
 // var create = require('./create');
 
 //authorized middleware
@@ -30,6 +31,7 @@ router.use('/admin', admin);
 router.use('/event', event);
 router.use('/auth', auth);
 router.use('/profile', profile);
+router.use('/map', map);
 //Api routes
 router.use('/events', events);
 router.use('/users', users);

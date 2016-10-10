@@ -28,12 +28,12 @@ router.use(function(req, res, next) {
 router.get('/', function(req, res) {//Lookup users events and load them into panels with edit pencil?
   var done = function( err, user ){
     if( err ){
-      return res.render('event/index', { title: "Express",
+      return res.render('event/index', { title: "Events",
         message: req.flash('eventsMessage'),
         err: err
       });
     }
-    res.render('event/index', { title: "Express", 
+    res.render('event/index', { title: "Events", 
       message : req.flash('eventsMessage'),
       user: user,
       rootPath: ''//this is because the path is at whatsup/event no need to go back 1 level
@@ -56,19 +56,19 @@ router.get('/', function(req, res) {//Lookup users events and load them into pan
 
 //Get add event page
 router.get('/add', function( req, res ){
-  res.render('event/add');
+  res.render('event/add', { title:'Add Event'});
 }); 
 
-/* GET home page. */
-router.get('/map', function(req, res) {
-  res.render('event/map', { title: 'Express' });
-});
 
 router.get('/edit/:id', function( req, res ){
   var id = req.params.id;
   console.log("Got GET for event update", id);
   Event.findOne({ _id: id}, function( err, event ){
-    res.render('event/edit',{ rootPath:"../../",event: event, detail: event.detail } );
+    res.render('event/edit',{
+       rootPath:"../../",
+       event: event, 
+       detail: event.detail,
+      title: "Edit Event" } );
   });
 
 });
@@ -80,7 +80,10 @@ router.post('/delete',
     var id = req.body.id;
     var done = function( err, updatedUser ){
       if( err )
-        res.render('event/index', { message: req.flash('eventsMessage'), err: err } );
+        res.render('event/index', { 
+          message: req.flash('eventsMessage'), 
+          err: err,
+          title: 'Events' } );
       else
         res.redirect(rootPath + 'event' );
       //res.render('event/index', { message: req.flash('eventsMessage'), user: updatedUser } );
@@ -129,7 +132,12 @@ router.post('/edit',
     //Done callback
     var done = function( err, event ){
       if( err )
-        return res.render('event/edit',{message: req.flash('eventsMessage'), err: err, event: event, detail: event.detail } );
+        return res.render('event/edit',{
+            message: req.flash('eventsMessage'),
+            err: err, 
+            event: event, 
+            detail: event.detail,
+            title: 'Edit Events' } );
       res.redirect( rootPath + 'event' );
     }
     //For update
@@ -197,7 +205,12 @@ router.post('/edit',
 router.post('/add', function( req, res ){
   var done = function( err, event ){
     if( err )
-      return res.render('event/add', { message: req.flash('eventsMessage'), err: err, event: event, detail: event.detail } );
+      return res.render('event/add', 
+        { message: req.flash('eventsMessage'),
+          err: err, 
+          event: event, 
+          detail: event.detail,
+          title: 'Add Event' } );
     res.redirect( rootPath + 'event' );
 
   }
