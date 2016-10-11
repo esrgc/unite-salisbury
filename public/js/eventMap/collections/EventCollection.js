@@ -1,6 +1,6 @@
 app.Collection.EventCollection = Backbone.Collection.extend({
     name: 'EventCollection',
-    url: '../events',
+    url: 'events',
     initialize: function(){
     },
     fetchEvents: function(){
