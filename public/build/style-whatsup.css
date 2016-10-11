@@ -87,6 +87,9 @@
   display: inline-block;
   float: right;
 }
+.inputLong {
+  width: 100%;
+}
 .map-container {
   min-height: 85vh;
   width: 100%;
@@ -104,6 +107,9 @@ body {
 }
 a {
   color: #00B7FF;
+}
+.headerNavbar {
+  margin-bottom: 0 !important;
 }
 .footer {
   position: absolute;

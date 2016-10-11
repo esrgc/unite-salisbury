@@ -39,7 +39,8 @@
     "passport-local": "^1.0.0",
     "passport-localapikey": "0.0.3",
     "serve-favicon": "~2.0.1",
-    "mdimapgeocoder": "~0.1.6"
+    "mdimapgeocoder": "~0.1.6",
+    "bootstrap-timepicker":"~0.5.2"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
