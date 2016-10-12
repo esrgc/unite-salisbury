@@ -17,13 +17,14 @@ router.use(authorized.can('access admin'));
 
 router.use(function(req, res, next) {
   res.locals.rootPath = '../';
+  res.locals.title = 'Administration';
   next();
 });
 
 /* GET admin home page. */
 router.get('/', function(req, res) {
   res.render('admin/index', {
-    title: 'Administration',
+
     message: req.flash('flashMessage'),
     rootPath: ''
   });
@@ -173,7 +174,7 @@ router.get('/manageUser', function(req, res) {
         console.log(count);
         //render
         res.render('admin/manageUser', {
-          title: 'Administration',
+
           message: req.flash('flashMessage'),
           data: result,
           pageSize: pageSize,
@@ -208,7 +209,7 @@ router.get('/editUser/:id', function(req, res) {
     console.log(result);
 
     res.render('admin/editUser', {
-      title: 'Administration',
+
       user: result,
       rootPath: '../../'
     });
@@ -225,7 +226,7 @@ router.post('/editUser/:id', function(req, res) {
   //done callback
   var done = function(err, user, validationError) {
     res.render('admin/editUser', {
-      title: 'Administration',
+
       message: req.flash('flashMessage'),
       user: user, //user model that contains previous user data
       valErr: validationError, //show all error messages
@@ -288,7 +289,7 @@ router.get('/deleteUser/:id', function(req, res, next) {
     return res.redirect('../manageUser');
   } else {
     res.render('admin/deleteUser', {
-      title: 'Administration',
+
       user: result.user,
       rootPath: '../../'
     });
@@ -377,7 +378,7 @@ router.get('/manageEvent', function(req, res) {
         // console.log(count);
         //render
         res.render('admin/manageEvent', {
-          title: 'Administration',
+
           message: req.flash('flashMessage'),
           data: result,
           pageSize: pageSize,
@@ -422,7 +423,7 @@ router.get('/editEvent', function(req, res, next) {
   }
   console.log('Rendering event');
   console.log(result.event);
-  res.render('admin/editEvent', { title: 'Administration', event: result.event });
+  res.render('admin/editEvent', { event: result.event });
 
 });
 //Edit event post
@@ -463,7 +464,7 @@ router.post('/editEvent', function(req, res, next) {
       State: data.state,
       ZIP: data.zip
     }, function(err, resp) {
-      if (err){
+      if (err) {
         result.err = err;
         req.flash('flashMessage', 'Error geocoding event.');
         return next();
@@ -491,7 +492,7 @@ router.post('/editEvent', function(req, res, next) {
             result.err = true;
             return next();
           }
-          
+
           //if no error save
           event.save(function(err) {
             if (err) {
@@ -515,12 +516,68 @@ router.post('/editEvent', function(req, res, next) {
 }, function(req, res) {
   var result = req.result;
   res.render('admin/editEvent', {
-    title: 'Administration',
     message: req.flash('flashMessage'),
     event: result.event, //event model that contains previous user data
     valErr: result.validateErr, //show all error messages
     err: result.err
   });
+});
+
+//delete event 
+router.get('/deleteEvent', function(req, res, next) {
+  var id = req.query.id;
+
+  if (typeof id == 'undefined') {
+    req.flash('flashMessage', 'Invalid event ID. ');
+    res.redirect('manageEvent');
+    return;
+  }
+
+  Event.findById(id, function(err, event) {
+    if (err) {
+      result.error = err;
+      console.log(err);
+      req.flash('flashMessage', 'Error finding event with id ' + id);
+      return res.redirect('manageEvent');
+    }
+
+    res.render('admin/deleteEvent', {
+      event: event
+    });
+  });
+});
+
+//delete event post
+router.post('/deleteEvent', function(req, res, next) {
+  var id = req.body.id;
+  if (typeof id == 'undefined') {
+    req.flash('flashMessage', 'Invalid event ID. ');
+    res.redirect('manageEvent');
+    return;
+  }
+
+  Event.findById(id, function(err, event) {
+    if (err) {
+      result.error = err;
+      console.log(err);
+      req.flash('flashMessage', 'Error finding event with id ' + id);
+      return res.redirect('manageEvent');
+    }
+
+    //event found -> delete it
+    event.remove(function(err) {
+      if (err) {
+        result.error = err;
+        console.log(err);
+        req.flash('flashMessage', 'Error deleting event with id ' + id);
+        return res.redirect('manageEvent');
+      }
+
+      req.flash('flashMessage', 'Event has been deleted successfully!');
+      res.redirect('manageEvent');
+    });
+  });
+
 });
 
 module.exports = router;
