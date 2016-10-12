@@ -17,7 +17,7 @@ router.use(function(req, res, next) {
 //GET..............................................................................
 router.get('/', function(req, res) {
   var done = function(err, user) {
-    res.render('profile/index', { user: user, rootPath: '' });
+    res.render('profile/index', { title: "Profile",  user: user, rootPath: '' });
   }; //add for lookup error
 
   User.findOne({ email: req.user.email }, function(err, user) {
@@ -33,7 +33,7 @@ router.get('/', function(req, res) {
 
 router.get('/edit', function(req, res) {
   var done = function(err, user) {
-    res.render('profile/edit', { user: user });
+    res.render('profile/edit', { title: "Edit Profile", user: user });
   }; //Add for lookup error
 
   // if (!req.user)
@@ -52,13 +52,14 @@ router.get('/edit', function(req, res) {
 });
 
 router.get('/changePassword', function(req, res) {
-  res.render('profile/changePassword');
+  res.render('profile/changePassword', {title: "Change Password" });
 });
 
 //POST...............................................................................
 router.post('/edit', function(req, res) {
   var done = function(err, user) {
     res.render('profile/edit', {
+      title: "Edit Profile",
       user: user,
       message: req.flash('profileMessage'),
       err: err

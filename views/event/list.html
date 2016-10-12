@@ -1,0 +1,22 @@
+<div class="container">
+  {{#if message}}
+  <div class='alert alert-danger text-center'>
+    {{message}}
+  </div>
+  {{/if}}
+  </br>
+  <div class="panel-group">
+    {{#each events}}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        {{this.name}}
+      </div>
+      <div class="panel-body">
+        <dl class="dl-horizontal">
+          {{{parseEvent this}}}
+        </dl>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+</div>

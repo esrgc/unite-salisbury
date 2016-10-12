@@ -91,12 +91,9 @@ var copy = function(dest, source) {
 };
 var parseDate = function(d) {
   var date = new Date(d);
-  return date.toLocaleDateString() +" "+ date.toLocaleTimeString();
-
-
-
- // return (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear();
+  return date.toLocaleDateString()+" "+ date.toLocaleTimeString().replace(/:\d\d /,' ');
 }
+
 var parseTime = function(d){
   var time = new Date(d);
   return time.toLocaleTimeString();
@@ -109,7 +106,6 @@ var pad = function(str) {
 
 
 Handlebars.registerHelper('parseEvent', function(object) {
-  console.log("got object", object);
   var detail = object.detail;
   return new Handlebars.SafeString( 
     "<dt> Description: </dt>" +
@@ -125,18 +121,6 @@ Handlebars.registerHelper('parseEvent', function(object) {
   );
 });
 
-/*Handlebars.registerHelper('parseDateForEdit', function( d ){
-  if( typeof d == 'undefined' )
-    return null
-  return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad( d.getDate() );
-});
-
-Handlebars.registerHelper('parseTimeForEdit', function( d ){
-  if( typeof d == 'undefined' )
-    return null
-  return pad(d.getHours()) + ":" + pad( d.getMinutes() ) + ":" + pad( d.getSeconds() );
-});
-*/ 
 
 
 /*
