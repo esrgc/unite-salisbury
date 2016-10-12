@@ -342,7 +342,7 @@ router.get('/manageEvent', function(req, res) {
     pageSize = data.size || 20,
     sortBy = data.sortBy || 'name',
     order = data.order || 'asc',
-    searchBy = data.searchBy || '',
+    searchBy = data.searchBy || 'name',
     search = data.search || '',
     sortOrder = '';
 
