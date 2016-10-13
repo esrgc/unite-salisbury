@@ -94,7 +94,7 @@ module.exports = {
       //generate previous link btn
       var prevBtn = [
         '<li class="' + (data.page > 1 ? '' : 'disabled') + '"">',
-        '<a href="' + url + '&page=' + (data.page - 1) + '" aria-label="Previous">',
+        '<a href="' + url + '&page=' + (data.page -1) + '" aria-label="Previous">',
         '<span aria-hidden="true">&laquo;</span>',
         '</a>',
         '</li>'
@@ -118,7 +118,7 @@ module.exports = {
       //generate next btn
       var nextBtn = [
         '<li class="' + (data.pageCount > data.page ? '' : 'disabled') + '"">',
-        '<a href="' + url + '&page=' + (data.page - 1) + '" aria-label="Next">',
+        '<a href="' + url + '&page=' + (data.page + 1)+ '" aria-label="Next">',
         '<span aria-hidden="true">&raquo;</span>',
         '</a>',
         '</li>'
@@ -128,7 +128,7 @@ module.exports = {
       //last btn
       var lastBtn = [
         '<li class="' + (data.page != data.pageCount ? '' : 'disabled') + '"">',
-        '<a href="' + url + '&page=1" aria-label="Previous">',
+        '<a href="' + url + '&page='+ data.pageCount +'" aria-label="Previous">',
         '<span aria-hidden="true">&raquo;&raquo;</span>',
         '</a>',
         '</li>'

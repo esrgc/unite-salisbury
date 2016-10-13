@@ -23,12 +23,15 @@ router.use(function(req, res, next) {
 
 /* GET admin home page. */
 router.get('/', function(req, res) {
-  res.render('admin/index', {
+  res.redirect('admin/index');
+});
 
-    message: req.flash('flashMessage'),
-    rootPath: ''
+router.get('/index', function(req, res){
+  res.render('admin/index', {
+    message: req.flash('flashMessage')
   });
 });
+
 //add user route
 router.get('/addUser', function(req, res) {
   res.render('admin/addUser', { title: 'Administration' });
@@ -135,7 +138,7 @@ router.get('/manageUser', function(req, res) {
 
   //params setup
   var pageIndex = (data.page - 1) || 0,
-    pageSize = data.size || 20,
+    pageSize = data.size || 5,
     sortBy = data.sortBy || 'firstName',
     order = data.order || 'asc',
     searchBy = data.searchBy || '',
@@ -165,7 +168,7 @@ router.get('/manageUser', function(req, res) {
     .exec(function(err, result) {
       if (err) {
         req.flash('flashMessage', 'Error reading data from database. Please try again!');
-        res.redirect('/admin');
+        return res.redirect('index');
       }
       //if nothing is wrong render the results
       console.log('Data returned...');
@@ -174,7 +177,6 @@ router.get('/manageUser', function(req, res) {
         console.log(count);
         //render
         res.render('admin/manageUser', {
-
           message: req.flash('flashMessage'),
           data: result,
           pageSize: pageSize,
@@ -339,7 +341,7 @@ router.get('/manageEvent', function(req, res) {
 
   //params setup
   var pageIndex = (data.page - 1) || 0,
-    pageSize = data.size || 20,
+    pageSize = data.size || 5,
     sortBy = data.sortBy || 'name',
     order = data.order || 'asc',
     searchBy = data.searchBy || 'name',
@@ -369,7 +371,7 @@ router.get('/manageEvent', function(req, res) {
     .exec(function(err, result) {
       if (err) {
         req.flash('flashMessage', 'Error reading data from database. Please try again!');
-        res.redirect('/admin');
+        return res.redirect('index');
       }
       //if nothing is wrong render the results
       console.log('Data returned successfully...');
