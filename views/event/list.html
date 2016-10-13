@@ -5,18 +5,45 @@
   </div>
   {{/if}}
   </br>
+  <form class="form-horizontal" action="manageUser" method="GET">
+    <input type="hidden" value="{{pageSize}}" name="pageSize">
+    <input type="hidden" value="{{page}}" name="page">
+    <input type="hidden" value="{{sortBy}}" name="sortBy">
+    <input type="hidden" value="{{order}}" name="order">
+    <div class="form-group">
+      <div class="col-md-2">
+
+      </div>
+      <div class="col-md-6">
+        <div class="input-group">
+          <input value="{{search}}" type="text" class="form-control" placeholder="Search..." name="search">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="submit" >
+              <i class="fa fa-search"></i>
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </form>
   <div class="panel-group">
     {{#each events}}
     <div class="panel panel-default">
       <div class="panel-heading">
         {{this.name}}
+        <a class="pull-right" href="{{rootPath}}map#{{{generateMapUrl this}}}">
+          <i class="fa fa-globe"></i>
+        </a>
       </div>
       <div class="panel-body">
         <dl class="dl-horizontal">
-          {{{parseEvent this}}}
+          {{{parseEventForList this}}}
         </dl>
       </div>
     </div>
     {{/each}}
+  </div>
+  <div class='text-center'>
+    {{{generatePagination this 'list' }}}
   </div>
 </div>

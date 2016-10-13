@@ -3,7 +3,6 @@ module.exports = {
     //register all helpers here
     var scope = this;
     hbs.registerHelper('parseEvent', function(object) {
-      console.log("got object", object);
       var detail = object.detail;
       return "<dt> Date Created: </dt>" +
         "<dd> " + scope.parseDate(object.date) + "</dd>" +
@@ -16,6 +15,21 @@ module.exports = {
         "<dt> Address </dt>" +
         "<dd> " + detail.address + "</dd>";
     });
+
+    hbs.registerHelper('parseEventForList', function(object){
+      var detail = object.detail;
+      return "<dt> Description </dt>" +
+        "<dd> " + detail.description + "</dd>" +
+        "<dt> Start Date </dt>" +
+        "<dd> " + scope.parseDate(detail.startDate) + "</dd>" +
+        "<dt> End Date </dt>" +
+        "<dd> " + scope.parseDate(detail.endDate) + "</dd>" +
+        "<dt> Address </dt>" +
+        "<dd> " + detail.address + "</dd>" +
+        "<dt> Date Created: </dt>" +
+        "<dd> " + scope.parseDate(object.date) + "</dd>"; 
+          
+    });
     hbs.registerHelper('parseDateForEdit', function( d ){
       if( typeof d == 'undefined' )
         return null
@@ -26,6 +40,9 @@ module.exports = {
         return null
       return scope.pad(d.getHours()) + ":" + scope.pad( d.getMinutes() ) + ":" + scope.pad( d.getSeconds() );
     }); 
+    hbs.registerHelper('generateMapUrl', function( data ){
+        return data.location.x+"/"+data.location.y;
+    });
     //generate listing link
     hbs.registerHelper('generateSortUrl', function(data, baseUrl, sortBy, label) {
       var url = baseUrl + '?' + [
@@ -126,6 +143,7 @@ module.exports = {
       // console.log(html.join(''));
       return html.join('');
     });
+
 
     hbs.registerHelper('ifCond', function(v1, v2, options) {
       if (v1 === v2) {
