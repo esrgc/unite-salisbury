@@ -26,7 +26,7 @@
                   <select class="form-control" id="searchBy" name="searchBy" title="Search by">
                     <option value="name" {{#ifCond searchBy 'name'}}selected{{/ifCond}}>Name</option>
                     <!-- <option value="_creator.firstName" {{#ifCond searchBy '_creator.firstName'}}selected{{/ifCond}}>Creator</option> -->
-                  <!-- </select>
+                <!-- </select>
                 </div> -->
                 <div class="col-md-6">
                   <div class="input-group">
@@ -37,6 +37,16 @@
                       </button>
                     </span>
                   </div>
+                </div>
+                <div class="col-md-1">
+                  <select class="form-control" name="pageSize" title="Showing size" id="pageSize">
+                    <option value="5" {{#ifCond pageSize 5}}selected{{/ifCond}}>5</option>
+                    <option value="10" {{#ifCond pageSize 10}}selected{{/ifCond}}>10</option>
+                    <option value="20" {{#ifCond pageSize 20}}selected{{/ifCond}}>20</option>
+                    <option value="30" {{#ifCond pageSize 30}}selected{{/ifCond}}>30</option>
+                    <option value="50" {{#ifCond pageSize 40}}selected{{/ifCond}}>50</option>
+                    <option value="100" {{#ifCond pageSize 50}}selected{{/ifCond}}>100</option>
+                  </select>
                 </div>
               </div>
             </form>
@@ -61,7 +71,7 @@
                   </th>
                   <th>
                     {{{generateSortUrl this 'manageEvent' '_creator.firstName' 'Creator'}}}
-                  </th>                 
+                  </th>
                   <th></th>
                 </thead>
                 <tbody>
@@ -96,3 +106,12 @@
     </div>
   </div>
 </div>
+{{#contentFor 'scripts'}}
+<script type="text/javascript">
+$(function() {
+  $('select#pageSize').on('change', function(e){
+    $('form').submit();
+  });  
+});
+</script>
+{{/contentFor}}

@@ -138,7 +138,7 @@ router.get('/manageUser', function(req, res) {
 
   //params setup
   var pageIndex = (data.page - 1) || 0,
-    pageSize = data.size || 5,
+    pageSize = data.pageSize || 5,
     sortBy = data.sortBy || 'firstName',
     order = data.order || 'asc',
     searchBy = data.searchBy || '',
@@ -174,18 +174,18 @@ router.get('/manageUser', function(req, res) {
       console.log('Data returned...');
       // console.log(result);
       User.count(function(err, count) {
-        console.log(count);
+        console.log(pageSize);
         //render
         res.render('admin/manageUser', {
           message: req.flash('flashMessage'),
           data: result,
-          pageSize: pageSize,
+          pageSize: parseInt(pageSize),
           page: pageIndex + 1,
           sortBy: sortBy,
           order: order,
           searchBy: searchBy,
           search: search,
-          pageCount: parseInt(count / pageSize) || 1
+          pageCount: Math.ceil(parseFloat(count / pageSize)) || 1
         });
       });
     });
@@ -341,7 +341,7 @@ router.get('/manageEvent', function(req, res) {
 
   //params setup
   var pageIndex = (data.page - 1) || 0,
-    pageSize = data.size || 5,
+    pageSize = data.pageSize || 5,
     sortBy = data.sortBy || 'name',
     order = data.order || 'asc',
     searchBy = data.searchBy || 'name',
@@ -383,13 +383,13 @@ router.get('/manageEvent', function(req, res) {
 
           message: req.flash('flashMessage'),
           data: result,
-          pageSize: pageSize,
+          pageSize: parseInt(pageSize),
           page: pageIndex + 1,
           sortBy: sortBy,
           order: order,
           searchBy: searchBy,
           search: search,
-          pageCount: parseInt(count / pageSize) || 1
+          pageCount: Math.ceil(parseFloat(count / pageSize)) || 1
         });
       });
     });

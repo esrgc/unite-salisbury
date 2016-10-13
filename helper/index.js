@@ -146,6 +146,9 @@ module.exports = {
 
 
     hbs.registerHelper('ifCond', function(v1, v2, options) {
+      console.log('v1 is '+ v1 + ' ' + typeof(v1));
+      console.log('v2 is '+ v2 + ' ' + typeof(v2));
+      console.log(v1 === v2);
       if (v1 === v2) {
         return options.fn(this);
       }
