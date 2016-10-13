@@ -370,6 +370,7 @@ router.get('/manageEvent', function(req, res) {
     .sort(sortOrder)
     .exec(function(err, result) {
       if (err) {
+        console.log(err);
         req.flash('flashMessage', 'Error reading data from database. Please try again!');
         return res.redirect('index');
       }
@@ -380,7 +381,6 @@ router.get('/manageEvent', function(req, res) {
         // console.log(count);
         //render
         res.render('admin/manageEvent', {
-
           message: req.flash('flashMessage'),
           data: result,
           pageSize: parseInt(pageSize),
