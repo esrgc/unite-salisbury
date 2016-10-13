@@ -341,7 +341,7 @@ router.get('/manageEvent', function(req, res) {
 
   //params setup
   var pageIndex = (data.page - 1) || 0,
-    pageSize = parseInt(pageSize) || 5,
+    pageSize = parseInt(data.pageSize) || 5,
     sortBy = data.sortBy || 'name',
     order = data.order || 'asc',
     searchBy = data.searchBy || 'name',
