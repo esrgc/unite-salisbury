@@ -138,7 +138,7 @@ router.get('/manageUser', function(req, res) {
 
   //params setup
   var pageIndex = (data.page - 1) || 0,
-    pageSize = data.pageSize || 5,
+    pageSize = parseInt(data.pageSize) || 5,
     sortBy = data.sortBy || 'firstName',
     order = data.order || 'asc',
     searchBy = data.searchBy || '',
@@ -341,7 +341,7 @@ router.get('/manageEvent', function(req, res) {
 
   //params setup
   var pageIndex = (data.page - 1) || 0,
-    pageSize = data.pageSize || 5,
+    pageSize = parseInt(pageSize) || 5,
     sortBy = data.sortBy || 'name',
     order = data.order || 'asc',
     searchBy = data.searchBy || 'name',
@@ -383,7 +383,7 @@ router.get('/manageEvent', function(req, res) {
         res.render('admin/manageEvent', {
           message: req.flash('flashMessage'),
           data: result,
-          pageSize: parseInt(pageSize),
+          pageSize: pageSize,
           page: pageIndex + 1,
           sortBy: sortBy,
           order: order,
