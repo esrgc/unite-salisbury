@@ -35,7 +35,7 @@ app.View.MapView = Backbone.View.extend({
   },
   centerOn: function( x, y ){
     console.log( "x", x );
-    this.mapViewer.zoomToPoint({x:y,y:x}, 10 );
+    this.mapViewer.zoomToPoint({x:y,y:x}, 14 );
   }
 
 
