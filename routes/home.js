@@ -8,7 +8,7 @@ router.get('/', function(req, res) {
 
 router.get('/index', function(req, res){
 	 res.render('index', {
-    title: "What's Up",
+    title: "Unite Salisbury",
     message: req.flash('loginMessage')
   });
 });
