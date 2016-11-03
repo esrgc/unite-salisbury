@@ -1,0 +1,15 @@
+<script type="text/x-handlebars-template" id="map-control-tpl">
+  <div class="leaflet-bottom leaflet-left">
+    <div class="overlays">
+      \{{#each models }}
+      <div id="layer-control-\{{ name }}" data-name="\{{ name }}" title="\{{ label }}" class="layerToggle leaflet-control layers">
+        \{{#if selected}}
+        <p>\{{ name }}&nbsp;<i class="fa fa-check" role="checkbox"></i></p>
+        \{{else}}
+        <p>\{{ name }}</p>
+        \{{/if }}
+      </div>
+      \{{/each}}
+    </div>
+  </div>
+</script>

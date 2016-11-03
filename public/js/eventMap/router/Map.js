@@ -1,34 +1,39 @@
 app.Router.Map = Backbone.Router.extend({
   name: 'Map',
   routes: {
-    '': 'runMap',
-    ':x/:y': 'runMapWithParams'
+    '': 'init',
+    ':x/:y': 'initZoom'
   },
-  runMap: function(){
-    console.log("Running map");
-    console.log( Backbone.history.getFragment() );
-    this.run();
+  init: function(){
+    //views
+    var mapView = app.getView('UniteSalisburyMap');
+    //collections
+    var eventCollection = app.getCollection('EventCollection');
+    //filters
+    var filters = {
+
+    };
+
+    eventCollection.onDataLoaded = function(collection){
+      var data = collection.getData();
+      mapView.addClusterMarkers(data);
+    };
+
+    //render map and other components
+    mapView.render();
+
+    //load map data
+    eventCollection.fetchData(filters);
+
   },
-  runMapWithParams: function( x, y ){
+  initZoom: function( x, y ){
     console.log('Running with params', x+" "+y );
     var mapView = app.getView('MapView');
-    mapView.centerOn( x, y );
-    this.run();
+    //mapView.centerOn( x, y );
 
-  },
-  run: function(){
-    var eventCollection = app.getCollection('EventCollection');
-    var mapView = app.getView('MapView');
+    this.init();
+    mapView.zoomToLocation(y, x); //y is lat, x is long
 
-    eventCollection.onDataLoaded = function(){
-      console.log( "Data is loaded" );
-      mapView.loadEvents( this );
-    }
-    eventCollection.onDataCollectionError = function(){
-      console.log( "Data is collected" );
-    }
-
-    eventCollection.fetchEvents();
   }
 
 });

@@ -2,8 +2,10 @@
 Author: Tu hoang
 ESRGC
 Provides base (prototype) functions for mapviewer
+Note: this class is defined using dx library
 
 implements leaflet API 
+operates foodshed application
 */
 
 app.Map.LeafletViewer = define({
@@ -29,7 +31,7 @@ app.Map.LeafletViewer = define({
     this.geoJsonFeatures = L.geoJson();
     this.clusterGroup = new L.MarkerClusterGroup(this.clusterOptions);
 
-   var overlayMaps = {
+    var overlayMaps = {
       //'State': stateBoundary,
       //'Counties': counties,
       'Overlays': this.geoJsonFeatures
@@ -117,6 +119,9 @@ app.Map.LeafletViewer = define({
     wkt.read(obj);
     var f = wkt.toObject();
     return f;
+  },
+  createMarker: function(lat, lng, options) {
+    return L.marker(L.latLng(lat, lng), options);
   },
   addClusterMarker: function(marker) {
     if (typeof this.clusterGroup == 'undefined')

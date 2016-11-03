@@ -67,13 +67,13 @@ module.exports = function(grunt) {
             'public/js/util/*.js',
             'public/js/helpers/*.js',
             'public/js/map/*.js',
+            'public/js/shared/*.js',
+            'public/js/shared/**/*.js',
             'public/js/eventMap/*.js',
             'public/js/eventMap/models/*.js',
             'public/js/eventMap/collections/*.js',
             'public/js/eventMap/router/*.js',
-            'public/js/eventMap/views/*.js',
-            'public/js/shared/*.js',
-            'public/js/shared/**/*.js'
+            'public/js/eventMap/views/*.js'
           ]
         }
       }
