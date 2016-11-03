@@ -163,7 +163,7 @@ app.Map.LeafletViewer = define({
   zoomToPoint: function(point, zoom) {
     var z = zoom || this.map.getMaxZoom(); //default zoom
     if (typeof point.x != 'undefined' && typeof point.y != 'undefined') {
-      var latlng = new L.LatLng(point.x, point.y);
+      var latlng = new L.LatLng(point.y, point.x);
       this.map.setView(latlng, z);
     } else {
       this.map.setView(point, z);

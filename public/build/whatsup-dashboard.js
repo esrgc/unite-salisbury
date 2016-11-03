@@ -254,7 +254,7 @@ app.Map.LeafletViewer = define({
   zoomToPoint: function(point, zoom) {
     var z = zoom || this.map.getMaxZoom(); //default zoom
     if (typeof point.x != 'undefined' && typeof point.y != 'undefined') {
-      var latlng = new L.LatLng(point.x, point.y);
+      var latlng = new L.LatLng(point.y, point.x);
       this.map.setView(latlng, z);
     } else {
       this.map.setView(point, z);
@@ -943,7 +943,7 @@ app.View.Map = Backbone.View.extend({
     else
       this.addClusterMarkers(); //passing no param to add the cached marker data
   },
-  zoomToLocation: function(lat, lon) {
+  zoomToLocation: function(lon, lat) {
     this.mapViewer.zoomToPoint({
       x: lon,
       y: lat

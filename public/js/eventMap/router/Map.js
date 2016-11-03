@@ -28,11 +28,11 @@ app.Router.Map = Backbone.Router.extend({
   },
   initZoom: function( x, y ){
     console.log('Running with params', x+" "+y );
-    var mapView = app.getView('MapView');
+    var mapView = app.getView('UniteSalisburyMap');
     //mapView.centerOn( x, y );
 
     this.init();
-    mapView.zoomToLocation(y, x); //y is lat, x is long
+    mapView.zoomToLocation(x, y); //y is lat, x is long
 
   }
 

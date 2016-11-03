@@ -523,7 +523,7 @@ app.View.Map = Backbone.View.extend({
     else
       this.addClusterMarkers(); //passing no param to add the cached marker data
   },
-  zoomToLocation: function(lat, lon) {
+  zoomToLocation: function(lon, lat) {
     this.mapViewer.zoomToPoint({
       x: lon,
       y: lat
