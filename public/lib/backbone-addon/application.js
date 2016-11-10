@@ -19,6 +19,7 @@ if (typeof BackboneApp == 'undefined')
     Router: {},
     Map: {},
     Util: {},
+    Shared: {},
     //getters
     getViews: function() {
       if (typeof this.appInstance == 'undefined')

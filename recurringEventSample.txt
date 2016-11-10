@@ -1,0 +1,71 @@
+The query looks like this: 
+{
+"$and": [
+    {
+        '$or': [
+            {
+                '$and': [
+                    {'schedule.repeatYear':  { "$in" : [getDateYear,'*'] } },
+                    {'schedule.repeatMonth':  { "$in" : [getDateMonth, '*'] } },
+                    {'schedule.repeatWeekInMonth':  { "$in" : [getDateWeekInMonth, '*'] } },
+                    {'schedule.repeatWeekday':  { "$in" : [getDateWeekDay, '*'] } },
+                    {'schedule.repeatMonthDay':  { "$in" : [getDateMonthDay, '*'] } }
+                ]
+            },
+            {
+                "$where":  "function () { 
+                   return this.repeatIntervals.some(function (obj) { 
+                           return new Date(getDate) - new Date(obj.repeatStart) % obj.interval == 0; })}"
+            }
+        ]
+    },
+    {
+     //one more condition application specific
+    }
+]
+}
+
+//Sample documents
+
+//Repeat every 3rd Friday every month
+  {
+    "startsOn" : "2015-09-16",
+    "timeOfDay" : "20:10:00",
+    "endsOn" : "2019-09-16",
+    "repeatIntervals" : null,
+    "repeatYear" : [ 
+        "*"
+    ],
+    "repeatMonth" : [ 
+        "*"
+    ],
+    "repeatWeekInMonth" : [ 
+        1
+    ],
+    "repeatWeekday" : [ 
+        1
+    ],
+    "repeatMonthDay" : [ 
+        "*"
+    ]
+}
+//repeats on Friday and Monday starting from 5th Aug
+{
+    "startsOn" : "2016-08-05",
+    "endsOn" : "2019-09-16",
+    "repeatIntervals" : [ 
+        {
+            "repeatStart" : "2016-08-05",
+            "interval" : 14
+        },
+        {
+            "repeatStart" : "2016-08-08",
+            "interval" : 14
+        }
+    ],
+    "repeatYear" : null,
+    "repeatMonth" : null,
+    "repeatWeekInMonth" : null,
+    "repeatWeekday" : null,
+    "repeatMonthDay" : null
+}
