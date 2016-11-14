@@ -90,10 +90,10 @@
 .inputLong {
   width: 100%;
 }
-.map-container {
-  min-height: 85vh;
+.map {
   width: 100%;
   border: thin;
+  min-height: 400px;
 }
 html {
   min-height: 100%;
@@ -122,6 +122,10 @@ a {
 }
 .banner {
   border: solid;
+}
+.page-wrap .container,
+.page-wrap .container-fluid {
+  padding-top: 40px;
 }
 .jumbotron {
   background-color: #fff;
