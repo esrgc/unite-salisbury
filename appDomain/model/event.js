@@ -34,6 +34,8 @@ var endDateValidators = [
   { validator: endDateAfterToday, message: 'End date cannot be before today' },
   { validator: endDateAfterStartDate, message: 'End date cannot be before start date' }
 ];
+
+//Event schema
 var EventSchema = new Schema({
 
   // id: String,
@@ -76,7 +78,19 @@ var EventSchema = new Schema({
     ZIP: {
       type: Number,
       required: [true, 'ZIP is required']
-    }
+    },
+    repeat: {
+      type: Boolean
+    },
+    repeatFrequency: {
+      type: String
+    },
+    repeatCustomFreq: {
+      type: String
+    },
+    repeatEnd: { type: Date }
+
+
 
     //other details can be added here
   }
