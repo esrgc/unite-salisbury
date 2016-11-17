@@ -1,0 +1,25 @@
+{
+  "name": "whatsup",
+  "description": "Events around Salisbury",
+  "main": "server.js",
+  "authors": [
+    "ESRGC Team"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "whatsup",
+    "salisbury"
+  ],
+  "homepage": "https://github.com/esrgc/whatsUp",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "later": "^1.2.0"
+  }
+}

@@ -216,6 +216,7 @@ pip-log.txt
 #custom
 config/
 node_modules/
+bower_components/
 old-code/
 *~
 *#

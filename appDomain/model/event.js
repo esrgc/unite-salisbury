@@ -5,35 +5,11 @@ This defines schema for model Event
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var moment = require('moment'); //for datetime math
+var later = require('later');//for recurring event
 
 // mongoose.connect(connectionStr);
 // Validators ============================================
-
-var nameValidator = function(name) {
-  //Capitalize
-  console.log("Validate", name);
-  return true;
-}
-
-
-var endDateAfterToday = function(endDate) {
-  var now = new Date();
-  if (endDate < now)
-    return false
-  return true;
-}
-
-var endDateAfterStartDate = function(endDate) {
-  console.log("Start date end datae .............");
-  if (this.detail.startDate > endDate)
-    return false
-  return true
-}
-
-var endDateValidators = [
-  { validator: endDateAfterToday, message: 'End date cannot be before today' },
-  { validator: endDateAfterStartDate, message: 'End date cannot be before start date' }
-];
 
 //Event schema
 var EventSchema = new Schema({
@@ -42,11 +18,11 @@ var EventSchema = new Schema({
   _creator: { type: Schema.Types.ObjectId, ref: 'User' }, //populated field
   name: {
     type: String,
-    required: [true, "Event name is required"],
-    validate: {
-      validator: nameValidator,
-      message: "Name entered is invalid"
-    }
+    required: [true, "Event name is required"]
+      // validate: {
+      //   validator: nameValidator,
+      //   message: "Name entered is invalid"
+      // }
   },
   date: Date,
   location: Object,
@@ -57,11 +33,11 @@ var EventSchema = new Schema({
     },
     startDate: {
       type: Date,
-      required: [true, 'Description required']
+      required: [true, 'Start Date is required']
     },
     endDate: {
       type: Date,
-      validate: endDateValidators
+      required: [true, 'End Date required']
     },
     address: {
       type: String,
@@ -75,25 +51,27 @@ var EventSchema = new Schema({
       type: String,
       required: [true, 'State is required']
     },
-    ZIP: {
+    zip: {
       type: Number,
       required: [true, 'ZIP is required']
     },
-    repeat: {
-      type: Boolean
-    },
-    repeatFrequency: {
-      type: String
-    },
-    repeatCustomFreq: {
-      type: String
-    },
-    repeatEnd: { type: Date }
+    repeat: Boolean,
+    schedule: String,
+    occurences: [Date]
+      // repeatFrequency: {
+      //   type: String
+      // },
+      // repeatCustomFreq: {
+      //   type: String
+      // },
+      // repeatEnd: { type: Date }
 
 
 
     //other details can be added here
   }
+}, {
+  validateBeforeSave: false //prevent pre-save validation
 });
 
 module.exports = mongoose.model('Event', EventSchema);
