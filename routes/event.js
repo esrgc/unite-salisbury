@@ -86,7 +86,7 @@ router.post('/add', function(req, res) {
       endDate: data.endDate + " " + data.endTime,
       city: data.city,
       state: data.state,
-      ZIP: data.zip
+      zip: data.zip
     }
   });
 
@@ -101,7 +101,7 @@ router.post('/add', function(req, res) {
       Street: data.streetAddress,
       City: data.city,
       State: data.state,
-      ZIP: data.zip
+      zip: data.zip
     }, function(err, res) {
       if (err)
         return done(err, newEvent);
@@ -230,7 +230,7 @@ router.post('/edit',
         endDate: data.endDate + " " + data.endTime,
         city: data.city,
         state: data.state,
-        ZIP: data.zip
+        zip: data.zip
       }
 
       event.name = data.eventTitle;
@@ -242,7 +242,7 @@ router.post('/edit',
         Street: data.streetAddress,
         City: data.city,
         State: data.state,
-        ZIP: data.zip
+        zip: data.zip
       }, function(err, res) {
         if (err)
           return done(err, event);
