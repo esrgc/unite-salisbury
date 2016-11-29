@@ -1,0 +1,53 @@
+<div class="page-wrap">
+  <div class="container">
+    {{#if message}}
+    {{#unless err}}
+    <div class="alert alert-success text-center">
+      {{message}}
+    </div>
+    {{/unless}}
+    {{#if err}}
+    <div class="alert alert-danger text-center">
+      {{message}}
+    </div>
+    {{/if}}
+    {{/if}}
+    {{#if user}}
+    <h3> {{user.email}}'s Events </h3>
+    <div class="panel-group">
+      {{#unless user.events}}
+      <div class="panel panel-default">
+        <dl class="dl-horizontal">
+          <dt>No events found.</dt>
+        </dl>
+      </div>
+      {{/unless}}
+      {{#each user.events}}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          {{this.name}}
+          &nbsp;
+          <a href="{{rootPath}}event/edit/{{this._id}}"><span class="fa fa-pencil"></span></a>
+          <form class="deleteButtonForm" action="/event/delete" method="post">
+            <input type="hidden" name="id" id="id" value="{{this._id}}">
+            <button type="submit" class="fa fa-trash-o pull-right">
+            </button>
+          </form>
+        </div>          
+        <div class="panel-body">
+          <dl class="dl-horizontal">
+            {{{parseEvent this}}}
+          </dl>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+    {{/if}}
+    <a href="{{rootPath}}event/add">
+      <button class="btn btn-primary" id="proceedBtn">
+        Add Event
+      </button>
+    </a>
+  </div>
+</div>
+

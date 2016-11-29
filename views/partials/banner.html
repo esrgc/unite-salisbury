@@ -14,7 +14,7 @@
           <a href="{{rootPath}}index"> <span class="fa fa-home"></span>&nbsp;Home</a>
         </li>
         <li>
-          <a href="{{rootPath}}map"> <span class="fa fa-globe"></span>&nbsp;Events</a>
+          <a href="{{rootPath}}event"> <span class="fa fa-globe"></span>&nbsp;Events</a>
         </li>
        <!--  <li>
         <a href="{{rootPath}}list"> <span class="fa fa-list"></span>&nbsp;Event List</a>
@@ -24,11 +24,11 @@
           <a href="{{rootPath}}auth/signUp"> <span class="fa fa-key"></span>&nbsp;Register</a>
         </li>
         {{/unless}} 
-        {{#if user }}
+        <!-- {{#if user }}
         <li>
-          <a href="{{rootPath}}event"><i class="fa fa-calendar"></i>&nbsp;Manage Event</a>
+          <a href="{{rootPath}}event/manage"><i class="fa fa-calendar"></i>&nbsp;Manage Event</a>
         </li>
-        {{/if}}
+        {{/if}} -->
         {{#ifCond user.role 'admin'}}
           <li>
           <a href="{{rootPath}}admin"><i class="fa fa-cogs"></i>&nbsp;Administration</a>

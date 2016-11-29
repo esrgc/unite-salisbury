@@ -6,9 +6,9 @@ var admin = require('./admin');
 var event = require('./event');
 var auth = require('./auth');
 var users = require('./users');
-var events = require('./events');
+// var events = require('./events');
 var profile = require('./profile');
-var map = require('./map');
+// var map = require('./map');
 var list = require('./list');
 // var create = require('./create');
 
@@ -32,10 +32,10 @@ router.use('/admin', admin);
 router.use('/event', event);
 router.use('/auth', auth);
 router.use('/profile', profile);
-router.use('/map', map);
+// router.use('/map', map);
 router.use('/list', list);
 //Api routes
-router.use('/events', events);
+// router.use('/events', events);
 router.use('/users', users);
 
 //authorized error handler

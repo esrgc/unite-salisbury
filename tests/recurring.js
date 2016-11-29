@@ -22,27 +22,31 @@ var Event = repo.Event;
 // });
 
 
-var newEvent = new repo.Event({
-	name: 'testEvent',
-	date: new Date(),
-	detail: {
-		description: 'test event',
-		startDate: new Date(),
-		endDate: new Date(),
-		address: '123 test street',
-		city: 'Salisbury',
-		state: 'MD',
-		ZIP: '21804',
-		repeat: true,
-		schedule: '[ { dc: [ 3 ], d: [ 6 ] } ]'
-	}	
-});
-console.log('saving event...');
-newEvent.save(function(e){
-	if(e){
-		console.log(e);
-		return;
-	}
-	console.log('saved event');
-});
+// var newEvent = new repo.Event({
+// 	name: 'testEvent',
+// 	date: new Date(),
+// 	detail: {
+// 		description: 'test event',
+// 		startDate: new Date(),
+// 		endDate: new Date(),
+// 		address: '123 test street',
+// 		city: 'Salisbury',
+// 		state: 'MD',
+// 		ZIP: '21804',
+// 		repeat: true,
+// 		schedule: '[ { dc: [ 3 ], d: [ 6 ] } ]'
+// 	}	
+// });
+// console.log('saving event...');
+// newEvent.save(function(e){
+// 	if(e){
+// 		console.log(e);
+// 		return;
+// 	}
+// 	console.log('saved event');
+// });
 
+var event = Event.find({}).where(function(){
+	var today = new Date();
+	var schedule = later.schedule(this.schedule);
+});
