@@ -36,4 +36,8 @@ router.get('/index', function(req, res){
 	res.render('event/index', {title: 'Event Map'});	
 });
 
+router.get('/add', function(req, res){
+	res.render('event/add', {title: 'Add a new Event'});
+});
+
 module.exports = router;
