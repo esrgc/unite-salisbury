@@ -32,7 +32,7 @@
           <label class="col-md-3 control-label"> Starts On</label>
           <div class="col-md-3">
             <div class="input-group date" data-provide="datepicker">
-              <input class="form-control" id="startDate" name="startDate" type="text" value="{{parseDateForEdit detail.startDate}}" />
+              <input class="form-control" id="startDate" name="startDate" type="text" value="{{parseDateForEdit detail.startDate}}" placeholder="MM/DD/YY" />
               <div class="input-group-addon"><span class="glyphicon glyphicon-th"></span></div>
             </div>
             <!--<span class="label label-default">Required</span>-->
@@ -49,7 +49,7 @@
           <label class="col-md-3 control-label">Ends</label>
           <div class="col-md-3">
             <div class="input-group date" data-provide="datepicker">
-              <input class="form-control" id="endDate" name="endDate" type="text" value="{{parseDateForEdit detail.endDate}}" />
+              <input class="form-control" id="endDate" name="endDate" type="text" value="{{parseDateForEdit detail.endDate}}" placeholder="MM/DD/YY" />
               <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
             </div>
             <!--<span class="label label-default">Required</span>-->
@@ -64,8 +64,21 @@
         </div>
         <!--repeat-->
         <div class="form-group">
-          <label class="col-md-3 control-label">Repeat</label>
+          <label class="col-md-3 control-label">Repeats</label>
+          <!--cusomized controls to capture repeat event-->
+          <div class="checkbox col-md-2">
+            <label>
+              <input type="checkbox" name="repeat" value="">
+            </label>
+          </div>
         </div>
+   
+        <!--Frequency, hidden controls -- only displayed when repeat is true-->
+        <div class="form-group">
+          <label class="col-md-3"></label>
+          <div class="col-md-3"></div>
+        </div>
+   
         <div class="form-group">
           <label class="col-md-3 control-label">Street Address</label>
           <div class="col-md-6">
@@ -88,9 +101,8 @@
             <!--<span class="label label-default">Required</span>-->
           </div>
         </div>
-        
         <div class="form-group">
-          <label class="col-md-3 control-label"> Description </label>
+          <label class="col-md-3 control-label">Description</label>
           <div class="col-md-6">
             <div class="input-group inputLong">
               <textarea class="form-control" id="description" name="description" value="{{detail.description}}" placeholder="Event Description..."></textarea>
