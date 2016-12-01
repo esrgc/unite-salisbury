@@ -55,7 +55,13 @@ var EventSchema = new Schema({
       type: Number,
       required: [true, 'ZIP is required']
     },
-    repeat: Boolean,
+    repeat: {
+      type: Boolean,
+      required: [true, 'Please specify if this event repeats.']
+    },
+    endRepeat: Date,
+    frequency: String,
+    every: Number,
     schedule: String,
     occurences: [Date]
       // repeatFrequency: {

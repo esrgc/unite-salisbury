@@ -64,7 +64,7 @@
         </div>
         <!--repeat-->
         <div class="form-group">
-          <label class="col-md-3 control-label">Repeats</label>
+          <label class="col-md-3 control-label">Repeat</label>
           <!--cusomized controls to capture repeat event-->
           <div class="checkbox col-md-2">
             <label>
@@ -75,10 +75,41 @@
    
         <!--Frequency, hidden controls -- only displayed when repeat is true-->
         <div class="form-group">
-          <label class="col-md-3"></label>
-          <div class="col-md-3"></div>
+          <label class="col-md-3 control-label">Frequency</label>
+          <div class="col-md-2">
+            <select class="form-control" name="frequency">
+              <option value='daily'>Daily</option>
+              <option value='weekly'>Weekly</option>
+              <!-- <option value='biweekly'>Bi-Weekly</option> -->
+              <option value='monthly'>Monthly</option>
+              <option value='yearly'>Yearly</option>
+            </select>
+          </div>
+          <label class="col-md-1 control-label">Every</label>
+          <div class="col-md-1">
+            <input class="form-control" name="every" type="number" value="1">                      
+          </div>
+          <label class="col-md-1 control-label" id="every-type" style="text-align: left;">Day</label>
         </div>
-   
+        
+        <!--OPTIONAL options based on frequency-->
+        <!--Daily-->
+        <div class="form-group" id="daily">
+          
+        </div>
+        <!--Weekly-->
+        <div class="form-group" id="weekly">
+          
+        </div>
+        <!--Monthly-->
+        <div class="form-group" id="monthly">
+          
+        </div>
+        <!--Yearly-->
+        <div class="form-group" id="yearly">
+          
+        </div>
+
         <div class="form-group">
           <label class="col-md-3 control-label">Street Address</label>
           <div class="col-md-6">
