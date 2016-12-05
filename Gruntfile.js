@@ -104,7 +104,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
   // Default task(s).
-  grunt.registerTask('default', ['concat', 'uglify', 'less', 'watch']);
-  grunt.registerTask('production', ['concat', 'uglify', 'less:prod']);
+  grunt.registerTask('default', [/*'concat', 'uglify', */'less', 'watch']);
+  grunt.registerTask('production', [/*'concat', 'uglify',*/ 'less:prod']);
 
 };

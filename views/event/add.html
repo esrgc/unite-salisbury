@@ -3,163 +3,157 @@
 <link rel="stylesheet" href="{{rootPath}}lib/bootstrap-datepicker/css/bootstrap-datepicker.min.css" /> {{/contentFor}}
 <div class="page-wrap">
   <div class="container">
-    {{#if message}} {{#unless err}}
-    <div class="alert alert-success text-center">
-      {{message}}
-    </div>
-    {{/unless}} {{#if err}}
-    <div class="alert alert-danger text-center">
-      {{message}} {{#each err.errors}}
-      <li>{{message}}</li>
-      {{/each}}
-    </div>
-    {{/if}} {{/if}}
-    <form action="add" class="form-horizontal" method="post">
-      <div class="panel panel-default">
-        <div class="form-group">
-          <div class="col-md-10 col-md-offset-1">
-            <h3 class="text-center"><i class="fa fa-plus"></i>&nbsp;Add Event</h3>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-md-3 control-label">Title</label>
-          <div class="col-md-6">
-            <input class="form-control" id="eventTitle" name="eventTitle" value="{{event.name}}" placeholder="Event title" />
-            <!--<span class="label label-default">Required</span>-->
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-md-3 control-label"> Starts On</label>
-          <div class="col-md-3">
-            <div class="input-group date" data-provide="datepicker">
-              <input class="form-control" id="startDate" name="startDate" type="text" value="{{parseDateForEdit detail.startDate}}" placeholder="MM/DD/YY" />
-              <div class="input-group-addon"><span class="glyphicon glyphicon-th"></span></div>
+    <div class="col-md-12">
+      {{#if message}} {{#unless err}}
+      <div class="alert alert-success text-center">
+        {{message}}
+      </div>
+      {{/unless}} {{#if err}}
+      <div class="alert alert-danger text-center">
+        {{message}} {{#each err.errors}}
+        <li>{{message}}</li>
+        {{/each}}
+      </div>
+      {{/if}} {{/if}}
+      <h3 class="text-left"><i class="fa fa-calendar"></i>&nbsp;Add Event</h3>
+      <form action="add" class="form-horizontal" method="post" id="event-form">
+        <div class="panel panel-default">
+          <div class="form-group">
+            <div class="col-md-10 col-md-offset-1">
             </div>
-            <!--<span class="label label-default">Required</span>-->
           </div>
-          <div class="col-md-3">
-            <div class="input-group bootstrap-timepicker timepicker">
-              <input class="form-control" id="startTime" name="startTime" type="text" value="{{parseTimeForEdit detail.startDate}}">
-              <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-            </div>
-            <!--<span class="label label-default">Required</span>-->
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-md-3 control-label">Ends</label>
-          <div class="col-md-3">
-            <div class="input-group date" data-provide="datepicker">
-              <input class="form-control" id="endDate" name="endDate" type="text" value="{{parseDateForEdit detail.endDate}}" placeholder="MM/DD/YY" />
-              <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-            </div>
-            <!--<span class="label label-default">Required</span>-->
-          </div>
-          <div class="col-md-3">
-            <div class="input-group bootstrap-timepicker timepicker">
-              <input class="form-control" id="endTime" name="endTime" type="text" value="{{parseTimeForEdit detail.endDate}}" />
-              <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-            </div>
-            <!--<span class="label label-default">Required</span>-->
-          </div>
-        </div>
-        <!--repeat-->
-        <div class="form-group">
-          <label class="col-md-3 control-label">Repeat</label>
-          <!--cusomized controls to capture repeat event-->
-          <div class="checkbox col-md-2">
-            <label>
-              <input type="checkbox" name="repeat" value="">
-            </label>
-          </div>
-        </div>
-   
-        <!--Frequency, hidden controls -- only displayed when repeat is true-->
-        <div class="form-group">
-          <label class="col-md-3 control-label">Frequency</label>
-          <div class="col-md-2">
-            <select class="form-control" name="frequency">
-              <option value='daily'>Daily</option>
-              <option value='weekly'>Weekly</option>
-              <!-- <option value='biweekly'>Bi-Weekly</option> -->
-              <option value='monthly'>Monthly</option>
-              <option value='yearly'>Yearly</option>
-            </select>
-          </div>
-          <label class="col-md-1 control-label">Every</label>
-          <div class="col-md-1">
-            <input class="form-control" name="every" type="number" value="1">                      
-          </div>
-          <label class="col-md-1 control-label" id="every-type" style="text-align: left;">Day</label>
-        </div>
-        
-        <!--OPTIONAL options based on frequency-->
-        <!--Daily-->
-        <div class="form-group" id="daily">
-          
-        </div>
-        <!--Weekly-->
-        <div class="form-group" id="weekly">
-          
-        </div>
-        <!--Monthly-->
-        <div class="form-group" id="monthly">
-          
-        </div>
-        <!--Yearly-->
-        <div class="form-group" id="yearly">
-          
-        </div>
-
-        <div class="form-group">
-          <label class="col-md-3 control-label">Street Address</label>
-          <div class="col-md-6">
-            <input class="form-control" id="streetAddress" name="streetAddress" value="{{detail.address}}" placeholder="Event location or address" />
-            <!--<span class="label label-default">Required</span>-->
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-md-3 control-label">City/State/Zip</label>
-          <div class="col-md-3">
-            <input class="form-control" id="city" name="city" value="{{detail.city}}" placeholder="City" />
-            <!--<span class="label label-default">Required</span>-->
-          </div>
-          <div class="col-md-1">
-            <input class="form-control" id="state" name="state" value="{{detail.state}}" placeholder="MD" />
-            <!--<span class="label label-default">Required</span>-->
-          </div>
-          <div class="col-md-2">
-            <input class="form-control" id="zip" name="zip" value="{{detail.zip}}" placeholder="21801" />
-            <!--<span class="label label-default">Required</span>-->
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-md-3 control-label">Description</label>
-          <div class="col-md-6">
-            <div class="input-group inputLong">
-              <textarea class="form-control" id="description" name="description" value="{{detail.description}}" placeholder="Event Description..."></textarea>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Title</label>
+            <div class="col-md-6">
+              <input class="form-control" id="eventTitle" name="eventTitle" value="{{event.name}}" placeholder="Event title" />
               <!--<span class="label label-default">Required</span>-->
             </div>
           </div>
-        </div>
-        <div class="form-group">
-          <div class="col-md-6 col-md-offset-3">
-            <button class="btn btn-primary" id="proceedBtn" type="submit">
-              Submit
-            </button>
-            <a class="btn btn-default" href="{{rootPath}}event">Cancel</a>
+          <div class="form-group">
+            <label class="col-md-3 control-label"> Starts On</label>
+            <div class="col-md-3">
+              <div class="input-group date" data-provide="datepicker">
+                <input class="form-control" id="startDate" name="startDate" type="text" value="{{parseDateForEdit detail.startDate}}" placeholder="MM/DD/YY" />
+                <div class="input-group-addon"><span class="glyphicon glyphicon-th"></span></div>
+              </div>
+              <!--<span class="label label-default">Required</span>-->
+            </div>
+            <div class="col-md-3">
+              <div class="input-group bootstrap-timepicker timepicker">
+                <input class="form-control" id="startTime" name="startTime" type="text" value="{{parseTimeForEdit detail.startDate}}">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+              </div>
+              <!--<span class="label label-default">Required</span>-->
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Ends</label>
+            <div class="col-md-3">
+              <div class="input-group date" data-provide="datepicker">
+                <input class="form-control" id="endDate" name="endDate" type="text" value="{{parseDateForEdit detail.endDate}}" placeholder="MM/DD/YY" />
+                <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+              </div>
+              <!--<span class="label label-default">Required</span>-->
+            </div>
+            <div class="col-md-3">
+              <div class="input-group bootstrap-timepicker timepicker">
+                <input class="form-control" id="endTime" name="endTime" type="text" value="{{parseTimeForEdit detail.endDate}}" />
+                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+              </div>
+              <!--<span class="label label-default">Required</span>-->
+            </div>
+          </div>
+          <!--repeat-->
+          <div class="form-group">
+            <label class="col-md-3 control-label">Repeat</label>
+            <!--cusomized controls to capture repeat event-->
+            <div class="checkbox col-md-2">
+              <label>
+                <input type="checkbox" name="repeat" value="">
+              </label>
+            </div>
+          </div>
+          <!--Frequency, hidden controls -- only displayed when repeat is true-->
+          <div class="form-group switchable">
+            <label class="col-md-3 control-label">Frequency</label>
+            <div class="col-md-2">
+              <select class="form-control" name="frequency">
+                <option value='daily'>Daily</option>
+                <option value='weekly'>Weekly</option>
+                <!-- <option value='biweekly'>Bi-Weekly</option> -->
+                <option value='monthly'>Monthly</option>
+                <option value='yearly'>Yearly</option>
+              </select>
+            </div>
+            <label class="col-md-1 control-label">Every</label>
+            <div class="col-md-1">
+              <input class="form-control" name="every" type="number" value="1">
+            </div>
+            <label class="col-md-1 control-label" id="every-type" style="text-align: left;">Day(s)</label>
+          </div>
+          <!--OPTIONAL options based on frequency-->
+          <!--Daily-->
+          <div class="form-group switchable" id="daily">
+          </div>
+          <!--Weekly-->
+          <div class="form-group switchable" id="weekly">
+          </div>
+          <!--Monthly-->
+          <div class="form-group switchable" id="monthly">
+          </div>
+          <!--Yearly-->
+          <div class="form-group switchable" id="yearly">
+          </div>
+          <!--end of repeat-->
+
+
+          <div class="form-group">
+            <label class="col-md-3 control-label">Street Address</label>
+            <div class="col-md-6">
+              <input class="form-control" id="streetAddress" name="streetAddress" value="{{detail.address}}" placeholder="Event location or address" />
+              <!--<span class="label label-default">Required</span>-->
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">City/State/Zip</label>
+            <div class="col-md-3">
+              <input class="form-control" id="city" name="city" value="{{detail.city}}" placeholder="City" />
+              <!--<span class="label label-default">Required</span>-->
+            </div>
+            <div class="col-md-1">
+              <input class="form-control" id="state" name="state" value="{{detail.state}}" placeholder="MD" />
+              <!--<span class="label label-default">Required</span>-->
+            </div>
+            <div class="col-md-2">
+              <input class="form-control" id="zip" name="zip" value="{{detail.zip}}" placeholder="21801" />
+              <!--<span class="label label-default">Required</span>-->
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Description</label>
+            <div class="col-md-6">
+              <div class="input-group inputLong">
+                <textarea class="form-control" id="description" name="description" value="{{detail.description}}" placeholder="Event Description..."></textarea>
+                <!--<span class="label label-default">Required</span>-->
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-6 col-md-offset-3">
+              <button class="btn btn-primary" id="proceedBtn" type="submit">
+                Submit
+              </button>
+              <a class="btn btn-default" href="{{rootPath}}event">Cancel</a>
+            </div>
           </div>
         </div>
-    </form>
+      </form>
     </div>
   </div>
 </div>
 {{#contentFor 'scripts'}}
 <script src="{{rootPath}}/lib/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <script src="{{rootPath}}/lib/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
-<script>
-$('#startDate').datepicker();
-$('#endDate').datepicker();
-$('#startTime').timepicker();
-$('#endTime').timepicker();
-</script>
+<script src="{{rootPath}}/build/eventAdd-bundle.js"></script>
+
 {{/contentFor}}
