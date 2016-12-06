@@ -146,6 +146,26 @@
             </div>
             <!--Monthly-->
             <div class="form-group switchable detail-frequency" id="monthly-on">
+              <label class="control-label col-md-3">On</label>
+              <div class="col-md-3">
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="monthlyOnType" value="each">
+                    Each
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="monthlyOnType" value="on">
+                    On the
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div id="monthlyOnEach" class="switchable active">On each</div>
+                <div id="monthlyOnThe" class="switchable">On the</div>
+              </div>
+              <input type="hidden" name="monthlyOnValue" value="">
             </div>
             <!--Yearly-->
             <div class="form-group switchable detail-frequency" id="yearly-on">

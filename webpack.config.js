@@ -28,7 +28,7 @@ const config = {
       underscore: 'underscore/underscore-min.js',
       backbone: 'backbone/backbone-min.js'
     },
-    modulesDirectories: ['lib']
+    modulesDirectories: ['lib','bower_components', 'node_modules']
   }
 };
 
