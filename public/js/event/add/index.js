@@ -10,8 +10,9 @@ add event script
 var AddEvent = require('./view/addEvent.js');
 
 let startup = function() {
-  let view = new AddEvent('#event-form');
-
+	
+  let view = new AddEvent({el: '#event-form'});
+  
 };
 
 //fire up the app

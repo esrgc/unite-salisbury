@@ -68,45 +68,90 @@
             <label class="col-md-3 control-label">Repeat</label>
             <!--cusomized controls to capture repeat event-->
             <div class="checkbox col-md-2">
-              <label>
-                <input type="checkbox" name="repeat" value="">
+              <label id="repeat-switch">
+                <input type="checkbox" name="repeat" value="true">
               </label>
             </div>
           </div>
           <!--Frequency, hidden controls -- only displayed when repeat is true-->
-          <div class="form-group switchable">
-            <label class="col-md-3 control-label">Frequency</label>
-            <div class="col-md-2">
-              <select class="form-control" name="frequency">
-                <option value='daily'>Daily</option>
-                <option value='weekly'>Weekly</option>
-                <!-- <option value='biweekly'>Bi-Weekly</option> -->
-                <option value='monthly'>Monthly</option>
-                <option value='yearly'>Yearly</option>
-              </select>
+          <div class="switchable" id="repeat-frequency-controls">
+            <div class="form-group">
+              <label class="col-md-3 control-label">Frequency</label>
+              <div class="col-md-2">
+                <select class="form-control" name="frequency" id="frequency-control">
+                  <option value='daily'>Daily</option>
+                  <option value='weekly'>Weekly</option>
+                  <!-- <option value='biweekly'>Bi-Weekly</option> -->
+                  <option value='monthly'>Monthly</option>
+                  <option value='yearly'>Yearly</option>
+                </select>
+              </div>
+              <label class="col-md-1 control-label">Every</label>
+              <div class="col-md-1">
+                <input class="form-control" name="every" type="number" min="1" value="1">
+              </div>
+              <label class="col-md-1 control-label" id="every-type" style="text-align: left;">Day(s)</label>
             </div>
-            <label class="col-md-1 control-label">Every</label>
-            <div class="col-md-1">
-              <input class="form-control" name="every" type="number" value="1">
+            <!--OPTIONAL options based on frequency-->
+            <!--Daily-->
+            <!-- <div class="form-group switchable" id="daily-on">
+            </div> -->
+            <!--Weekly-->
+            <div class="form-group switchable detail-frequency" id="weekly-on">
+              <label class="control-label col-md-3">On</label>
+              <div class="col-md-9">
+                <div class="checkbox">
+                  <!--monday-->
+                  <label id="monday-switch">
+                    <input type="checkbox" name="weeklyDayOfWeek" value="monday"> Monday
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <!--tuesday-->
+                  <label id="tuesday-switch">
+                    <input type="checkbox" name="weeklyDayOfWeek" value="tuesday"> Tuesday
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <!--wednesday-->
+                  <label id="wednesday-switch">
+                    <input type="checkbox" name="weeklyDayOfWeek" value="wednesday"> Wednesday
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <!--thursday-->
+                  <label id="thursday-switch">
+                    <input type="checkbox" name="weeklyDayOfWeek" value="thursday"> Thursday
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <!--Friday-->
+                  <label id="Friday-switch">
+                    <input type="checkbox" name="weeklyDayOfWeek" value="friday"> Friday
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <!--Saturday-->
+                  <label id="Saturday-switch">
+                    <input type="checkbox" name="weeklyDayOfWeek" value="saturday"> Saturday
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <!--Sunday-->
+                  <label id="sunday-switch">
+                    <input type="checkbox" name="weeklyDayOfWeek" value="sunday"> Sunday
+                  </label>
+                </div>
+              </div>
             </div>
-            <label class="col-md-1 control-label" id="every-type" style="text-align: left;">Day(s)</label>
-          </div>
-          <!--OPTIONAL options based on frequency-->
-          <!--Daily-->
-          <div class="form-group switchable" id="daily">
-          </div>
-          <!--Weekly-->
-          <div class="form-group switchable" id="weekly">
-          </div>
-          <!--Monthly-->
-          <div class="form-group switchable" id="monthly">
-          </div>
-          <!--Yearly-->
-          <div class="form-group switchable" id="yearly">
+            <!--Monthly-->
+            <div class="form-group switchable detail-frequency" id="monthly-on">
+            </div>
+            <!--Yearly-->
+            <div class="form-group switchable detail-frequency" id="yearly-on">
+            </div>
           </div>
           <!--end of repeat-->
-
-
           <div class="form-group">
             <label class="col-md-3 control-label">Street Address</label>
             <div class="col-md-6">
@@ -155,5 +200,4 @@
 <script src="{{rootPath}}/lib/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <script src="{{rootPath}}/lib/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
 <script src="{{rootPath}}/build/eventAdd-bundle.js"></script>
-
 {{/contentFor}}

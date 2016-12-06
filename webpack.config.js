@@ -23,12 +23,12 @@ const config = {
     })
   ],
   resolve: {
-  	alias: {
-  		jquery: 'jquery-3.1.1/jquery.min.js',
-  		underscore: 'underscore/underscore-min.js',
-  		backbone: 'backbone/backbone-min.js'
-  	},
-  	modulesDirectories: ['lib']
+    alias: {
+      jquery: 'jquery-3.1.1/jquery.min.js',
+      underscore: 'underscore/underscore-min.js',
+      backbone: 'backbone/backbone-min.js'
+    },
+    modulesDirectories: ['lib']
   }
 };
 

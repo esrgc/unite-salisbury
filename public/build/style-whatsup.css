@@ -130,3 +130,9 @@ a {
 .jumbotron {
   background-color: #fff;
 }
+.switchable {
+  display: none;
+}
+.switchable.active {
+  display: block;
+}
