@@ -129,6 +129,7 @@
 	  onFrequencyChange: function(e) {
 	    let value = $(e.target).val();
 	    console.log(value);
+	    this.$('.detail-frequency').removeClass('active');
 
 	    switch (value) {
 	      case 'daily':
@@ -136,12 +137,15 @@
 	        break;
 	      case 'weekly':
 	        this.$('#every-type').text('Week(s)');
+	        this.$('.detail-frequency#weekly-on').addClass('active');
 	        break;
 	      case 'monthly':
 	        this.$('#every-type').text('Month(s)');
+	        this.$('.detail-frequency#monthly-on').addClass('active');
 	        break;
 	      case 'yearly':
 	        this.$('#every-type').text('Year(s)');
+	        this.$('.detail-frequency#yearly-on').addClass('active');
 	        break;
 	    }
 	  }
