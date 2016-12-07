@@ -90,6 +90,13 @@
 .inputLong {
   width: 100%;
 }
+#monthlyOnEach .btn-group > .btn {
+  border-radius: 0;
+  width: 42px;
+}
+#monthlyOnEach .btn-group .btn + .btn {
+  margin-left: 0;
+}
 .map {
   width: 100%;
   border: thin;
