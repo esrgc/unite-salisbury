@@ -41,7 +41,8 @@ var AddEvent = Backbone.View.extend({
   },
   events: {
     'click #repeat-switch': 'onRepeatSwitch',
-    'change #frequency-control': 'onFrequencyChange'
+    'change #frequency-control': 'onFrequencyChange',
+    'click #monthly-on .radio': 'onMonthlyFreqTypeSwitch'
   },
   onRepeatSwitch: function(e) {
     var value = $(e.target).is(':checked');
@@ -74,6 +75,21 @@ var AddEvent = Backbone.View.extend({
         this.$('#every-type').text('Year(s)');
         this.$('.detail-frequency#yearly-on').addClass('active');
         break;
+    }
+  },
+  onMonthlyFreqTypeSwitch: function(e) {
+    let value = $(e.target).val();
+    //console.log(value);
+    this.$('#monthly-on .monthly-freq-type').removeClass('active');
+    if (value != '') {    	
+      switch (value) {
+        case 'each':
+        	this.$('#monthly-on #monthly-on-each').addClass('active');
+          break;
+        case 'on':
+        this.$('#monthly-on #monthly-on-day-of-month').addClass('active');
+          break;
+      }
     }
   }
 });

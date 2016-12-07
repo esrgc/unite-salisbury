@@ -90,12 +90,18 @@
 .inputLong {
   width: 100%;
 }
-#monthlyOnEach .btn-group > .btn {
+#repeat-frequency-controls #monthly-on-each .btn-group > .btn {
   border-radius: 0;
   width: 42px;
 }
-#monthlyOnEach .btn-group .btn + .btn {
+#repeat-frequency-controls #monthly-on-each .btn-group .btn + .btn {
   margin-left: 0;
+}
+#repeat-frequency-controls #monthly-on-day-of-month select {
+  margin-bottom: 5px;
+}
+#repeat-frequency-controls #monthly-on-day-of-month select[multiple] {
+  height: 135px;
 }
 .map {
   width: 100%;
