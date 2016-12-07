@@ -155,12 +155,12 @@
                 </div>
                 <div class="radio">
                   <label>
-                    <input type="radio" name="monthlyOnType" value="on"> On the
+                    <input type="radio" name="monthlyOnType" value="on"> On day of week
                   </label>
                 </div>
               </div>
               <div class="col-md-3">
-                <div id="monthlyOnEach" class="switchable active">
+                <div id="monthlyOnEach" class="switchable">
                   <div class="btn-group btn-group-sm" data-toggle="buttons-radio" role="group" aria-label="1">
                     <button type="button" class="btn btn-default">1</button>
                     <button type="button" class="btn btn-default">2</button>
@@ -195,12 +195,78 @@
                     <button type="button" class="btn btn-default">31</button>
                   </div>
                 </div>
-                <div id="monthlyOnThe" class="switchable">On the</div>
+                <div id="monthlyOnThe" class="switchable active">
+                  <select id="monthly-on-each" class="form-control">
+                    <option value="first">First</option>
+                    <option value="second">Second</option>
+                    <option value="third">Third</option>
+                    <option value="fourth">Fourth</option>
+                    <option value="fifth">Fifth</option>
+                    <option value="last">Last</option>
+                  </select>
+                  <select id="monthly-day-of-week" class="form-control">
+                    <option value="monday">Monday</option>
+                    <option value="tuesday">Tuesday</option>
+                    <option value="wednesday">Wednesday</option>
+                    <option value="thursday">Thursday</option>
+                    <option value="friday">Friday</option>
+                    <option value="saturday">Saturday</option>
+                    <option value="sunday">Sunday</option>
+                  </select>
+                </div>
               </div>
               <input type="hidden" name="monthlyOnValue" value="">
             </div>
             <!--Yearly-->
-            <div class="form-group switchable detail-frequency" id="yearly-on">
+            <div class="detail-frequency switchable" id="yearly-on">
+              <div class="form-group">
+                <label class="control-label col-md-3">In</label>
+                <div class="col-md-9">
+                  <div class="btn-group btn-group-sm" data-toggle="buttons-radio" role="group" aria-label="1">
+                    <button type="button" class="btn btn-default" data-month="january">Jan</button>
+                    <button type="button" class="btn btn-default" data-month="february">Feb</button>
+                    <button type="button" class="btn btn-default" data-month="march">Mar</button>
+                    <button type="button" class="btn btn-default" data-month="april">Apr</button>
+                    <button type="button" class="btn btn-default" data-month="may">May</button>
+                    <button type="button" class="btn btn-default" data-month="june">Jun</button>
+                    <button type="button" class="btn btn-default" data-month="july">Jul</button>
+                    <button type="button" class="btn btn-default" data-month="august">Aug</button>
+                    <button type="button" class="btn btn-default" data-month="september">Sep</button>
+                    <button type="button" class="btn btn-default" data-month="october">Oct</button>
+                    <button type="button" class="btn btn-default" data-month="november">Nov</button>
+                    <button type="button" class="btn btn-default" data-month="december">Dec</button>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" id="yearly-day-of-week">
+                <label class="control-label col-md-3">Day of week</label>
+                <div class="col-md-3">
+                  <label id="repeat-switch">
+                    <input type="checkbox" name="yearlyDayOfWeek" value="true">
+                  </label>
+                </div>
+                <div class="col-md-3">
+                  <div id="yearlyOnThe" class="switchable active">
+                    <select id="yearly-on-each" class="form-control">
+                      <option value="first">First</option>
+                      <option value="second">Second</option>
+                      <option value="third">Third</option>
+                      <option value="fourth">Fourth</option>
+                      <option value="fifth">Fifth</option>
+                      <option value="last">Last</option>
+                    </select>
+                    <select id="yearly-day-of-week" class="form-control">
+                      <option value="monday">Monday</option>
+                      <option value="tuesday">Tuesday</option>
+                      <option value="wednesday">Wednesday</option>
+                      <option value="thursday">Thursday</option>
+                      <option value="friday">Friday</option>
+                      <option value="saturday">Saturday</option>
+                      <option value="sunday">Sunday</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="form-group">
               <div class="col-md-6 col-md-offset-3">
