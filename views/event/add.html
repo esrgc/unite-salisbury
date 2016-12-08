@@ -241,13 +241,13 @@
               </div>
               <div class="form-group" id="yearly-day-of-month">
                 <label class="control-label col-md-3">Day of Month</label>
-                <div class="col-md-3">
-                  <label id="day-of-month-switch">
-                    <input type="checkbox" name="yearlyDayOfWeek" value="true">
+                <div class="checkbox col-md-3">
+                  <label id="yearly-day-of-month-switch">
+                    <input type="checkbox" name="yearlyDayOfMonth" value="true">
                   </label>
                 </div>
                 <div class="col-md-3">
-                  <div id="yearly-on-day-of-month" class="switchable">
+                  <div id="yearly-on-day-of-month-container" class="switchable">
                     <select id="yearly-on-each" class="form-control">
                       <option value="first">First</option>
                       <option value="second">Second</option>
@@ -256,7 +256,7 @@
                       <option value="fifth">Fifth</option>
                       <option value="last">Last</option>
                     </select>
-                    <select id="yearly-day-of-week" class="form-control">
+                    <select multiple id="yearly-day-of-week" class="form-control">
                       <option value="monday">Monday</option>
                       <option value="tuesday">Tuesday</option>
                       <option value="wednesday">Wednesday</option>
@@ -265,6 +265,7 @@
                       <option value="saturday">Saturday</option>
                       <option value="sunday">Sunday</option>
                     </select>
+                    <small class="text-info">Hold down <kbd>CTRL</kbd> to select multiple items.</small>
                   </div>
                 </div>
               </div>

@@ -42,11 +42,12 @@ var AddEvent = Backbone.View.extend({
   events: {
     'click #repeat-switch': 'onRepeatSwitch',
     'change #frequency-control': 'onFrequencyChange',
-    'click #monthly-on .radio': 'onMonthlyFreqTypeSwitch'
+    'click #monthly-on .radio': 'onMonthlyFreqTypeSwitch',
+    'click #yearly-day-of-month-switch': 'onYearlyDayOfMonthSwitch'
   },
   onRepeatSwitch: function(e) {
     var value = $(e.target).is(':checked');
-    console.log(value);
+    // console.log(value);
 
     if (value) {
       this.$('#repeat-frequency-controls').addClass('active');
@@ -81,16 +82,45 @@ var AddEvent = Backbone.View.extend({
     let value = $(e.target).val();
     //console.log(value);
     this.$('#monthly-on .monthly-freq-type').removeClass('active');
-    if (value != '') {    	
+    if (value != '') {
       switch (value) {
         case 'each':
-        	this.$('#monthly-on #monthly-on-each').addClass('active');
+          this.$('#monthly-on #monthly-on-each').addClass('active');
           break;
         case 'on':
-        this.$('#monthly-on #monthly-on-day-of-month').addClass('active');
+          this.$('#monthly-on #monthly-on-day-of-month').addClass('active');
           break;
       }
     }
+  },
+  onYearlyDayOfMonthSwitch: function(e) {
+    var value = $(e.target).is(':checked');
+    if (value) {
+      this.$('#yearly-on-day-of-month-container').addClass('active');
+    } else {
+      this.$('#yearly-on-day-of-month-container').removeClass('active');
+    }
+  },
+  //private functions
+  setRecurringStatus: function(repeatType, every, onType, day, dayOfWeek, dayOfWeekCount, month, year) {
+    if (typeof repeatType == 'undefined')
+      return;
+    let reapeatStatus = 'Occurs ';
+
+    switch (repeatType) {
+      case 'daily';
+      	reapeatStatus += `every ${every} day(s)`;
+      	break;
+      case 'weekly':
+      	reapeatStatus += `every ${every} week(s) on ${dayOfWeek}`;
+        break;
+      case 'monthly':
+        break
+      case 'yearly':
+        break;
+    }
+
+    return reapeatStatus;
   }
 });
 
