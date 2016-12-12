@@ -43,7 +43,9 @@ var AddEvent = Backbone.View.extend({
     'click #repeat-switch': 'onRepeatSwitch',
     'change #frequency-control': 'onFrequencyChange',
     'click #monthly-on .radio': 'onMonthlyFreqTypeSwitch',
-    'click #yearly-day-of-month-switch': 'onYearlyDayOfMonthSwitch'
+    'click #yearly-day-of-week-count-switch': 'onYearlyDayOfWeekCountSwitch',
+    'change #every-count': 'onEveryCountChange'
+
   },
   onRepeatSwitch: function(e) {
     var value = $(e.target).is(':checked');
@@ -77,6 +79,10 @@ var AddEvent = Backbone.View.extend({
         this.$('.detail-frequency#yearly-on').addClass('active');
         break;
     }
+    var every = this.$('#every-count').val();
+    var statusText = this.setRepeatFreq(value, every);
+    this.$('#repeat-summary').text(statusText);
+
   },
   onMonthlyFreqTypeSwitch: function(e) {
     let value = $(e.target).val();
@@ -93,34 +99,42 @@ var AddEvent = Backbone.View.extend({
       }
     }
   },
-  onYearlyDayOfMonthSwitch: function(e) {
+  onYearlyDayOfWeekCountSwitch: function(e) {
     var value = $(e.target).is(':checked');
     if (value) {
-      this.$('#yearly-on-day-of-month-container').addClass('active');
+      this.$('#yearly-on-day-of-week-count-container').addClass('active');
     } else {
-      this.$('#yearly-on-day-of-month-container').removeClass('active');
+      this.$('#yearly-on-day-of-week-count-container').removeClass('active');
     }
   },
+  onEveryCountChange: function(e){
+  	var repeatType = this.$('select#frequency-control').val();
+  	var value = $(e.target).val();
+  	var statusText = this.setRepeatFreq(repeatType, value);
+  	this.$('#repeat-summary').text(statusText);
+  },
   //private functions
-  setRecurringStatus: function(repeatType, every, onType, day, dayOfWeek, dayOfWeekCount, month, year) {
+  setRepeatFreq: function(repeatType, every) {
     if (typeof repeatType == 'undefined')
       return;
-    let reapeatStatus = 'Occurs ';
+    let repeatFrequency = 'Event will occur ';
 
     switch (repeatType) {
-      case 'daily';
-      	reapeatStatus += `every ${every} day(s)`;
+      case 'daily':
+      	repeatFrequency += `every ${every} day(s)`;
       	break;
       case 'weekly':
-      	reapeatStatus += `every ${every} week(s) on ${dayOfWeek}`;
+      	repeatFrequency += `every ${every} week(s)`;
         break;
       case 'monthly':
-        break
+      	repeatFrequency += `every ${every} month(s)`;     	
+      	break;
       case 'yearly':
+      	repeatFrequency += `every ${every} year(s)`;
         break;
     }
 
-    return reapeatStatus;
+    return repeatFrequency;
   }
 });
 

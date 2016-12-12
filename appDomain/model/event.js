@@ -60,10 +60,14 @@ var EventSchema = new Schema({
       required: [true, 'Please specify if this event repeats.']
     },
     endRepeat: Date,
-    frequency: String,
-    every: Number,
-    schedule: String,
-    occurences: [Date]
+    frequency: String,//daily, weekly, monthly, and yearly
+    every: Number,//recurring frequency
+    dayOfMonth: [Date], //1,2,3...31
+    dayOfWeek: [String],//Monday, Tuesday,...Sunday
+    dayOfWeekCount: String,//first, second,...fifth
+    schedule: String,//later.js calculated schedule
+    occurences: [Date]//proccessed occurenses
+
       // repeatFrequency: {
       //   type: String
       // },

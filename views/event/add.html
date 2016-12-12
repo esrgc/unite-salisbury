@@ -88,7 +88,7 @@
               </div>
               <label class="col-md-1 control-label">Every</label>
               <div class="col-md-1">
-                <input class="form-control" name="every" type="number" min="1" value="1">
+                <input class="form-control" id="every-count" name="every" type="number" min="1" value="1">
               </div>
               <label class="col-md-1 control-label" id="every-type" style="text-align: left;">Day(s)</label>
             </div>
@@ -150,12 +150,12 @@
               <div class="col-md-3">
                 <div class="radio">
                   <label>
-                    <input type="radio" name="monthlyOnType" value="each" checked> Each
+                    <input type="radio" name="monthlyOnType" value="each" checked> Day of Month
                   </label>
                 </div>
                 <div class="radio">
                   <label>
-                    <input type="radio" name="monthlyOnType" value="on"> On day of month
+                    <input type="radio" name="monthlyOnType" value="on"> Day of Week Count
                   </label>
                 </div>
               </div>
@@ -195,8 +195,8 @@
                     <button type="button" class="btn btn-default">31</button>
                   </div>
                 </div>
-                <div id="monthly-on-day-of-month" class="switchable monthly-freq-type">
-                  <select id="monthly-day-of-month" class="form-control">
+                <div id="monthly-on-day-of-week" class="switchable monthly-freq-type">
+                  <select id="monthly-day-of-week" class="form-control">
                     <option value="first">First</option>
                     <option value="second">Second</option>
                     <option value="third">Third</option>
@@ -239,16 +239,16 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group" id="yearly-day-of-month">
-                <label class="control-label col-md-3">Day of Month</label>
+              <div class="form-group" id="yearly-day-of-week-count">
+                <label class="control-label col-md-3">Day of Week Count</label>
                 <div class="checkbox col-md-3">
-                  <label id="yearly-day-of-month-switch">
-                    <input type="checkbox" name="yearlyDayOfMonth" value="true">
+                  <label id="yearly-day-of-week-count-switch">
+                    <input type="checkbox" name="yearlyDayOfWeek" value="true">
                   </label>
                 </div>
                 <div class="col-md-3">
-                  <div id="yearly-on-day-of-month-container" class="switchable">
-                    <select id="yearly-on-each" class="form-control">
+                  <div id="yearly-on-day-of-week-count-container" class="switchable">
+                    <select id="yearly-day-of-week-count" class="form-control">
                       <option value="first">First</option>
                       <option value="second">Second</option>
                       <option value="third">Third</option>
@@ -270,9 +270,12 @@
                 </div>
               </div>
             </div>
-            <div class="form-group">
+            <!-- TO BE IMPLEMENTED -->
+             <div class="form-group">
               <div class="col-md-6 col-md-offset-3">
-                <span class="text-success" id="repeat-summary">Occurs everyday.</span>
+                <span class="text-success" id="repeat-summary">Event will occur every 1 day(s)</span>
+                &nbsp;
+                <span class="text-success" id="repeat-summary-details"></span>
               </div>
             </div>
           </div>

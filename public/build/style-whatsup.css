@@ -98,11 +98,11 @@
   margin-left: 0;
 }
 #repeat-frequency-controls #monthly-on-day-of-month select,
-#repeat-frequency-controls #yearly-on-day-of-month-container select {
+#repeat-frequency-controls #yearly-on-day-of-week-count-container select {
   margin-bottom: 5px;
 }
 #repeat-frequency-controls #monthly-on-day-of-month select[multiple],
-#repeat-frequency-controls #yearly-on-day-of-month-container select[multiple] {
+#repeat-frequency-controls #yearly-on-day-of-week-count-container select[multiple] {
   height: 135px;
 }
 .map {

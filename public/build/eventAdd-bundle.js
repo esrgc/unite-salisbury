@@ -53,7 +53,7 @@
 	*/
 
 
-	var AddEvent = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./view/addEvent.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var AddEvent = __webpack_require__(1);
 
 	let startup = function() {
 		
@@ -65,6 +65,153 @@
 	$(() => {
 	  startup();
 	});
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports) {
+
+	/*
+	Author: Tu Hoang
+	Dec 2016
+
+	Require webpack
+	*/
+
+
+	// var AddEvent = class AddEvent extends Backbone.View {
+	// 	constructor (elementID) {
+	// 		super({el: elementID});
+	// 		this.name = 'AddEventView';
+	// 		// this.el = elementID;
+	// 		console.log(`Initializing ${this.name}`);
+
+	// 		this.events = {
+	// 			'click #repeat-switch': 'switch'
+	// 		};
+
+	// 	}
+	// 	switch(event) {
+	// 		console.log('Checkbox clicked');
+	// 	}
+	// };
+
+
+	var AddEvent = Backbone.View.extend({
+	  name: 'AddEvent',
+	  initialize: function(tagID) {
+	    this.el = tagID;
+	    console.log(`View ${this.name} initialized`);
+
+	    //verify checked status on repeat
+	    // var value = $('#repeat-switch').is(':checked');
+
+	    // if (value) {
+	    //   this.$('#repeat-frequency-controls').addClass('active');
+	    // } else {
+	    //   this.$('#repeat-frequency-controls').removeClass('active');
+	    // }
+	  },
+	  events: {
+	    'click #repeat-switch': 'onRepeatSwitch',
+	    'change #frequency-control': 'onFrequencyChange',
+	    'click #monthly-on .radio': 'onMonthlyFreqTypeSwitch',
+	    'click #yearly-day-of-week-count-switch': 'onYearlyDayOfWeekCountSwitch',
+	    'change #every-count': 'onEveryCountChange'
+
+	  },
+	  onRepeatSwitch: function(e) {
+	    var value = $(e.target).is(':checked');
+	    // console.log(value);
+
+	    if (value) {
+	      this.$('#repeat-frequency-controls').addClass('active');
+	    } else {
+	      this.$('#repeat-frequency-controls').removeClass('active');
+	    }
+	  },
+	  onFrequencyChange: function(e) {
+	    let value = $(e.target).val();
+	    console.log(value);
+	    this.$('.detail-frequency').removeClass('active');
+
+	    switch (value) {
+	      case 'daily':
+	        this.$('#every-type').text('Day(s)');
+	        break;
+	      case 'weekly':
+	        this.$('#every-type').text('Week(s)');
+	        this.$('.detail-frequency#weekly-on').addClass('active');
+	        break;
+	      case 'monthly':
+	        this.$('#every-type').text('Month(s)');
+	        this.$('.detail-frequency#monthly-on').addClass('active');
+	        break;
+	      case 'yearly':
+	        this.$('#every-type').text('Year(s)');
+	        this.$('.detail-frequency#yearly-on').addClass('active');
+	        break;
+	    }
+	    var every = this.$('#every-count').val();
+	    var statusText = this.setRepeatFreq(value, every);
+	    this.$('#repeat-summary').text(statusText);
+
+	  },
+	  onMonthlyFreqTypeSwitch: function(e) {
+	    let value = $(e.target).val();
+	    //console.log(value);
+	    this.$('#monthly-on .monthly-freq-type').removeClass('active');
+	    if (value != '') {
+	      switch (value) {
+	        case 'each':
+	          this.$('#monthly-on #monthly-on-each').addClass('active');
+	          break;
+	        case 'on':
+	          this.$('#monthly-on #monthly-on-day-of-month').addClass('active');
+	          break;
+	      }
+	    }
+	  },
+	  onYearlyDayOfWeekCountSwitch: function(e) {
+	    var value = $(e.target).is(':checked');
+	    if (value) {
+	      this.$('#yearly-on-day-of-week-count-container').addClass('active');
+	    } else {
+	      this.$('#yearly-on-day-of-week-count-container').removeClass('active');
+	    }
+	  },
+	  onEveryCountChange: function(e){
+	  	var repeatType = this.$('select#frequency-control').val();
+	  	var value = $(e.target).val();
+	  	var statusText = this.setRepeatFreq(repeatType, value);
+	  	this.$('#repeat-summary').text(statusText);
+	  },
+	  //private functions
+	  setRepeatFreq: function(repeatType, every) {
+	    if (typeof repeatType == 'undefined')
+	      return;
+	    let repeatFrequency = 'Event will occur ';
+
+	    switch (repeatType) {
+	      case 'daily':
+	      	repeatFrequency += `every ${every} day(s)`;
+	      	break;
+	      case 'weekly':
+	      	repeatFrequency += `every ${every} week(s)`;
+	        break;
+	      case 'monthly':
+	      	repeatFrequency += `every ${every} month(s)`;     	
+	      	break;
+	      case 'yearly':
+	      	repeatFrequency += `every ${every} year(s)`;
+	        break;
+	    }
+
+	    return repeatFrequency;
+	  }
+	});
+
+	module.exports = AddEvent;
 
 
 /***/ }
