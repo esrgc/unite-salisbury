@@ -37,7 +37,14 @@ router.get('/index', function(req, res){
 });
 
 router.get('/add', function(req, res){
-	res.render('event/add', {title: 'Add a new Event'});
+	res.render('event/add', {title: 'New Event'});
+});
+//post for add event
+router.post('/add', function(req, res){
+	var model = req.body;
+	console.log(model);
+
+	res.render('event/add', {title: 'New Event'});
 });
 
 module.exports = router;

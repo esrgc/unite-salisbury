@@ -98,10 +98,20 @@
 
 
 	var AddEvent = Backbone.View.extend({
-	  name: 'AddEvent',
-	  initialize: function(tagID) {
+	  name: 'AddEvent',  
+	  initialize: function(tagID, eventModel) {
 	    this.el = tagID;
+
+	    //bind model to view
+	    if(typeof eventModel == 'undefined')
+	    	this.model = new Backbone.Model({
+	    		//add details if neccesary
+	    	});
+	    else
+	    	this.model = eventModel;
+
 	    console.log(`View ${this.name} initialized`);
+
 
 	    //verify checked status on repeat
 	    // var value = $('#repeat-switch').is(':checked');
