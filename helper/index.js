@@ -159,6 +159,14 @@ module.exports = {
       return d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
     });
 
+    //block helper to generate html through for loop starting at min and stopping at max (max is included)
+    hbs.registerHelper('for', function(min, max, options){
+      var html = '';
+      for(var i = min; i <= max; i++){
+        html += options.fn({i: i});
+      }
+      return html;
+    });
     return hbs;
   },
   copy: function(dest, source) {

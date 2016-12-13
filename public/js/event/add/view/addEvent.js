@@ -104,7 +104,7 @@ var AddEvent = Backbone.View.extend({
           this.$('#monthly-on #monthly-on-each').addClass('active');
           break;
         case 'on':
-          this.$('#monthly-on #monthly-on-day-of-month').addClass('active');
+          this.$('#monthly-on #monthly-on-day-of-week').addClass('active');
           break;
       }
     }

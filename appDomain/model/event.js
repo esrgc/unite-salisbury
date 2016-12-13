@@ -61,10 +61,11 @@ var EventSchema = new Schema({
     },
     endRepeat: Date,
     frequency: String,//daily, weekly, monthly, and yearly
-    every: Number,//recurring frequency
+    every: {type: Number, default: 1},//recurring frequency
     dayOfMonth: [Date], //1,2,3...31
     dayOfWeek: [String],//Monday, Tuesday,...Sunday
     dayOfWeekCount: String,//first, second,...fifth
+    monthOfYear: String,//jan, feb, mar,...dec
     schedule: String,//later.js calculated schedule
     occurences: [Date]//proccessed occurenses
 
