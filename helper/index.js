@@ -16,7 +16,7 @@ module.exports = {
         "<dd> " + detail.address + "</dd>";
     });
 
-    hbs.registerHelper('parseEventForList', function(object){
+    hbs.registerHelper('parseEventForList', function(object) {
       var detail = object.detail;
       return "<dt> Description </dt>" +
         "<dd> " + detail.description + "</dd>" +
@@ -27,21 +27,21 @@ module.exports = {
         "<dt> Address </dt>" +
         "<dd> " + detail.address + "</dd>" +
         "<dt> Date Created: </dt>" +
-        "<dd> " + scope.parseDate(object.date) + "</dd>"; 
-          
+        "<dd> " + scope.parseDate(object.date) + "</dd>";
+
     });
-    hbs.registerHelper('parseDateForEdit', function( d ){
-      if( typeof d == 'undefined' )
+    hbs.registerHelper('parseDateForEdit', function(d) {
+      if (typeof d == 'undefined')
         return null
-      return d.getFullYear() + "-" + scope.pad(d.getMonth() + 1) + "-" + scope.pad( d.getDate() );
+      return d.getFullYear() + "-" + scope.pad(d.getMonth() + 1) + "-" + scope.pad(d.getDate());
     });
-    hbs.registerHelper('parseTimeForEdit', function( d ){
-      if( typeof d == 'undefined' )
+    hbs.registerHelper('parseTimeForEdit', function(d) {
+      if (typeof d == 'undefined')
         return null
-      return scope.pad(d.getHours()) + ":" + scope.pad( d.getMinutes() ) + ":" + scope.pad( d.getSeconds() );
-    }); 
-    hbs.registerHelper('generateMapUrl', function( data ){
-        return data.location.x+"/"+data.location.y;
+      return scope.pad(d.getHours()) + ":" + scope.pad(d.getMinutes()) + ":" + scope.pad(d.getSeconds());
+    });
+    hbs.registerHelper('generateMapUrl', function(data) {
+      return data.location.x + "/" + data.location.y;
     });
     //generate listing link
     hbs.registerHelper('generateSortUrl', function(data, baseUrl, sortBy, label) {
@@ -94,7 +94,7 @@ module.exports = {
       //generate previous link btn
       var prevBtn = [
         '<li class="' + (data.page > 1 ? '' : 'disabled') + '"">',
-        '<a href="' + url + '&page=' + (data.page -1) + '" aria-label="Previous">',
+        '<a href="' + url + '&page=' + (data.page - 1) + '" aria-label="Previous">',
         '<span aria-hidden="true">&laquo;</span>',
         '</a>',
         '</li>'
@@ -118,7 +118,7 @@ module.exports = {
       //generate next btn
       var nextBtn = [
         '<li class="' + (data.pageCount > data.page ? '' : 'disabled') + '"">',
-        '<a href="' + url + '&page=' + (data.page + 1)+ '" aria-label="Next">',
+        '<a href="' + url + '&page=' + (data.page + 1) + '" aria-label="Next">',
         '<span aria-hidden="true">&raquo;</span>',
         '</a>',
         '</li>'
@@ -128,7 +128,7 @@ module.exports = {
       //last btn
       var lastBtn = [
         '<li class="' + (data.page != data.pageCount ? '' : 'disabled') + '"">',
-        '<a href="' + url + '&page='+ data.pageCount +'" aria-label="Previous">',
+        '<a href="' + url + '&page=' + data.pageCount + '" aria-label="Previous">',
         '<span aria-hidden="true">&raquo;&raquo;</span>',
         '</a>',
         '</li>'
@@ -144,7 +144,7 @@ module.exports = {
       return html.join('');
     });
 
-
+    //if == to value helper
     hbs.registerHelper('ifCond', function(v1, v2, options) {
       // console.log('v1 is '+ v1 + ' ' + typeof(v1));
       // console.log('v2 is '+ v2 + ' ' + typeof(v2));
@@ -154,16 +154,22 @@ module.exports = {
       }
       return options.inverse(this);
     });
-
+    //if contains in an array of values 
+    hbs.registerHelper('ifIn', function(el, list, options) {
+      if (typeof list != 'undefined' && list.indexOf(el) > -1) {
+        return options.fn(this);
+      }
+      return options.inverse(this);
+    });
     hbs.registerHelper('parseDateTime', function(d) {
       return d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
     });
 
     //block helper to generate html through for loop starting at min and stopping at max (max is included)
-    hbs.registerHelper('for', function(min, max, options){
+    hbs.registerHelper('for', function(min, max, options) {
       var html = '';
-      for(var i = min; i <= max; i++){
-        html += options.fn({i: i});
+      for (var i = min; i <= max; i++) {
+        html += options.fn({ i: i });
       }
       return html;
     });
@@ -185,7 +191,7 @@ module.exports = {
     return d.toLocaleDateString();
     //return (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear();
   },
-  paseTime: function(d){
+  paseTime: function(d) {
     return d.toLocaleTimeString();
   },
   pad: function(str) {

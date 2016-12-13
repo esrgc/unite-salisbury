@@ -104,60 +104,67 @@
                 <div class="checkbox">
                   <!--monday-->
                   <label id="monday-switch">
-                    <input type="checkbox" name="weeklyDayOfWeek" value="monday" checked> Monday
+                    <input type="checkbox" name="weeklyDayOfWeek" value="monday"
+                      {{#ifIn 'monday' dayOfWeek}}checked{{/ifIn}}> Monday
                   </label>
                 </div>
                 <div class="checkbox">
                   <!--tuesday-->
                   <label id="tuesday-switch">
-                    <input type="checkbox" name="weeklyDayOfWeek" value="tuesday"> Tuesday
+                    <input type="checkbox" name="weeklyDayOfWeek" 
+                    {{#ifIn 'tuesday' dayOfWeek}}checked{{/ifIn}} value="tuesday"> Tuesday
                   </label>
                 </div>
                 <div class="checkbox">
                   <!--wednesday-->
                   <label id="wednesday-switch">
-                    <input type="checkbox" name="weeklyDayOfWeek" value="wednesday"> Wednesday
+                    <input type="checkbox" name="weeklyDayOfWeek"
+                    {{#ifIn 'wednesday' dayOfWeek}}checked{{/ifIn}} value="wednesday"> Wednesday
                   </label>
                 </div>
                 <div class="checkbox">
                   <!--thursday-->
                   <label id="thursday-switch">
-                    <input type="checkbox" name="weeklyDayOfWeek" value="thursday"> Thursday
+                    <input type="checkbox" name="weeklyDayOfWeek"
+                    {{#ifIn 'thursday' dayOfWeek}}checked{{/ifIn}} value="thursday"> Thursday
                   </label>
                 </div>
                 <div class="checkbox">
                   <!--Friday-->
                   <label id="Friday-switch">
-                    <input type="checkbox" name="weeklyDayOfWeek" value="friday"> Friday
+                    <input type="checkbox" name="weeklyDayOfWeek"
+                    {{#ifIn 'friday' dayOfWeek}}checked{{/ifIn}} value="friday"> Friday
                   </label>
                 </div>
                 <div class="checkbox">
                   <!--Saturday-->
                   <label id="Saturday-switch">
-                    <input type="checkbox" name="weeklyDayOfWeek" value="saturday"> Saturday
+                    <input type="checkbox" name="weeklyDayOfWeek"
+                    {{#ifIn 'saturday' dayOfWeek}}checked{{/ifIn}} value="saturday"> Saturday
                   </label>
                 </div>
                 <div class="checkbox">
                   <!--Sunday-->
                   <label id="sunday-switch">
-                    <input type="checkbox" name="weeklyDayOfWeek" value="sunday"> Sunday
+                    <input type="checkbox" name="weeklyDayOfWeek"
+                    {{#ifIn 'sunday' dayOfWeek}}checked{{/ifIn}} value="sunday"> Sunday
                   </label>
                 </div>
               </div>
             </div>
 
             <!--Monthly-->
-            <div class="form-group switchable detail-frequency {{#ifCond frequency 'yearly'}}selected{{/ifCond}}" id="monthly-on">
+            <div class="form-group switchable detail-frequency {{#ifCond frequency 'monthly'}}active{{/ifCond}}" id="monthly-on">
               <label class="control-label col-md-3">On</label>
               <div class="col-md-3">
                 <div class="radio">
                   <label>
-                    <input type="radio" name="monthlyOnType" value="each" checked> Day of Month
+                    <input type="radio" name="monthlyOnType" value="each" checked> Date of Month
                   </label>
                 </div>
                 <div class="radio">
                   <label>
-                    <input type="radio" name="monthlyOnType" value="on"> Day of Week Count
+                    <input type="radio" name="monthlyOnType" value="on"> Day of Week
                   </label>
                 </div>
               </div>
@@ -166,38 +173,7 @@
                   <div class="btn-group btn-group-sm" data-toggle="buttons-radio" role="group" aria-label="1">
                     {{#for 1 31}}
                       <button type="button" class="btn btn-default {{#ifCond dayOfMonth i}}active{{/ifCond}}" value="{{i}}">{{i}}</button>
-                    {{/for}}
-                    <!-- <button type="button" class="btn btn-default" value="1">1</button>
-                    <button type="button" class="btn btn-default" value="2">2</button> 
-                    <button type="button" class="btn btn-default" value="3">3</button>
-                    <button type="button" class="btn btn-default" value="4">4</button>
-                    <button type="button" class="btn btn-default" value="5">5</button>
-                    <button type="button" class="btn btn-default" value="6">6</button>
-                    <button type="button" class="btn btn-default" value="7">7</button>
-                    <button type="button" class="btn btn-default" value="8">8</button>
-                    <button type="button" class="btn btn-default" value="9">9</button>
-                    <button type="button" class="btn btn-default" value="10">10</button>
-                    <button type="button" class="btn btn-default" value="11">11</button>
-                    <button type="button" class="btn btn-default" value="12">12</button>
-                    <button type="button" class="btn btn-default" value="13">13</button>
-                    <button type="button" class="btn btn-default" value="14">14</button>
-                    <button type="button" class="btn btn-default" value="15">15</button>
-                    <button type="button" class="btn btn-default" value="16">16</button>
-                    <button type="button" class="btn btn-default" value="17">17</button>
-                    <button type="button" class="btn btn-default" value="18">18</button>
-                    <button type="button" class="btn btn-default" value="19">19</button>
-                    <button type="button" class="btn btn-default" value="20">20</button>
-                    <button type="button" class="btn btn-default" value="21">21</button>
-                    <button type="button" class="btn btn-default" value="22">22</button>
-                    <button type="button" class="btn btn-default" value="23">23</button>
-                    <button type="button" class="btn btn-default" value="24">24</button>
-                    <button type="button" class="btn btn-default" value="25">25</button>
-                    <button type="button" class="btn btn-default" value="26">26</button>
-                    <button type="button" class="btn btn-default" value="27">27</button>
-                    <button type="button" class="btn btn-default" value="28">28</button>
-                    <button type="button" class="btn btn-default" value="29">29</button>
-                    <button type="button" class="btn btn-default" value="30">30</button>
-                    <button type="button" class="btn btn-default" value="31">31</button> -->
+                    {{/for}}                   
                   </div>
                   <div id="dayOfMonth-container">
                     <!--Contains hidden fields for monthly day of month-->
@@ -227,7 +203,7 @@
               <input type="hidden" name="monthlyOnValue" value="">
             </div>
             <!--Yearly-->
-            <div class="detail-frequency switchable" id="yearly-on">
+            <div class="detail-frequency switchable {{#ifCond frequency 'yearly'}}active{{/ifCond}}" id="yearly-on">
               <div class="form-group">
                 <label class="control-label col-md-3">In</label>
                 <div class="col-md-9">
@@ -248,7 +224,7 @@
                 </div>
               </div>
               <div class="form-group" id="yearly-day-of-week-count">
-                <label class="control-label col-md-3">Day of Week Count</label>
+                <label class="control-label col-md-3">Day of Week</label>
                 <div class="checkbox col-md-3">
                   <label id="yearly-day-of-week-count-switch">
                     <input type="checkbox" name="yearlyDayOfWeek" value="true">
