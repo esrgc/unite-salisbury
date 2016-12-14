@@ -2,6 +2,7 @@
 This defines schema for model Event
 */
 // var connectionStr = require('../../config').database.mongodb;
+'use strict';
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
@@ -26,153 +27,144 @@ var EventSchema = new Schema({
   },
   date: Date,
   location: Object,
-  detail: {
-    description: {
-      type: String,
-      required: [true, 'Description required']
-    },
-    startDate: {
-      type: Date,
-      required: [true, 'Start Date is required']
-    },
-    endDate: {
-      type: Date,
-      required: [true, 'End Date required']
-    },
-    address: {
-      type: String,
-      required: [true, 'Street Address required']
-    },
-    city: {
-      type: String,
-      required: [true, 'City is required']
-    },
-    state: {
-      type: String,
-      required: [true, 'State is required']
-    },
-    zip: {
-      type: Number,
-      required: [true, 'ZIP is required']
-    },
-    repeat: {
-      type: Boolean,
-      required: [true, 'Please specify if this event repeats.']
-    },
-    repeatEnd: Date,
-    frequency: { type: String, default: 'daily' }, //daily, weekly, monthly, and yearly
-    every: { type: Number, default: 1 }, //recurring frequency
-    dayOfMonth: [Date], //1,2,3...31
-    dayOfWeek: [String], //Monday, Tuesday,...Sunday
-    dayOfWeekCount: String, //first, second,...fifth
-    monthOfYear: [String], //jan, feb, mar,...dec
-    schedule: String, //later.js calculated schedule
-    occurences: [Date] //proccessed occurenses
+  description: {
+    type: String,
+    required: [true, 'Description required']
+  },
+  startDate: {
+    type: Date,
+    required: [true, 'Start Date is required']
+  },
+  endDate: {
+    type: Date,
+    required: [true, 'End Date required']
+  },
+  address: {
+    type: String,
+    required: [true, 'Street Address required']
+  },
+  city: {
+    type: String,
+    required: [true, 'City is required']
+  },
+  state: {
+    type: String,
+    required: [true, 'State is required']
+  },
+  zip: {
+    type: Number,
+    required: [true, 'ZIP is required']
+  },
+  repeat: {
+    type: Boolean,
+    default: false,
+    required: [true, 'Please specify if this event repeats.']
+  },
+  repeatEnd: Date,
+  frequency: { type: String, default: 'daily' }, //daily, weekly, monthly, and yearly
+  every: { type: Number, default: 1 }, //recurring frequency
+  dayOfMonth: [Number], //1,2,3...31 
+  dayOfWeek: [Number], //Monday, Tuesday,...Sunday (1-7)
+  dayOfWeekCount: { type: Number, default: null }, //first, second,...fifth (1-5)
+  monthOfYear: [Number], //jan, feb, mar,...dec (1-12)
+  schedule: Schema.Types.Mixed, //later.js calculated schedule
+  occurences: [Date] //proccessed occurences
 
-    // repeatFrequency: {
-    //   type: String
-    // },
-    // repeatCustomFreq: {
-    //   type: String
-    // },
-
-
-
-    //other details can be added here
-  }
 }, {
   validateBeforeSave: false //prevent pre-save validation
 });
 //calculate how event will occur
 EventSchema.methods.calculateOccurences = function() {
-  var futureOccurencesCount = 10000;
+  var scope = this;
+  var futureOccurencesCount = 5000;
   // set later to use local time
   later.date.localTime();
 
-  if (typeof this.repeat == 'undefined')
+  //not repeated
+  if (typeof scope.repeat == 'undefined' || !scope.repeat)
     return;
 
-  var schedule = '',
-    occurenses = [];
+  var schedule = null,
+    occurences = [];
 
   try {
-    switch (this.repeat) {
+    switch (scope.frequency) {
       case 'daily':
-        schedule = later.parse.recur().every(this.every).dayOfYear();
+        schedule = later.parse.recur().every(scope.every).dayOfYear();
         break;
       case 'weekly':
         //recurs every # of week
         schedule = later.parse.recur()
-          .every(this.every).weekOfYear();
+          .every(scope.every).weekOfYear();
         //on specific days of week
-        this.dayOfWeek.forEach(function(d) {
+        scope.dayOfWeek.forEach(function(d) {
           schedule.on(d).dayOfWeek();
         });
         break;
       case 'monthly':
         //occur every # of month
         schedule = later.parse.recur()
-          .every(this.every).month();
+          .every(scope.every).month();
         //on days of month
-        if (typeof this.dayOfMonth != 'undefined')
-          this.dayOfMonth.forEach(function(d) {
+        if (scope.dayOfMonth.length > 0)
+          scope.dayOfMonth.forEach(function(d) {
             schedule.on(d).dayOfMonth();
           });
         //or on day of week count
-        else if (typeof this.dayOfWeek != 'undefined' && this.dayOfWeekCount != 'undefined') {
+        else if (scope.dayOfWeek.length > 0 && scope.dayOfWeekCount != null) {
           //day of week count
-          this.dayOfWeekCount.forEach(function(d) {
-            schedule.on(d).dayOfWeekCount();
-          });
+          schedule.on(scope.dayOfWeekCount).dayOfWeekCount();
           //day of week
-          this.dayOfWeek.forEach(function(d) {
+          scope.dayOfWeek.forEach(function(d) {
             schedule.on(d).dayOfWeek();
           });
         }
         break;
       case 'yearly':
         //occurs every # year
-        schedule = later.parse.recur().every(this.every).year();
+        schedule = later.parse.recur().every(scope.every).year();
         //in months
-        if (typeof this.monthOfYear != 'undefined')
-          this.monthOfYear.forEach(function(d) {
-            schedule.on(d).monthOfYear();
+        if (scope.monthOfYear.length > 0)
+          scope.monthOfYear.forEach(function(d) {
+            schedule.on(d).month();
           });
-
-        //on starting day
-        if (typeof this.dayOfWeek == 'undefined' && typeof this.dayOfWeekCount == 'undefined') {
-          let date = this.startDate.getDate();
-          schedule.on(date);
-        } else {
+        //day of week or on starting day
+        if (scope.dayOfWeek.length > 0 && scope.dayOfWeekCount != null) {
           //day of week count
-          this.dayOfWeekCount.forEach(function(d) {
-            schedule.on(d).dayOfWeekCount();
-          });
+          schedule.on(scope.dayOfWeekCount).dayOfWeekCount();
           //day of week
-          this.dayOfWeek.forEach(function(d) {
+          scope.dayOfWeek.forEach(function(d) {
             schedule.on(d).dayOfWeek();
           });
+        } else { //on starting day
+          let date = scope.startDate.getDate();
+          schedule.on(date).dayOfMonth();
         }
         break;
     }
   } catch (e) {
     //error has occur
+    console.log(e);
     return null;
   }
+  //if schedule was failed to define
+  if (schedule == null)
+    return null;
+
   //calculate occurences
-  if (typeof this.repeatEnd != 'undefined')
-    occurenses =
-      later.schedule(schedule)
-      .next(futureOccurencesCount, this.startDate, this.repeatEnd);
+  if (typeof scope.repeatEnd != 'undefined')
+    occurences =
+    later.schedule(schedule)
+    .next(futureOccurencesCount, scope.startDate, scope.repeatEnd);
   else
-    occurenses =
-      later.schedule(schedule)
-      .next(futureOccurencesCount, this.startDate);
+    occurences =
+    later.schedule(schedule)
+    .next(futureOccurencesCount, scope.startDate);
 
   //store results to model
-  this.schedule = { schedules: schedule.schedules, exceptions: schedule.exceptions };
-  this.occurenses = occurenses;
-  return occurenses;
+  scope.schedule = { schedules: schedule.schedules, exceptions: schedule.exceptions };
+  scope.occurences = occurences;
+  return occurences;
 };
 
 module.exports = mongoose.model('Event', EventSchema);
