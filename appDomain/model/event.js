@@ -60,13 +60,31 @@ var EventSchema = new Schema({
     default: false,
     required: [true, 'Please specify if this event repeats.']
   },
-  repeatEnd: Date,
+  repeatEnd: { type: Date, default: null },
   frequency: { type: String, default: 'daily' }, //daily, weekly, monthly, and yearly
   every: { type: Number, default: 1 }, //recurring frequency
-  dayOfMonth: [Number], //1,2,3...31 
-  dayOfWeek: [Number], //Monday, Tuesday,...Sunday (1-7)
-  dayOfWeekCount: { type: Number, default: null }, //first, second,...fifth (1-5)
-  monthOfYear: [Number], //jan, feb, mar,...dec (1-12)
+  dayOfMonth: [{
+    type: Number,
+    min: [1, 'Please enter date between (1-31)'],
+    max: [31, 'Please enter date between (1-31)']
+  }], //1,2,3...31 
+  dayOfWeek: [{
+    type: Number,
+    min: [1, 'Please enter date between (1-7)'],
+    max: [7, 'Please enter date between (1-7)']
+  }], //Monday, Tuesday,...Sunday (1-7)
+  dayOfWeekCount: {
+    type: Number,
+    default: null,
+    min: [1, 'Invalid value. Please enter value from 1-5'],
+    max: [5, 'Invalid value. Please enter value from 1-5']
+  }, //first, second,...fifth (1-5)
+  monthOfYear: [{
+    type: Number,
+    default: null,
+    min: [1, 'Invalid value. Please enter value from 1-12'],
+    max: [12, 'Invalid value. Please enter value from 1-12']
+  }], //jan, feb, mar,...dec (1-12)
   schedule: Schema.Types.Mixed, //later.js calculated schedule
   occurences: [Date] //proccessed occurences
 
@@ -152,7 +170,7 @@ EventSchema.methods.calculateOccurences = function() {
     return null;
 
   //calculate occurences
-  if (typeof scope.repeatEnd != 'undefined')
+  if (scope.repeatEnd != null)
     occurences =
     later.schedule(schedule)
     .next(futureOccurencesCount, scope.startDate, scope.repeatEnd);

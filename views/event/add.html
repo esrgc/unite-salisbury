@@ -33,7 +33,7 @@
             <label class="col-md-3 control-label"> Starts On</label>
             <div class="col-md-3">
               <div class="input-group date" data-provide="datepicker">
-                <input class="form-control" id="startDate" name="startDate" type="text" value="{{parseDateForEdit detail.startDate}}" placeholder="MM/DD/YY" />
+                <input class="form-control" id="startDate" name="startDate" type="text" value="{{parseDateForEdit detail.startDate}}" placeholder="MM/DD/YYYY" />
                 <div class="input-group-addon"><span class="glyphicon glyphicon-th"></span></div>
               </div>
               <!--<span class="label label-default">Required</span>-->
@@ -50,7 +50,7 @@
             <label class="col-md-3 control-label">Ends</label>
             <div class="col-md-3">
               <div class="input-group date" data-provide="datepicker">
-                <input class="form-control" id="endDate" name="endDate" type="text" value="{{parseDateForEdit detail.endDate}}" placeholder="MM/DD/YY" />
+                <input class="form-control" id="endDate" name="endDate" type="text" value="{{parseDateForEdit detail.endDate}}" placeholder="MM/DD/YYYY" />
                 <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
               </div>
               <!--<span class="label label-default">Required</span>-->
@@ -67,10 +67,17 @@
           <div class="form-group">
             <label class="col-md-3 control-label">Repeat</label>
             <!--cusomized controls to capture repeat event-->
-            <div class="checkbox col-md-2">
+            <div class="checkbox col-md-1">
               <label id="repeat-switch">
                 <input type="checkbox" name="repeat" value="true" {{#if repeat}}checked{{/if}}>
               </label>
+            </div>
+            <label class="control-label col-md-2">Repeat Ends On</label>
+            <div class="col-md-3">
+              <div class="input-group date" data-provide="datepicker">
+                <input class="form-control" id="repeatEnd" name="repeatEnd" type="text" value="" placeholder="MM/DD/YYYY" />
+                <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+              </div>
             </div>
           </div>
           <!--Frequency, hidden controls -- only displayed when repeat is true-->
