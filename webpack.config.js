@@ -7,6 +7,7 @@ Webpack configuration
 var webpack = require('webpack');
 
 const config = {
+  devtool: 'source-map',
   entry: {
     eventAdd: './public/js/event/add/index.js'
   },
@@ -21,6 +22,7 @@ const config = {
       _: 'underscore',
       Backbone: 'backbone'
     })
+    // new webpack.optimize.UglifyJsPlugin()
   ],
   resolve: {
     alias: {

@@ -5,7 +5,9 @@
   "description": "Events around Salisbury",
   "main": "index.js",
   "scripts": {
-    "test": "node server.js"
+    "test": "nodemon server.js",
+    "compile-dev": "webpack",
+    "compile-prod": "webpack -p"
   },
   "repository": {
     "type": "git",
@@ -42,16 +44,19 @@
     "passport-facebook": "^2.1.1",
     "passport-local": "^1.0.0",
     "passport-localapikey": "0.0.3",
-    "serve-favicon": "~2.0.1",
-    "webpack": "^1.13.3"
+    "serve-favicon": "~2.0.1"
   },
   "devDependencies": {
+    "extract-text-webpack-plugin": "^1.0.1",
     "grunt": "^0.4.5",
     "grunt-contrib-concat": "^0.5.1",
     "grunt-contrib-less": "^1.0.1",
     "grunt-contrib-uglify": "^0.9.1",
     "grunt-contrib-watch": "^0.6.1",
+    "html-webpack-plugin": "^2.26.0",
     "less-plugin-autoprefix": "^1.4.1",
-    "less-plugin-clean-css": "^1.5.0"
+    "less-plugin-clean-css": "^1.5.0",
+    "webpack": "^1.13.3",
+    "webpack-dev-server": "^1.16.2"
   }
 }
