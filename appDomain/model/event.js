@@ -92,9 +92,9 @@ var EventSchema = new Schema({
   validateBeforeSave: false //prevent pre-save validation
 });
 //calculate how event will occur
-EventSchema.methods.calculateOccurences = function() {
+EventSchema.methods.calculateOccurences = function(futureRecurring) {
   var scope = this;
-  var futureOccurencesCount = 5000;
+  var futureOccurencesCount = futureRecurring || 5000;
   // set later to use local time
   later.date.localTime();
 

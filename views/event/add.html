@@ -10,9 +10,12 @@
       </div>
       {{/unless}} {{#if err}}
       <div class="alert alert-danger text-center">
-        {{message}} {{#each err.errors}}
-        <li>{{message}}</li>
-        {{/each}}
+        <ul class="list-unstyled">
+          {{message}} 
+          {{#each err.errors}}
+          <li>{{message}}</li>
+          {{/each}}
+        </ul>
       </div>
       {{/if}} {{/if}}
       <h3 class="text-left"><i class="fa fa-calendar"></i>&nbsp;Add Event</h3>
@@ -40,7 +43,7 @@
             </div>
             <div class="col-md-3">
               <div class="input-group bootstrap-timepicker timepicker">
-                <input class="form-control" id="startTime" name="startTime" type="text" value="{{parseTimeForEdit detail.startDate}}">
+                <input class="form-control" id="startTime" name="startTime" type="text" value="{{parseTimeForEdit detail.startDate}}" placeholder="HH:MM">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
               </div>
               <!--<span class="label label-default">Required</span>-->
@@ -57,7 +60,7 @@
             </div>
             <div class="col-md-3">
               <div class="input-group bootstrap-timepicker timepicker">
-                <input class="form-control" id="endTime" name="endTime" type="text" value="{{parseTimeForEdit detail.endDate}}" />
+                <input class="form-control" id="endTime" name="endTime" type="text" value="{{parseTimeForEdit detail.endDate}}" placeholder="HH:MM" />
                 <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
               </div>
               <!--<span class="label label-default">Required</span>-->

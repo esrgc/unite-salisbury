@@ -28,23 +28,62 @@ router.use(function(req, res, next) {
 });
 
 /*get index page*/
-router.get('/', function(req, res){
-	res.redirect('event/index');
+router.get('/', function(req, res) {
+  res.redirect('event/index');
 });
 
-router.get('/index', function(req, res){
-	res.render('event/index', {title: 'Event Map'});	
+router.get('/index', function(req, res) {
+  res.render('event/index', { title: 'Event Map', message: req.flash('message') });
 });
 
-router.get('/add', function(req, res){
-	res.render('event/add', {title: 'New Event'});
+router.get('/add', function(req, res) {
+  res.render('event/add', { title: 'New Event' });
 });
 //post for add event
-router.post('/add', function(req, res){
-	var model = req.body;
-	console.log(model);
+router.post('/add', function(req, res) {
+  var model = req.body;
+  console.log(model);
+  console.log('After copying...')
+  var newEvent = new Event();
+  //copy the model properties
+  newEvent = Object.assign(newEvent, model);
 
-	res.render('event/add', {title: 'New Event'});
+  console.log(newEvent);
+
+  newEvent.validate((err) => {
+    if (err) {
+      //do a flash message here
+      res.render('event/add', {
+        message: 'Error Validating Event. Please try again!',
+        err: err,
+        event: newEvent
+      });
+    } else {
+      res.render('event/add', {
+        message: 'Validated successfully',
+        err: null,
+        event: newEvent
+      });
+      return;
+      //calculate and save model the event recurrence      
+      //newEvent.calculateOccurences();
+      // if (newEvent) {
+        // newEvent.save((err) => {
+        //   if (err)
+        //     res.render('event/add', {
+        //       event: newEvent,
+        //       message: 'Error saving event...Please try again!'
+        //     }); //do a flash message and redisplay
+        //   else {
+        //     req.flash('message', 'Event added successfully!');
+        //     res.redirect('/'); //redirect to index page;          
+        //   }
+        // });
+      // }
+    }
+  });
+
+
 });
 
 module.exports = router;
