@@ -33,7 +33,7 @@ module.exports = {
     hbs.registerHelper('parseDate', function(d) {
       if (typeof d == 'undefined' || d == null)
         return '';
-      return d.getFullYear() + "-" + scope.pad(d.getMonth() + 1) + "-" + scope.pad(d.getDate());
+      return d.toLocaleDateString();
     });
     hbs.registerHelper('parseTime', function(d) {
       if (typeof d == 'undefined' || d == null)
