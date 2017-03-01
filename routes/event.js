@@ -1,6 +1,7 @@
 /*
 Event router
 */
+'use strict';
 
 var express = require('express');
 var router = express.Router();
@@ -8,8 +9,8 @@ var router = express.Router();
 var auth = require('authorized');
 var domain = require('../appDomain');
 
-User = domain.dataRepository.User;
-Event = domain.dataRepository.Event;
+var User = domain.dataRepository.User;
+var Event = domain.dataRepository.Event;
 
 var geoCoder = require('../appDomain/mdimapgeocoder');
 var isLoggedIn = domain.authentication.isLoggedIn;
@@ -37,7 +38,7 @@ router.get('/index', function(req, res) {
 });
 
 router.get('/add', function(req, res) {
-	var newEvent = new Event();
+  var newEvent = new Event();
   res.render('event/add', { title: 'New Event', event: newEvent });
 });
 
@@ -50,8 +51,42 @@ router.post('/add', function(req, res) {
   //copy the model properties
   newEvent = Object.assign(newEvent, model);
 
-  console.log(newEvent);
+  
 
+
+  //parse recurring event to generate schedule
+  if (newEvent.repeat) {
+    let frequency = newEvent.frequency;
+    switch (frequency) {
+      case 'daily':
+        break;
+      case 'weekly':
+        if (typeof model.weeklyDayOfWeek == 'undefined')
+          return res.render('event/add', {
+            message: 'Please specify day of week for weekly recurring!',
+            err: true,
+            event: newEvent
+          });
+        newEvent.dayOfWeek = model.weeklyDayOfWeek;
+
+        break;
+      case 'monthly':
+        //day of week
+        if (model.monthlyOnType == 'dayOfWeek') {
+          newEvent.dayOfWeek = model.dayOfWeek;
+          newEvent.dayOfWeekCount = model.dayOfWeekCount;
+          console.log('day of week count ' + newEvent.dayOfWeekCount)
+        }
+        //day of month
+        if (model.monthlyOnType == 'dayOfMonth') {
+
+        }
+        break;
+      case 'yearly':
+        break;
+    }
+  }
+  console.log(newEvent);
   newEvent.validate((err) => {
     if (err) {
       //do a flash message here
@@ -70,17 +105,17 @@ router.post('/add', function(req, res) {
       //calculate and save model the event recurrence      
       //newEvent.calculateOccurences();
       // if (newEvent) {
-        // newEvent.save((err) => {
-        //   if (err)
-        //     res.render('event/add', {
-        //       event: newEvent,
-        //       message: 'Error saving event...Please try again!'
-        //     }); //do a flash message and redisplay
-        //   else {
-        //     req.flash('message', 'Event added successfully!');
-        //     res.redirect('/'); //redirect to index page;          
-        //   }
-        // });
+      // newEvent.save((err) => {
+      //   if (err)
+      //     res.render('event/add', {
+      //       event: newEvent,
+      //       message: 'Error saving event...Please try again!'
+      //     }); //do a flash message and redisplay
+      //   else {
+      //     req.flash('message', 'Event added successfully!');
+      //     res.redirect('/'); //redirect to index page;          
+      //   }
+      // });
       // }
     }
   });

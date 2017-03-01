@@ -161,6 +161,7 @@ module.exports = {
     });
     //if contains in an array of values 
     hbs.registerHelper('ifIn', function(el, list, options) {
+      // console.log(`${el} ${list}`);
       if (typeof list != 'undefined' && list.indexOf(el) > -1) {
         return options.fn(this);
       }

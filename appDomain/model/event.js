@@ -70,6 +70,7 @@ var EventSchema = new Schema({
   }], //1,2,3...31 
   dayOfWeek: [{
     type: Number,
+    default: [],
     min: [1, 'Please enter date between (1-7)'],
     max: [7, 'Please enter date between (1-7)']
   }], //Monday, Tuesday,...Sunday (1-7)

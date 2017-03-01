@@ -122,10 +122,10 @@ var AddEvent = Backbone.View.extend({
     this.$('#monthly-on .monthly-freq-type').removeClass('active');
     if (value != '') {
       switch (value) {
-        case 'each':
+        case 'dayOfMonth':
           this.$('#monthly-on #monthly-on-each').addClass('active');
           break;
-        case 'on':
+        case 'dayOfWeek':
           this.$('#monthly-on #monthly-on-day-of-week').addClass('active');
           break;
       }
