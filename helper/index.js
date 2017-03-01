@@ -33,7 +33,10 @@ module.exports = {
     hbs.registerHelper('parseDate', function(d) {
       if (typeof d == 'undefined' || d == null)
         return '';
-      return d.toLocaleDateString();
+      if (typeof d == 'string')
+        return d;
+      else
+        return d.toLocaleDateString();
     });
     hbs.registerHelper('parseTime', function(d) {
       if (typeof d == 'undefined' || d == null)
@@ -167,7 +170,7 @@ module.exports = {
       }
       return options.inverse(this);
     });
-   
+
     //block helper to generate html through for loop starting at min and stopping at max (max is included)
     hbs.registerHelper('for', function(min, max, options) {
       var html = '';

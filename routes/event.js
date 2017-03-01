@@ -65,7 +65,7 @@ router.post('/add', function(req, res) {
           return res.render('event/add', {
             message: 'Please specify day of week for weekly recurring!',
             err: true,
-            event: newEvent
+            event: model
           });
         newEvent.dayOfWeek = model.weeklyDayOfWeek;
 
@@ -75,12 +75,13 @@ router.post('/add', function(req, res) {
         if (model.monthlyOnType == 'dayOfWeek') {
           newEvent.dayOfWeek = model.dayOfWeek;
           newEvent.dayOfWeekCount = model.dayOfWeekCount;
-          console.log('day of week count ' + newEvent.dayOfWeekCount)
+          console.log('day of week count ' + newEvent.dayOfWeekCount);
         }
         //day of month
         if (model.monthlyOnType == 'dayOfMonth') {
-
+        	newEvent.dayOfMonth = model.monthlyDayOfMonth;
         }
+
         break;
       case 'yearly':
         break;
@@ -93,13 +94,13 @@ router.post('/add', function(req, res) {
       res.render('event/add', {
         message: 'Error creating new event. Please try again!',
         err: err,
-        event: newEvent
+        event: model
       });
     } else {
       res.render('event/add', {
         message: 'Validated successfully',
         err: null,
-        event: newEvent
+        event: model
       });
       return;
       //calculate and save model the event recurrence      

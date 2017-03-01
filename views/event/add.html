@@ -99,43 +99,43 @@
                 <div class="checkbox">
                   <!--monday-->
                   <label id="monday-switch">
-                    <input type="checkbox" name="weeklyDayOfWeek" value="2" {{#ifIn 2 event.dayOfWeek}}checked{{/ifIn}}> Monday
+                    <input type="checkbox" name="weeklyDayOfWeek" value="2" {{#ifIn '2' event.weeklyDayOfWeek}}checked{{/ifIn}}> Monday
                   </label>
                 </div>
                 <div class="checkbox">
                   <!--tuesday-->
                   <label id="tuesday-switch">
-                    <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn 3 event.dayOfWeek}}checked{{/ifIn}} value="3"> Tuesday
+                    <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn '3' event.weeklyDayOfWeek}}checked{{/ifIn}} value="3"> Tuesday
                   </label>
                 </div>
                 <div class="checkbox">
                   <!--wednesday-->
                   <label id="wednesday-switch">
-                    <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn 4 event.dayOfWeek}}checked{{/ifIn}} value="4"> Wednesday
+                    <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn '4' event.weeklyDayOfWeek}}checked{{/ifIn}} value="4"> Wednesday
                   </label>
                 </div>
                 <div class="checkbox">
                   <!--thursday-->
                   <label id="thursday-switch">
-                    <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn 5 event.dayOfWeek}}checked{{/ifIn}} value="5"> Thursday
+                    <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn '5' event.weeklyDayOfWeek}}checked{{/ifIn}} value="5"> Thursday
                   </label>
                 </div>
                 <div class="checkbox">
                   <!--Friday-->
                   <label id="Friday-switch">
-                    <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn 6 event.dayOfWeek}}checked{{/ifIn}} value="6"> Friday
+                    <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn '6' event.weeklyDayOfWeek}}checked{{/ifIn}} value="6"> Friday
                   </label>
                 </div>
                 <div class="checkbox">
                   <!--Saturday-->
                   <label id="Saturday-switch">
-                    <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn 7 event.dayOfWeek}}checked{{/ifIn}} value="7"> Saturday
+                    <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn '7' event.weeklyDayOfWeek}}checked{{/ifIn}} value="7"> Saturday
                   </label>
                 </div>
                 <div class="checkbox">
                   <!--Sunday-->
                   <label id="sunday-switch">
-                    <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn 1 event.dayOfWeek}}checked{{/ifIn}} value="1"> Sunday
+                    <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn '1' event.weeklyDayOfWeek}}checked{{/ifIn}} value="1"> Sunday
                   </label>
                 </div>
               </div>
@@ -146,27 +146,36 @@
               <div class="col-md-3">
                 <div class="radio">
                   <label>
-                    <input type="radio" name="monthlyOnType" value="dayOfMonth" checked> Date of Month
+                    <input type="radio" name="monthlyOnType" value="dayOfMonth" {{#ifCond 'dayOfMonth' event.monthlyOnType}}checked{{/ifCond}}>Date of Month
                   </label>
                 </div>
                 <div class="radio">
                   <label>
-                    <input type="radio" name="monthlyOnType" value="dayOfWeek"> Day of Week
+                    <input type="radio" name="monthlyOnType" value="dayOfWeek" {{#ifCond 'dayOfWeek' event.monthlyOnType}}checked{{/ifCond}}>Day of Week
                   </label>
                 </div>
               </div>
               <div class="col-md-3">
-                <div id="monthly-on-each" class="switchable monthly-freq-type active">
-                  <div class="btn-group btn-group-sm" data-toggle="buttons-radio" role="group" aria-label="1">
+                <div id="monthly-on-each" class="switchable monthly-freq-type {{#ifCond 'dayOfMonth' event.monthlyOnType}}active{{/ifCond}}">
+                <!--TO BE WORKED ON-->
+                  {{#for 1 31}}
+                    <div class="checkbox">
+                      <!--{{i}}-->
+                      <label id="{{i}}-switch">
+                        <input type="checkbox" name="monthlyDayOfMonth" value="{{i}}" {{#ifIn i event.monthlyDayOfMonth}}checked{{/ifIn}}> {{i}}
+                      </label>
+                    </div>
+                  {{/for}}
+                  <!-- <div class="btn-group btn-group-sm" data-toggle="buttons-radio" role="group" aria-label="1">
                     {{#for 1 31}}
                     <button type="button" class="btn btn-default {{#ifCond event.dayOfMonth i}}active{{/ifCond}}" value="{{i}}">{{i}}</button>
                     {{/for}}
-                  </div>
+                  </div> -->
                   <div id="dayOfMonth-container">
                     <!--Contains hidden fields for monthly day of month-->
                   </div>
                 </div>
-                <div id="monthly-on-day-of-week" class="switchable monthly-freq-type">
+                <div id="monthly-on-day-of-week" class="switchable monthly-freq-type {{#ifCond 'dayOfWeek' event.monthlyOnType}}active{{/ifCond}}">
                   <select id="monthly-day-of-week" class="form-control" name="dayOfWeekCount">
                     <option value="1" {{#ifCond 1 event.dayOfWeekCount}}selected{{/ifCond}}>First</option>
                     <option value="2" {{#ifCond 2 event.dayOfWeekCount}}selected{{/ifCond}}>Second</option>
