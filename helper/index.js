@@ -30,15 +30,20 @@ module.exports = {
         "<dd> " + scope.parseDate(object.date) + "</dd>";
 
     });
-    hbs.registerHelper('parseDateForEdit', function(d) {
-      if (typeof d == 'undefined')
-        return null
+    hbs.registerHelper('parseDate', function(d) {
+      if (typeof d == 'undefined' || d == null)
+        return '';
       return d.getFullYear() + "-" + scope.pad(d.getMonth() + 1) + "-" + scope.pad(d.getDate());
     });
-    hbs.registerHelper('parseTimeForEdit', function(d) {
-      if (typeof d == 'undefined')
-        return null
+    hbs.registerHelper('parseTime', function(d) {
+      if (typeof d == 'undefined' || d == null)
+        return '';
       return scope.pad(d.getHours()) + ":" + scope.pad(d.getMinutes()) + ":" + scope.pad(d.getSeconds());
+    });
+    hbs.registerHelper('parseDateTime', function(d) {
+      if (typeof d == 'undefined' || d == null)
+        return '';
+      return d.toLocaleString();
     });
     hbs.registerHelper('generateMapUrl', function(data) {
       return data.location.x + "/" + data.location.y;
@@ -161,10 +166,7 @@ module.exports = {
       }
       return options.inverse(this);
     });
-    hbs.registerHelper('parseDateTime', function(d) {
-      return d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
-    });
-
+   
     //block helper to generate html through for loop starting at min and stopping at max (max is included)
     hbs.registerHelper('for', function(min, max, options) {
       var html = '';

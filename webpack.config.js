@@ -30,7 +30,12 @@ const config = {
       underscore: 'underscore/underscore-min.js',
       backbone: 'backbone/backbone-min.js'
     },
-    modulesDirectories: ['lib','bower_components', 'node_modules']
+    modulesDirectories: ['lib', 'bower_components', 'node_modules']
+  },
+  module: {
+    loaders: [
+      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' }
+    ]
   }
 };
 

@@ -37,8 +37,10 @@ router.get('/index', function(req, res) {
 });
 
 router.get('/add', function(req, res) {
-  res.render('event/add', { title: 'New Event' });
+	var newEvent = new Event();
+  res.render('event/add', { title: 'New Event', event: newEvent });
 });
+
 //post for add event
 router.post('/add', function(req, res) {
   var model = req.body;
@@ -54,7 +56,7 @@ router.post('/add', function(req, res) {
     if (err) {
       //do a flash message here
       res.render('event/add', {
-        message: 'Error Validating Event. Please try again!',
+        message: 'Error creating new event. Please try again!',
         err: err,
         event: newEvent
       });

@@ -7,37 +7,37 @@ Require webpack
 
 
 // var AddEvent = class AddEvent extends Backbone.View {
-// 	constructor (elementID) {
-// 		super({el: elementID});
-// 		this.name = 'AddEventView';
-// 		// this.el = elementID;
-// 		console.log(`Initializing ${this.name}`);
+//  constructor (elementID) {
+//    super({el: elementID});
+//    this.name = 'AddEventView';
+//    // this.el = elementID;
+//    console.log(`Initializing ${this.name}`);
 
-// 		this.events = {
-// 			'click #repeat-switch': 'switch'
-// 		};
+//    this.events = {
+//      'click #repeat-switch': 'switch'
+//    };
 
-// 	}
-// 	switch(event) {
-// 		console.log('Checkbox clicked');
-// 	}
+//  }
+//  switch(event) {
+//    console.log('Checkbox clicked');
+//  }
 // };
 
 
 var AddEvent = Backbone.View.extend({
-  name: 'AddEvent',  
+  name: 'AddEvent',
   initialize: function(tagID, eventModel) {
     this.el = tagID;
 
-    //bind model to view
-    if(typeof eventModel == 'undefined')
-    	this.model = new Backbone.Model({
-    		//add details if neccesary
-    	});
-    else
-    	this.model = eventModel;
+    // //bind model to view
+    // if(typeof eventModel == 'undefined')
+    //  this.model = new Backbone.Model({
+    //    //add details if neccesary
+    //  });
+    // else
+    //  this.model = eventModel;
 
-    console.log(`View ${this.name} initialized`);
+    // console.log(`View ${this.name} initialized`);
 
 
     //verify checked status on repeat
@@ -48,6 +48,28 @@ var AddEvent = Backbone.View.extend({
     // } else {
     //   this.$('#repeat-frequency-controls').removeClass('active');
     // }
+    var every = this.$('#every-count').val();
+    var frequency = this.$('#frequency-control').val();
+    if (every) {
+      var txtPrompt = this.setRepeatFreq(frequency, every);
+      this.$('#repeat-summary').text(txtPrompt);
+    }
+
+    //initiate datetime picker
+    // this.$('input[role="datetime-picker"]').datetimepicker();
+    $('#startDate').datetimepicker();
+    $('#endDate').datetimepicker({
+      useCurrent: false //Important! See issue #1075
+    });
+    $("#startDate").on("dp.change", function(e) {
+      $('#endDate').data("DateTimePicker").minDate(e.date);
+    });
+    $("#endDate").on("dp.change", function(e) {
+      $('#startDate').data("DateTimePicker").maxDate(e.date);
+    });
+    $("#repeatEnd").datetimepicker({
+      format: 'MM/DD/YYYY'
+    });
   },
   events: {
     'click #repeat-switch': 'onRepeatSwitch',
@@ -117,11 +139,11 @@ var AddEvent = Backbone.View.extend({
       this.$('#yearly-on-day-of-week-count-container').removeClass('active');
     }
   },
-  onEveryCountChange: function(e){
-  	var repeatType = this.$('select#frequency-control').val();
-  	var value = $(e.target).val();
-  	var statusText = this.setRepeatFreq(repeatType, value);
-  	this.$('#repeat-summary').text(statusText);
+  onEveryCountChange: function(e) {
+    var repeatType = this.$('select#frequency-control').val();
+    var value = $(e.target).val();
+    var statusText = this.setRepeatFreq(repeatType, value);
+    this.$('#repeat-summary').text(statusText);
   },
   //private functions
   setRepeatFreq: function(repeatType, every) {
@@ -131,16 +153,16 @@ var AddEvent = Backbone.View.extend({
 
     switch (repeatType) {
       case 'daily':
-      	repeatFrequency += `every ${every} day(s)`;
-      	break;
+        repeatFrequency += `every ${every} day(s)`;
+        break;
       case 'weekly':
-      	repeatFrequency += `every ${every} week(s)`;
+        repeatFrequency += `every ${every} week(s)`;
         break;
       case 'monthly':
-      	repeatFrequency += `every ${every} month(s)`;     	
-      	break;
+        repeatFrequency += `every ${every} month(s)`;
+        break;
       case 'yearly':
-      	repeatFrequency += `every ${every} year(s)`;
+        repeatFrequency += `every ${every} year(s)`;
         break;
     }
 
