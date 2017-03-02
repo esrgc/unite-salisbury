@@ -90,14 +90,17 @@
 .inputLong {
   width: 100%;
 }
-#repeat-frequency-controls #monthly-on-each div.checkbox {
+#repeat-frequency-controls #monthly-on-each div.checkbox,
+#repeat-frequency-controls #month-of-year div.checkbox {
   display: inline-block;
 }
-#repeat-frequency-controls #monthly-on-each .btn-group > .btn {
+#repeat-frequency-controls #monthly-on-each .btn-group > .btn,
+#repeat-frequency-controls #month-of-year .btn-group > .btn {
   border-radius: 0;
   width: 42px;
 }
-#repeat-frequency-controls #monthly-on-each .btn-group .btn + .btn {
+#repeat-frequency-controls #monthly-on-each .btn-group .btn + .btn,
+#repeat-frequency-controls #month-of-year .btn-group .btn + .btn {
   margin-left: 0;
 }
 #repeat-frequency-controls #monthly-on-day-of-week select,

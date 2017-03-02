@@ -45,12 +45,12 @@ router.get('/add', function(req, res) {
 //post for add event
 router.post('/add', function(req, res) {
   var model = req.body;
-  
+
   var newEvent = new Event();
   //copy the model properties
   newEvent = Object.assign(newEvent, model);
 
-  
+
 
 
   //parse recurring event to generate schedule
@@ -72,23 +72,26 @@ router.post('/add', function(req, res) {
       case 'monthly':
         //day of week
         if (model.monthlyOnType == 'dayOfWeek') {
-          newEvent.dayOfWeek = model.dayOfWeek;
-          newEvent.dayOfWeekCount = model.dayOfWeekCount;
+          newEvent.dayOfWeek = model.monthlyDayOfWeek;
+          newEvent.dayOfWeekCount = model.monthlyDayOfWeekCount;
           console.log('day of week count ' + newEvent.dayOfWeekCount);
         }
         //day of month
         if (model.monthlyOnType == 'dayOfMonth') {
-        	newEvent.dayOfMonth = model.monthlyDayOfMonth;
+          newEvent.dayOfMonth = model.monthlyDayOfMonth;
         }
-
         break;
       case 'yearly':
+        newEvent.monthOfYear = model.monthOfYear;
+        if (model.yearlyDayOfWeekMode == 'true') {
+        	newEvent.dayOfWeekCount = model.yearlyDayOfWeekCount;
+        	newEvent.dayOfWeek = model.yearlyDayOfWeek;
+        }
         break;
     }
   }
   console.log(model);
-  console.log('After copying...')
-  console.log(newEvent);
+  
   newEvent.validate((err) => {
     if (err) {
       //do a flash message here
@@ -98,14 +101,18 @@ router.post('/add', function(req, res) {
         event: model
       });
     } else {
+    	//calculate and save model the event recurrence      
+      let occurrences = newEvent.calculateOccurences();
       res.render('event/add', {
         message: 'Validated successfully',
         err: null,
         event: model
       });
+      console.log(occurrences);
+      console.log('After processing...')
+  		console.log(newEvent);
       return;
-      //calculate and save model the event recurrence      
-      //newEvent.calculateOccurences();
+      
       // if (newEvent) {
       // newEvent.save((err) => {
       //   if (err)

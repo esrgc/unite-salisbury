@@ -1,6 +1,5 @@
 {{#contentFor 'customCss'}}
-<link rel="stylesheet" href="{{rootPath}}lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" /> 
-{{/contentFor}}
+<link rel="stylesheet" href="{{rootPath}}lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" /> {{/contentFor}}
 <div class="page-wrap">
   <div class="container">
     <div class="col-md-12">
@@ -35,22 +34,21 @@
             <label class="col-md-3 control-label"> Starts On</label>
             <div class="col-md-6">
               <div class="input-group date" data-provide="datepicker">
-                <input required class="form-control" id="startDate" name="startDate" type="text" value="{{parseDateTime event.startDate}}" placeholder="MM/DD/YYYY"  role="datetime-picker"/>
+                <input required class="form-control" id="startDate" name="startDate" type="text" value="{{parseDateTime event.startDate}}" placeholder="MM/DD/YYYY" role="datetime-picker" />
                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
               </div>
               <!--<span class="label label-default">Required</span>-->
-            </div>           
+            </div>
           </div>
           <div class="form-group">
             <label class="col-md-3 control-label">Ends</label>
             <div class="col-md-6">
               <div class="input-group date" data-provide="datepicker">
-                <input required class="form-control" id="endDate" name="endDate" type="text" value="{{parseDateTime event.endDate}}" placeholder="MM/DD/YYYY" role="datetime-picker"/>
+                <input required class="form-control" id="endDate" name="endDate" type="text" value="{{parseDateTime event.endDate}}" placeholder="MM/DD/YYYY" role="datetime-picker" />
                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
               </div>
               <!--<span class="label label-default">Required</span>-->
             </div>
-            
           </div>
           <!--repeat-->
           <div class="form-group">
@@ -157,14 +155,14 @@
               </div>
               <div class="col-md-3">
                 <div id="monthly-on-each" class="switchable monthly-freq-type {{#ifCond 'dayOfMonth' event.monthlyOnType}}active{{/ifCond}}">
-                <!--TO BE WORKED ON-->
+                  <!--TO BE WORKED ON-->
                   {{#for 1 31}}
-                    <div class="checkbox">
-                      <!--{{i}}-->
-                      <label id="{{i}}-switch">
-                        <input type="checkbox" name="monthlyDayOfMonth" value="{{i}}" {{#ifIn i model.monthlyDayOfMonth}}checked{{/ifIn}}> {{i}}
-                      </label>
-                    </div>
+                  <div class="checkbox">
+                    <!--{{i}}-->
+                    <label id="{{i}}-switch">
+                      <input type="checkbox" name="monthlyDayOfMonth" value="{{i}}" {{#ifIn i model.monthlyDayOfMonth}}checked{{/ifIn}}>{{i}}
+                    </label>
+                  </div>
                   {{/for}}
                   <!-- <div class="btn-group btn-group-sm" data-toggle="buttons-radio" role="group" aria-label="1">
                     {{#for 1 31}}
@@ -176,22 +174,22 @@
                   </div>
                 </div>
                 <div id="monthly-on-day-of-week" class="switchable monthly-freq-type {{#ifCond 'dayOfWeek' event.monthlyOnType}}active{{/ifCond}}">
-                  <select id="monthly-day-of-week" class="form-control" name="dayOfWeekCount">
-                    <option value="1" {{#ifCond 1 event.dayOfWeekCount}}selected{{/ifCond}}>First</option>
-                    <option value="2" {{#ifCond 2 event.dayOfWeekCount}}selected{{/ifCond}}>Second</option>
-                    <option value="3" {{#ifCond 3 event.dayOfWeekCount}}selected{{/ifCond}}>Third</option>
-                    <option value="4" {{#ifCond 4 event.dayOfWeekCount}}selected{{/ifCond}}>Fourth</option>
-                    <option value="5" {{#ifCond 5 event.dayOfWeekCount}}selected{{/ifCond}}>Fifth</option>
-                    <option value="0" {{#ifCond 0 event.dayOfWeekCount}}selected{{/ifCond}}>Last</option>
+                  <select id="monthly-day-of-week" class="form-control" name="monthlyDayOfWeekCount">
+                    <option value="1" {{#ifCond '1' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>First</option>
+                    <option value="2" {{#ifCond '2' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>Second</option>
+                    <option value="3" {{#ifCond '3' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>Third</option>
+                    <option value="4" {{#ifCond '4' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>Fourth</option>
+                    <option value="5" {{#ifCond '5' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>Fifth</option>
+                    <option value="0" {{#ifCond '0' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>Last</option>
                   </select>
-                  <select id="monthly-day-of-week" class="form-control" multiple name="dayOfWeek">
-                    <option value="2" {{#ifIn 2 event.dayOfWeek}}selected{{/ifIn}}>Monday</option>
-                    <option value="3" {{#ifIn 3 event.dayOfWeek}}selected{{/ifIn}}>Tuesday</option>
-                    <option value="4" {{#ifIn 4 event.dayOfWeek}}selected{{/ifIn}}>Wednesday</option>
-                    <option value="5" {{#ifIn 5 event.dayOfWeek}}selected{{/ifIn}}>Thursday</option>
-                    <option value="6" {{#ifIn 6 event.dayOfWeek}}selected{{/ifIn}}>Friday</option>
-                    <option value="7" {{#ifIn 7 event.dayOfWeek}}selected{{/ifIn}}>Saturday</option>
-                    <option value="1" {{#ifIn 1 event.dayOfWeek}}selected{{/ifIn}}>Sunday</option>
+                  <select id="monthly-day-of-week" class="form-control" multiple name="monthlyDayOfWeek">
+                    <option value="2" {{#ifIn 2 event.monthlyDayOfWeek}}selected{{/ifIn}}>Monday</option>
+                    <option value="3" {{#ifIn 3 event.monthlyDayOfWeek}}selected{{/ifIn}}>Tuesday</option>
+                    <option value="4" {{#ifIn 4 event.monthlyDayOfWeek}}selected{{/ifIn}}>Wednesday</option>
+                    <option value="5" {{#ifIn 5 event.monthlyDayOfWeek}}selected{{/ifIn}}>Thursday</option>
+                    <option value="6" {{#ifIn 6 event.monthlyDayOfWeek}}selected{{/ifIn}}>Friday</option>
+                    <option value="7" {{#ifIn 7 event.monthlyDayOfWeek}}selected{{/ifIn}}>Saturday</option>
+                    <option value="1" {{#ifIn 1 event.monthlyDayOfWeek}}selected{{/ifIn}}>Sunday</option>
                   </select>
                   <small class="text-info">Hold down <kbd>CTRL</kbd> to select multiple items</small>
                 </div>
@@ -202,20 +200,68 @@
             <div class="detail-frequency switchable {{#ifCond event.frequency 'yearly'}}active{{/ifCond}}" id="yearly-on">
               <div class="form-group">
                 <label class="control-label col-md-3">In</label>
-                <div class="col-md-9">
-                  <div class="btn-group btn-group-sm" data-toggle="buttons-radio" role="group" aria-label="1">
-                    <button type="button" class="btn btn-default" data-month="january">Jan</button>
-                    <button type="button" class="btn btn-default" data-month="february">Feb</button>
-                    <button type="button" class="btn btn-default" data-month="march">Mar</button>
-                    <button type="button" class="btn btn-default" data-month="april">Apr</button>
-                    <button type="button" class="btn btn-default" data-month="may">May</button>
-                    <button type="button" class="btn btn-default" data-month="june">Jun</button>
-                    <button type="button" class="btn btn-default" data-month="july">Jul</button>
-                    <button type="button" class="btn btn-default" data-month="august">Aug</button>
-                    <button type="button" class="btn btn-default" data-month="september">Sep</button>
-                    <button type="button" class="btn btn-default" data-month="october">Oct</button>
-                    <button type="button" class="btn btn-default" data-month="november">Nov</button>
-                    <button type="button" class="btn btn-default" data-month="december">Dec</button>
+                <div class="col-md-4">
+                  <div id="month-of-year" data-toggle="buttons-radio" role="group" aria-label="1">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" {{#ifIn '1' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="1" />Jan
+                      </label>
+                    </div>
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" {{#ifIn '2' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="2" />Feb
+                      </label>
+                    </div>
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" {{#ifIn '3' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="3" />Mar
+                      </label>
+                    </div>
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" {{#ifIn '4' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="4" />Apr
+                      </label>
+                    </div>
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" {{#ifIn '5' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="5" />May
+                      </label>
+                    </div>
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" {{#ifIn '6' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="6" />Jun
+                      </label>
+                    </div>
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" {{#ifIn '7' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="7" />Jul
+                      </label>
+                    </div>
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" {{#ifIn '8' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="8" />Aug
+                      </label>
+                    </div>
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" {{#ifIn '9' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="9" />Sep
+                      </label>
+                    </div>
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" {{#ifIn '10' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="10" />Oct
+                      </label>
+                    </div>
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" {{#ifIn '11' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="11" />Nov
+                      </label>
+                    </div>
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" {{#ifIn '12' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="12" />Dec
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -223,27 +269,27 @@
                 <label class="control-label col-md-3">Day of Week</label>
                 <div class="checkbox col-md-3">
                   <label id="yearly-day-of-week-count-switch">
-                    <input type="checkbox" name="yearlyDayOfWeek" value="true">
+                    <input type="checkbox" name="yearlyDayOfWeekMode" {{#ifCond 'true' event.yearlyDayOfWeekMode}}checked{{/ifCond}} value="true">
                   </label>
                 </div>
                 <div class="col-md-3">
-                  <div id="yearly-on-day-of-week-count-container" class="switchable">
-                    <select id="yearly-day-of-week-count" class="form-control">
-                      <option value="1">First</option>
-                      <option value="2">Second</option>
-                      <option value="3">Third</option>
-                      <option value="4">Fourth</option>
-                      <option value="5">Fifth</option>
-                      <option value="0">Last</option>
+                  <div id="yearly-on-day-of-week-count-container" class="switchable {{#ifCond 'true' event.yearlyDayOfWeekMode}}active{{/ifCond}}">
+                    <select id="yearly-day-of-week-count" name="yearlyDayOfWeekCount" class="form-control">
+                      <option value="1" {{#ifCond '1' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>First</option>
+                      <option value="2" {{#ifCond '2' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Second</option>
+                      <option value="3" {{#ifCond '3' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Third</option>
+                      <option value="4" {{#ifCond '4' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Fourth</option>
+                      <option value="5" {{#ifCond '5' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Fifth</option>
+                      <option value="0" {{#ifCond '0' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Last</option>
                     </select>
-                    <select multiple id="yearly-day-of-week" class="form-control">
-                      <option value="2">Monday</option>
-                      <option value="3">Tuesday</option>
-                      <option value="4">Wednesday</option>
-                      <option value="5">Thursday</option>
-                      <option value="6">Friday</option>
-                      <option value="7">Saturday</option>
-                      <option value="1">Sunday</option>
+                    <select multiple id="yearly-day-of-week" name="yearlyDayOfWeek" class="form-control">
+                      <option value="2" {{#ifIn 2 event.yearlyDayOfWeek}}selected{{/ifIn}}>Monday</option>
+                      <option value="3" {{#ifIn 3 event.yearlyDayOfWeek}}selected{{/ifIn}}>Tuesday</option>
+                      <option value="4" {{#ifIn 4 event.yearlyDayOfWeek}}selected{{/ifIn}}>Wednesday</option>
+                      <option value="5" {{#ifIn 5 event.yearlyDayOfWeek}}selected{{/ifIn}}>Thursday</option>
+                      <option value="6" {{#ifIn 6 event.yearlyDayOfWeek}}selected{{/ifIn}}>Friday</option>
+                      <option value="7" {{#ifIn 7 event.yearlyDayOfWeek}}selected{{/ifIn}}>Saturday</option>
+                      <option value="1" {{#ifIn 1 event.yearlyDayOfWeek}}selected{{/ifIn}}>Sunday</option>
                     </select>
                     <small class="text-info">Hold down <kbd>CTRL</kbd> to select multiple items.</small>
                   </div>
