@@ -84,14 +84,14 @@ router.post('/add', function(req, res) {
       case 'yearly':
         newEvent.monthOfYear = model.monthOfYear;
         if (model.yearlyDayOfWeekMode == 'true') {
-        	newEvent.dayOfWeekCount = model.yearlyDayOfWeekCount;
-        	newEvent.dayOfWeek = model.yearlyDayOfWeek;
+          newEvent.dayOfWeekCount = model.yearlyDayOfWeekCount;
+          newEvent.dayOfWeek = model.yearlyDayOfWeek;
         }
         break;
     }
   }
   console.log(model);
-  
+
   newEvent.validate((err) => {
     if (err) {
       //do a flash message here
@@ -101,18 +101,48 @@ router.post('/add', function(req, res) {
         event: model
       });
     } else {
-    	//calculate and save model the event recurrence      
+      //calculate and save model the event recurrence      
       let occurrences = newEvent.calculateOccurences();
       res.render('event/add', {
         message: 'Validated successfully',
         err: null,
         event: model
       });
-      console.log(occurrences);
-      console.log('After processing...')
-  		console.log(newEvent);
+
+      //now geocode
+      geoCoder.search({ //Use geocoder to lookup
+        Street: model.aAddress,
+        City: model.city,
+        State: model.state,
+        ZIP: model.zip
+      }, function(err, res) {
+        if (err){
+        	newEvent.location = null;
+          return;
+        }
+        if (res.candidates.length == 0) { //If no candidates
+          req.flash('eventsMessage', 'Could not find that address, please try agian.');
+          newEvent.location = null;
+          return;
+        }
+        for (var i in res.candidates) {
+          var place = res.candidates[i];
+          if (place.score > 79) {
+            let location = place.location; //Else select first candidate
+            newEvent.location = location;
+            break;
+          }
+        }
+
+        // console.log(occurrences);
+        console.log('After geocoding...')
+        console.log(newEvent);
+
+      });
+
+
       return;
-      
+
       // if (newEvent) {
       // newEvent.save((err) => {
       //   if (err)
