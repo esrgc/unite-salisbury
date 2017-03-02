@@ -45,8 +45,7 @@ router.get('/add', function(req, res) {
 //post for add event
 router.post('/add', function(req, res) {
   var model = req.body;
-  console.log(model);
-  console.log('After copying...')
+  
   var newEvent = new Event();
   //copy the model properties
   newEvent = Object.assign(newEvent, model);
@@ -87,6 +86,8 @@ router.post('/add', function(req, res) {
         break;
     }
   }
+  console.log(model);
+  console.log('After copying...')
   console.log(newEvent);
   newEvent.validate((err) => {
     if (err) {

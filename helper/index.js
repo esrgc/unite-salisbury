@@ -164,8 +164,18 @@ module.exports = {
     });
     //if contains in an array of values 
     hbs.registerHelper('ifIn', function(el, list, options) {
+      // console.log(el);
+      // console.log(list);
+      if (typeof list == 'undefined')
+        return;
+      if (list.length == 0)
+        return;
+
+      if(typeof list[0] == 'string')
+        el = el.toString();
+
       // console.log(`${el} ${list}`);
-      if (typeof list != 'undefined' && list.indexOf(el) > -1) {
+      if (list.indexOf(el) > -1) {
         return options.fn(this);
       }
       return options.inverse(this);
@@ -173,9 +183,11 @@ module.exports = {
 
     //block helper to generate html through for loop starting at min and stopping at max (max is included)
     hbs.registerHelper('for', function(min, max, options) {
+      var model = options.data.root.event;
+      //console.log(model);
       var html = '';
       for (var i = min; i <= max; i++) {
-        html += options.fn({ i: i });
+        html += options.fn({ i: i , model: model});
       }
       return html;
     });
