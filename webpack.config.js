@@ -9,6 +9,7 @@ var webpack = require('webpack');
 const config = {
   devtool: 'source-map',
   entry: {
+    eventIndex: './public/js/event/index/index.js',
     eventAdd: './public/js/event/add/index.js'
   },
   output: {
