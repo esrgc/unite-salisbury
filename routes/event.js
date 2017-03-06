@@ -121,7 +121,7 @@ router.post('/add', function(req, res) {
           return;
         }
         if (res.candidates.length == 0) { //If no candidates
-          req.flash('eventsMessage', 'Could not find that address, please try agian.');
+          req.flash('eventsMessage', 'Could not find that address, please try again.');
           newEvent.location = null;
           return;
         }

@@ -31,8 +31,7 @@ var define = function(child) {
         this.initialize.apply(this, arguments);
     };
     _class_.prototype = ch;
-  }
-  else {
+  } else {
     _class_ = function() {
       var init = typeof this.initialize == 'function' ? this.initialize : 'undefined';
       //run child initialize function if exists
@@ -52,7 +51,7 @@ is a copy of the parent's prototype, and assign it to the child prototype.
 Finally, sets the child's prototype constructor to the child's constructor
 */
 var extend = function(child, parent) {
-  var F = function() { };
+  var F = function() {};
   F.prototype = parent.prototype;
   child.prototype = new F();
   child.prototype.constructor = child;
@@ -69,26 +68,26 @@ var copy = function(dest, source) {
       }
     }
     /**
-    * IE doesn't include the toString property when iterating over an object's
-    * properties with the for(property in object) syntax.  Explicitly check if
-    * the source has its own toString property.
-    */
+     * IE doesn't include the toString property when iterating over an object's
+     * properties with the for(property in object) syntax.  Explicitly check if
+     * the source has its own toString property.
+     */
     /*
-    * FF/Windows < 2.0.0.13 reports "Illegal operation on WrappedNative
-    * prototype object" when calling hawOwnProperty if the source object
-    * is an instance of window.Event.
-    */
+     * FF/Windows < 2.0.0.13 reports "Illegal operation on WrappedNative
+     * prototype object" when calling hawOwnProperty if the source object
+     * is an instance of window.Event.
+     */
 
-    var sourceIsEvt = typeof window.Event == "function"
-                          && source instanceof window.Event;
+    var sourceIsEvt = typeof window.Event == "function" && source instanceof window.Event;
 
     if (!sourceIsEvt &&
-                source.hasOwnProperty && source.hasOwnProperty("toString")) {
+      source.hasOwnProperty && source.hasOwnProperty("toString")) {
       dest.toString = source.toString;
     }
   }
   return dest;
 };
+
 /*
 Author: Tu hoang
 ESRGC
