@@ -55,7 +55,7 @@ router.post('/add', function(req, res) {
 
   promise.then(function(data) {
     console.log('Checking for existing event...');
-    console.log(data);
+
     if (data != null)
       return res.render('event/add', {
         message: 'Event name entered has already been in use. Please use another name!',
@@ -63,7 +63,7 @@ router.post('/add', function(req, res) {
         event: model
       });
     else {
-
+      console.log('No existing event...proceeding to create a new one.');
       //parse recurring event to generate schedule
       if (newEvent.repeat) {
         let frequency = newEvent.frequency;
@@ -102,7 +102,7 @@ router.post('/add', function(req, res) {
         }
       }
       // console.log(model);
-
+      //validate event
       newEvent.validate((err) => {
         if (err) {
           //do a flash message here
@@ -114,11 +114,6 @@ router.post('/add', function(req, res) {
         } else {
           //calculate and save model the event recurrence      
           let occurrences = newEvent.calculateOccurences();
-          res.render('event/add', {
-            message: 'Validated successfully',
-            err: null,
-            event: model
-          });
 
           //now geocode
           geoCoder.search({ //Use geocoder to lookup
@@ -126,18 +121,18 @@ router.post('/add', function(req, res) {
             City: model.city,
             State: model.state,
             ZIP: model.zip
-          }, function(err, res) {
+          }, function(err, response) {
             if (err) {
               newEvent.location = null;
               return;
             }
-            if (res.candidates.length == 0) { //If no candidates
+            if (response.candidates.length == 0) { //If no candidates
               req.flash('eventsMessage', 'Could not find that address, please try again.');
               newEvent.location = null;
               return;
             }
-            for (var i in res.candidates) {
-              var place = res.candidates[i];
+            for (var i in response.candidates) {
+              var place = response.candidates[i];
               if (place.score > 79) {
                 let location = place.location; //Else select first candidate
                 newEvent.location = location;
@@ -148,6 +143,20 @@ router.post('/add', function(req, res) {
             // console.log(occurrences);
             console.log('After geocoding...')
             console.log(newEvent);
+
+            //save event and return
+            let p = newEvent.save();
+
+            p.then(function(data) {
+              req.flash('message', 'Event added successfully!')
+              res.redirect('index');
+            }, function(error) {
+              res.render('event/add', {
+                message: 'Error saving event! Please try again!',
+                err: error,
+                event: model
+              });
+            })
 
           });
 
@@ -170,7 +179,7 @@ router.post('/add', function(req, res) {
         }
       });
     }
-  }, function(err) {});
+  });
 
 
 

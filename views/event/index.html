@@ -1,29 +1,48 @@
 <link href="{{rootPath}}lib/leaflet-0.7.3/leaflet.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="{{rootPath}}lib/leaflet-cluster/markerCluster.css">
 <div class="page-wrap">
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-6">
-				<div class="map" id="unite-map">
-					<!--Map area-->
-				</div>
-			</div>
-			<div class="col-md-6" id="list-area">
-				<h3>Event list</h3>
-			</div>			
-		</div>
-		<div class="row"><!--Event list-->
-			<div class="col-md-12 col-sm-12" id="calendar-area">
-					<h3>Calendar</h3>
-			</div>
-		</div>
-	</div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        {{#if message}} 
+        	{{#unless err}}
+		        <div class="alert alert-success text-center">
+		          {{message}}
+		        </div>
+        	{{/unless}} 
+        	{{#if err}}
+		        <div class="alert alert-danger text-center">
+		          <ul class="list-unstyled">
+		            {{message}} 
+		            {{#each err.errors}}
+		            	<li>{{message}}</li>
+		            {{/each}}
+		          </ul>
+		        </div>
+	        {{/if}} 
+        {{/if}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="map" id="unite-map">
+          <!--Map area-->
+        </div>
+      </div>
+      <div class="col-md-6" id="list-area">
+        <h3>Event list</h3>
+      </div>
+    </div>
+    <div class="row">
+      <!--Event list-->
+      <div class="col-md-12 col-sm-12" id="calendar-area">
+        <h3>Calendar</h3>
+      </div>
+    </div>
+  </div>
 </div>
 </div>
-
-{{> popupTemplate }}
-
-{{#contentFor "scripts"}}
+{{> popupTemplate }} {{#contentFor "scripts"}}
 <script type="text/javascript" src="{{rootPath}}lib/backbone-addon/application.js"></script>
 <script type="text/javascript" src="{{rootPath}}lib/leaflet-0.7.3/leaflet.js"></script>
 <script type="text/javascript" src="{{rootPath}}lib/leaflet-cluster/leaflet.markercluster.js"></script>
@@ -34,4 +53,4 @@ $(function() {
     startup();
 });
 </script>
-{{/contentFor}} 
+{{/contentFor}}
