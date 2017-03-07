@@ -8,6 +8,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var moment = require('moment'); //for datetime math
 var later = require('later'); //for recurring event
+var config = require('../../config');
 
 // mongoose.connect(connectionStr);
 // Validators ============================================
@@ -31,11 +32,11 @@ var EventSchema = new Schema({
     type: String,
     required: [true, 'Description required']
   },
-  startDate: {
+  start: {
     type: Date,
     required: [true, 'Start Date is required']
   },
-  endDate: {
+  end: {
     type: Date,
     required: [true, 'End Date required']
   },
@@ -93,9 +94,9 @@ var EventSchema = new Schema({
   validateBeforeSave: false //prevent pre-save validation
 });
 //calculate how event will occur
-EventSchema.methods.calculateOccurences = function(futureRecurring) {
+EventSchema.methods.calculateSchedule = function() {
   var scope = this;
-  var futureOccurencesCount = futureRecurring || 5000;
+
   // set later to use local time
   later.date.localTime();
 
@@ -156,7 +157,7 @@ EventSchema.methods.calculateOccurences = function(futureRecurring) {
             schedule.on(d).dayOfWeek();
           });
         } else { //on starting day
-          let date = scope.startDate.getDate();
+          let date = scope.start.getDate();
           schedule.on(date).dayOfMonth();
         }
         break;
@@ -166,24 +167,63 @@ EventSchema.methods.calculateOccurences = function(futureRecurring) {
     console.log(e);
     return null;
   }
+
   //if schedule was failed to define
   if (schedule == null)
     return null;
+  else {
+    //add start time
+    // let startTime = later.time.val(scope.start).toString();
+    // schedule.on(startTime).time();
+  }
 
+  // //calculate occurences
+  // if (scope.repeatEnd != null)
+  //   occurences =
+  //   later.schedule(schedule)
+  //   .next(futureOccurencesCount, scope.start, scope.repeatEnd);
+  // else
+  //   occurences =
+  //   later.schedule(schedule)
+  //   .next(futureOccurencesCount, scope.start);
+
+  //store results to model
+  scope.schedule = { schedules: schedule.schedules, exceptions: schedule.exceptions };
+  // scope.occurences = occurences;
+  //return occurences;
+};
+
+EventSchema.statics.calculateOccurrences = function(event, futureRecurring) {
+  // set later to use local time
+  later.date.localTime();
+  // console.log(event);
+  let scope = event,
+    occurences = [],
+    futureOccurencesCount,
+    schedule = event.schedule;
+  
+  
+  if (typeof schedule == 'undefined')
+    return null;
+
+  //1000 occurences will be calculated -- 
+  //well i think 1000 is a default value
+  //anyway  
+  futureOccurencesCount = futureRecurring || 1000;
+  console.log('calculating occurences...');
+  // console.log(futureOccurencesCount);
   //calculate occurences
   if (scope.repeatEnd != null)
     occurences =
     later.schedule(schedule)
-    .next(futureOccurencesCount, scope.startDate, scope.repeatEnd);
+    .next(futureOccurencesCount, scope.start, scope.repeatEnd);
   else
     occurences =
     later.schedule(schedule)
-    .next(futureOccurencesCount, scope.startDate);
+    .next(futureOccurencesCount, scope.start);
 
-  //store results to model
-  scope.schedule = { schedules: schedule.schedules, exceptions: schedule.exceptions };
-  scope.occurences = occurences;
+  //scope.occurences = occurences;
   return occurences;
-};
+}
 
 module.exports = mongoose.model('Event', EventSchema);

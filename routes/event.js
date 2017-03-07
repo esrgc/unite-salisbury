@@ -17,6 +17,9 @@ var isLoggedIn = domain.authentication.isLoggedIn;
 var http = require('http');
 geoCoder.browser = false; //for windows
 
+var _ = require('lodash');
+var moment = require('moment');
+
 
 //middle ware to check if user is logged in
 router.use(isLoggedIn);
@@ -35,6 +38,99 @@ router.get('/', function(req, res) {
 
 router.get('/index', function(req, res) {
   res.render('event/index', { title: 'Event Map', message: req.flash('message') });
+});
+
+//event feed for calendar
+router.get('/feed', function(req, res) {
+  var startStr = req.query.start;
+  var endStr = req.query.end;
+  console.log(`start: ${startStr} end: ${endStr}`);
+  //default start is now
+  let start = startStr ? moment(startStr) : moment(),
+    //default end is a year from now
+    end = endStr ? moment(endStr) : moment().add(1, 'y'),
+    events = [];
+
+  Event.find({}, function(err, data) {
+    if (err) {
+      res.status(err.status || 500);
+      res.render('error', {
+        message: err.message,
+        error: err
+      });
+      return;
+    }
+    //parse events to have have recurring events\
+    _.each(data, (d) => {
+      //console.log(typeof d.calculateOccurences);
+      if (d.repeat) {
+        //calculate schedule if not already calculated
+        // if (typeof d.schedule == 'undefined')
+        //   d.calculateSchedule();
+        //calculate occurences
+        let occurences = Event.calculateOccurrences(d);
+        console.log(occurences);
+        // console.log(occurences);
+        if (occurences == null)
+          return; //no occurrence then move on to the next event
+        //now go through all occurences to replicate 
+        //repeating events
+        _.each(occurences, (occurence) => {
+          //check if the occurence is between start and end time
+          
+          if (moment(occurence).isBetween(start, end)) {
+
+            var e = {};
+            e.id = d._id;
+            e.description = d.description;
+            e.location = d.location;
+            e.address = d.address;
+            e.city = d.city;
+            e.zip = d.zip;
+            e.name = d.name;
+            //calculate new start and end time
+            let startTime = moment(d.start);
+            let endTime = moment(d.end);
+            let eventDuration = endTime.diff(startTime);
+            //new start datetime
+            let newStart = moment(occurence);
+            newStart.hour(startTime.hour());
+            newStart.minute(startTime.minute());
+            //new end datetime
+            let newEnd = newStart.clone().add(eventDuration, 'ms');
+            console.log(`Event duration: ${eventDuration}`);
+
+            //now set displayable datetime
+            e.start = newStart.local().format('dddd, MMMM Do YYYY, h:mm:ss a');
+            e.end = newEnd.local().format('dddd, MMMM Do YYYY, h:mm:ss a');
+
+            //console.log(`start: ${d.start} end: ${d.end}`);
+            console.log(`e.start: ${e.start} e.end: ${e.end}\n`);
+            // e.occurences = occurences;
+            events.push(e);
+          }
+        });
+      } else {
+        var firstOccurence = {}
+        firstOccurence.id = d._id;
+        firstOccurence.description = d.description;
+        firstOccurence.location = d.location;
+        firstOccurence.address = d.address;
+        firstOccurence.city = d.city;
+        firstOccurence.zip = d.zip;
+        firstOccurence.name = d.name;
+        firstOccurence.start =
+          moment(d.start).local().format('dddd, MMMM Do YYYY, h:mm:ss a');
+        firstOccurence.end =
+          moment(d.end).local().format('dddd, MMMM Do YYYY, h:mm:ss a');
+        //push the first occurence
+        events.push(firstOccurence);
+      }
+    });
+    console.log('Success');
+    res.json(events);
+  }); //get all events
+
 });
 
 router.get('/add', function(req, res) {
@@ -113,7 +209,7 @@ router.post('/add', function(req, res) {
           });
         } else {
           //calculate and save model the event recurrence      
-          let occurrences = newEvent.calculateOccurences();
+          newEvent.calculateSchedule();
 
           //now geocode
           geoCoder.search({ //Use geocoder to lookup
@@ -180,10 +276,8 @@ router.post('/add', function(req, res) {
       });
     }
   });
-
-
-
-
 });
+
+
 
 module.exports = router;

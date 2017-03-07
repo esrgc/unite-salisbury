@@ -130,15 +130,15 @@
 	
 	    //initiate datetime picker
 	    // this.$('input[role="datetime-picker"]').datetimepicker();
-	    $('#startDate').datetimepicker();
-	    $('#endDate').datetimepicker({
+	    $('#start').datetimepicker();
+	    $('#end').datetimepicker({
 	      useCurrent: false //Important! See issue #1075
 	    });
-	    $("#startDate").on("dp.change", function (e) {
-	      $('#endDate').data("DateTimePicker").minDate(e.date);
+	    $("#start").on("dp.change", function (e) {
+	      $('#end').data("DateTimePicker").minDate(e.date);
 	    });
-	    $("#endDate").on("dp.change", function (e) {
-	      $('#startDate').data("DateTimePicker").maxDate(e.date);
+	    $("#end").on("dp.change", function (e) {
+	      $('#start').data("DateTimePicker").maxDate(e.date);
 	    });
 	    $("#repeatEnd").datetimepicker({
 	      format: 'MM/DD/YYYY'
