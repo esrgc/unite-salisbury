@@ -40,7 +40,7 @@ var Calendar = Backbone.View.extend({
         console.log(event);
         //register call back and trigger here
         if (typeof scope.onEventClick == 'function')
-          scope.onEventClick.apply(scope, arguments);
+          scope.onEventClick.call(scope, event, jsEvent, view);
       },
       loading: (isLoading, view) => {
         if (!isLoading){

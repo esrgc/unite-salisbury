@@ -614,7 +614,7 @@
 	      if (typeof this.onGeomSelected == 'function') this.onGeomSelected.call(this, feature);
 	    });
 	  },
-	  addClusterMarkers: function addClusterMarkers(data) {
+	  addClusterMarkers: function addClusterMarkers(data, popupTemplate) {
 	    var mapViewer = this.mapViewer;
 	    mapViewer.clearClusterMarkers(); //clear current clustermakers
 	    if (typeof data == 'undefined') data = this.clusterMarkerCache;else this.clusterMarkerCache = data;
@@ -629,9 +629,7 @@
 	    //add new cluster markers
 	    _.each(data, function (d) {
 	      var m = mapViewer.createMarker(d.y_coord, d.x_coord, {});
-	      m.bindPopup([
-	        //to be filled out
-	      ].join(''), {});
+	      m.bindPopup(d.title, {});
 	      mapViewer.addClusterMarker(m);
 	    });
 	  },
@@ -1018,8 +1016,6 @@
 	  name: 'CalendarView',
 	  el: '#calendar-area',
 	  render: function render() {
-	    var _arguments = arguments;
-	
 	    var scope = this;
 	    this.$('#calendar').fullCalendar({
 	      //init full calendar 
@@ -1044,7 +1040,7 @@
 	      eventClick: function eventClick(event, jsEvent, view) {
 	        console.log(event);
 	        //register call back and trigger here
-	        if (typeof scope.onEventClick == 'function') scope.onEventClick.apply(scope, _arguments);
+	        if (typeof scope.onEventClick == 'function') scope.onEventClick.call(scope, event, jsEvent, view);
 	      },
 	      loading: function loading(isLoading, view) {
 	        if (!isLoading) {
@@ -1099,15 +1095,35 @@
 	    key: 'initialize',
 	    value: function initialize() {
 	      console.log('Initializing...');
+	      var scope = this;
 	      //render map
-	      this._mapView.render();
+	      scope._mapView.render();
 	      //wire event callback for calendar
-	      this._calendarView.onEventsLoaded = function (eventData, view) {
+	      scope._calendarView.onEventsLoaded = function (eventData, view) {
 	        console.log('this event is called from controller!');
 	        console.log(eventData);
+	        var data = _.map(eventData, function (value, index) {
+	          return {
+	            x_coord: value.location.x,
+	            y_coord: value.location.y,
+	            title: value.title
+	          };
+	        });
+	
+	        scope._mapView.addClusterMarkers(data);
+	
+	        /*TO BE WORKED ON*/
+	        //popup template needs to be dynamically passed in
 	      };
+	
+	      scope._calendarView.onEventClick = function (eventDataObj, jsEvent, view) {
+	        var location = eventDataObj.location;
+	        if (typeof location == 'undefined') return;
+	        scope._mapView.zoomToLocation(location.x, location.y);
+	      };
+	
 	      //render calendar
-	      this._calendarView.render();
+	      scope._calendarView.render();
 	    }
 	  }, {
 	    key: 'zoomToLocation',

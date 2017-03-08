@@ -1084,7 +1084,7 @@ var map = Backbone.View.extend({
         this.onGeomSelected.call(this, feature);
     });
   },
-  addClusterMarkers: function(data) {
+  addClusterMarkers: function(data, popupTemplate) {
     var mapViewer = this.mapViewer;
     mapViewer.clearClusterMarkers(); //clear current clustermakers
     if (typeof data == 'undefined')
@@ -1104,9 +1104,7 @@ var map = Backbone.View.extend({
     //add new cluster markers
     _.each(data, function(d) {
       var m = mapViewer.createMarker(d.y_coord, d.x_coord, {});
-      m.bindPopup([
-        //to be filled out
-      ].join(''), {});
+      m.bindPopup(d.title, {});
       mapViewer.addClusterMarker(m);
     });
 

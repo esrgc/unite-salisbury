@@ -18,16 +18,37 @@ class mainController {
   }
   //initialize view components 
   initialize() {
-    console.log('Initializing...')
+    console.log('Initializing...');
+    var scope = this;
       //render map
-    this._mapView.render();
+    scope._mapView.render();
     //wire event callback for calendar
-    this._calendarView.onEventsLoaded = (eventData, view) => {
+    scope._calendarView.onEventsLoaded = (eventData, view) => {
       console.log(`this event is called from controller!`);
       console.log(eventData);
+      let data = _.map(eventData, (value, index) => {
+      	return {
+      		x_coord: value.location.x,
+      		y_coord: value.location.y,
+      		title: value.title
+      	};
+      });
+
+      scope._mapView.addClusterMarkers(data);
+
+      /*TO BE WORKED ON*/
+      //popup template needs to be dynamically passed in
     };
+
+    scope._calendarView.onEventClick = (eventDataObj, jsEvent, view) => {
+    	var location = eventDataObj.location;
+    	if(typeof location == 'undefined')
+    		return;
+    	scope._mapView.zoomToLocation(location.x, location.y);
+    };
+
     //render calendar
-    this._calendarView.render();
+    scope._calendarView.render();
   }
 
   get mapView() {
