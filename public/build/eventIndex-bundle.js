@@ -92,13 +92,18 @@
 	    console.log('Initializing...');
 	    //render map
 	    mapView.render();
+	    //wire event callback for calendar
+	    calendarView.onEventsLoaded = function (eventData, view) {
+	      console.log('this event is called from router');
+	      console.log(eventData);
+	    };
 	    //render calendar
 	    calendarView.render();
 	
-	    return mapView;
+	    // return mapView;
 	  },
 	  initZoom: function initZoom(x, y) {
-	    var mapView = undefined.init();
+	    undefined.init();
 	    mapView.zoomToLocation(x, y);
 	  }
 	});
@@ -1003,26 +1008,56 @@
 	March 2017
 	
 	Calendar view
+	
+	event callbacks: 
+	onEventClick(event, jsEvent, view)
+	onEventsLoaded(eventData, view)
+	
 	*/
 	
 	var Calendar = Backbone.View.extend({
 	  name: 'CalendarView',
 	  el: '#calendar-area',
 	  render: function render() {
+	    var _arguments = arguments;
+	
+	    var scope = this;
 	    this.$('#calendar').fullCalendar({
 	      //init full calendar 
 	      header: {
 	        left: 'prev,next,today',
 	        center: 'title',
-	        right: 'month,basicWeek,basicDay,listMonth'
+	        right: 'month,agendaWeek,agendaDay,listMonth'
 	      },
 	      editable: false,
-	      events: 'feed',
-	      views: {
-	        month: {},
-	        basicWeek: {},
-	        basicDay: {}
+	      eventSources: [
+	      //event feed
+	      {
+	        url: 'feed' // use the `url` property
+	        // color: 'yellow', // an option!
+	        // textColor: 'black' // an option!
 	      }
+	
+	      // any other sources...
+	
+	      ],
+	      eventLimit: true,
+	      eventClick: function eventClick(event, jsEvent, view) {
+	        console.log(event);
+	        //register call back and trigger here
+	        if (typeof scope.onEventClick == 'function') scope.onEventClick.apply(scope, _arguments);
+	      },
+	      loading: function loading(isLoading, view) {
+	        if (!isLoading) {
+	          console.log('done fetching event data!');
+	          var eventData = $('#calendar').fullCalendar('clientEvents');
+	          // console.log(eventData);
+	          if (typeof scope.onEventsLoaded == 'function') {
+	            scope.onEventsLoaded.call(scope, eventData, view);
+	          }
+	        }
+	      }
+	
 	    });
 	  }
 	});

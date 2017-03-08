@@ -3,6 +3,11 @@ Tu Hoang
 March 2017
 
 Calendar view
+
+event callbacks: 
+onEventClick(event, jsEvent, view)
+onEventsLoaded(eventData, view)
+
 */
 
 
@@ -10,21 +15,47 @@ var Calendar = Backbone.View.extend({
   name: 'CalendarView',
   el: '#calendar-area',
   render: function() {
-  	this.$('#calendar').fullCalendar({
-  		//init full calendar 
-  		header: {
-  			left: 'prev,next,today',
-  			center: 'title',
-  			right: 'month,basicWeek,basicDay,listMonth'
-  		},
-  		editable: false,
-  		events: 'feed',
-  		views: {
-  			month:{},
-  			basicWeek: {},
-  			basicDay: {}
-  		}
-  	});
+    var scope = this;
+    this.$('#calendar').fullCalendar({
+      //init full calendar 
+      header: {
+        left: 'prev,next,today',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay,listMonth'
+      },
+      editable: false,
+      eventSources: [
+        //event feed
+        {
+          url: 'feed' // use the `url` property
+            // color: 'yellow', // an option!
+            // textColor: 'black' // an option!
+        }
+
+        // any other sources...
+
+      ],
+      eventLimit: true,
+      eventClick: (event, jsEvent, view) => {
+        console.log(event);
+        //register call back and trigger here
+        if (typeof scope.onEventClick == 'function')
+          scope.onEventClick.apply(scope, arguments);
+      },
+      loading: (isLoading, view) => {
+        if (!isLoading){
+          console.log('done fetching event data!');
+          var eventData = $('#calendar').fullCalendar('clientEvents');
+          // console.log(eventData);
+          if(typeof scope.onEventsLoaded == 'function'){
+          	scope.onEventsLoaded.call(scope, eventData, view);
+          }
+
+        }
+
+      }
+
+    });
   }
 });
 

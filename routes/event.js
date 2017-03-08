@@ -80,14 +80,16 @@ router.get('/feed', function(req, res) {
 
           if (moment(occurence).isBetween(start, end)) {
 
-            var e = {};
-            e.id = d._id;
-            e.description = d.description;
-            e.location = d.location;
-            e.address = d.address;
-            e.city = d.city;
-            e.zip = d.zip;
-            e.name = d.name;
+            var e = {
+              id: d._id,
+              description: d.description,
+              location: d.location,
+              address: d.address,
+              city: d.city,
+              zip: d.zip,
+              title: d.name
+            };
+
             //calculate new start and end time
             let startTime = moment(d.start);
             let endTime = moment(d.end);
@@ -102,7 +104,7 @@ router.get('/feed', function(req, res) {
 
             //now set displayable datetime
             e.start = newStart.local().format();
-            e.end = newEnd.local().format();//.format('dddd, MMMM Do YYYY, h:mm:ss a');
+            e.end = newEnd.local().format(); //.format('dddd, MMMM Do YYYY, h:mm:ss a');
 
             //console.log(`start: ${d.start} end: ${d.end}`);
             console.log(`e.start: ${e.start} e.end: ${e.end}\n`);
@@ -111,18 +113,18 @@ router.get('/feed', function(req, res) {
           }
         });
       } else {
-        var firstOccurence = {}
-        firstOccurence.id = d._id;
-        firstOccurence.description = d.description;
-        firstOccurence.location = d.location;
-        firstOccurence.address = d.address;
-        firstOccurence.city = d.city;
-        firstOccurence.zip = d.zip;
-        firstOccurence.name = d.name;
-        firstOccurence.start =
-          moment(d.start).local().format();
-        firstOccurence.end =
-          moment(d.end).local().format();
+        var firstOccurence = {
+          id: d._id,
+          description: d.description,
+          location: d.location,
+          address: d.address,
+          city: d.city,
+          zip: d.zip,
+          title: d.name,
+          start: moment(d.start).local().format(),
+          end: moment(d.end).local().format()
+        };
+
         //push the first occurence
         events.push(firstOccurence);
       }

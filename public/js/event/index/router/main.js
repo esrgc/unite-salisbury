@@ -18,17 +18,23 @@ var mainRouter = Backbone.Router.extend({
     ':x/:y': 'initZoom'
   },
   init: () => {
-  	console.log('Initializing...')
-  	//render map
-  	mapView.render();
-  	//render calendar
-  	calendarView.render();
+    console.log('Initializing...')
+      //render map
+    mapView.render();
+    //wire event callback for calendar
+    calendarView.onEventsLoaded = (eventData, view) => {
+      console.log(`this event is called from router`);
+      console.log(eventData);
+    };
+    //render calendar
+    calendarView.render();
 
-    return mapView;
+
+    // return mapView;
   },
-  initZoom: (x,y) => {
-  	var mapView = this.init();
-  	mapView.zoomToLocation(x, y);
+  initZoom: (x, y) => {
+    this.init();
+    mapView.zoomToLocation(x, y);
   }
 });
 
