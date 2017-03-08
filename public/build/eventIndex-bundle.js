@@ -72,14 +72,20 @@
 	
 	/*
 	Tu Hoang
+	March 2017
+	
+	main router for event/index page
 	*/
 	
-	var MapView = __webpack_require__(3);
-	var CalendarView = __webpack_require__(8);
+	// var MapView = require('../view/map.js');
+	// var CalendarView = require('../view/calendar');
 	
-	//views
-	var mapView = new MapView();
-	var calendarView = new CalendarView();
+	// //views
+	// var mapView = new MapView();
+	// var calendarView = new CalendarView();
+	
+	var MainController = __webpack_require__(9);
+	var controller = new MainController();
 	
 	//router definition
 	var mainRouter = Backbone.Router.extend({
@@ -90,21 +96,14 @@
 	  },
 	  init: function init() {
 	    console.log('Initializing...');
-	    //render map
-	    mapView.render();
-	    //wire event callback for calendar
-	    calendarView.onEventsLoaded = function (eventData, view) {
-	      console.log('this event is called from router');
-	      console.log(eventData);
-	    };
-	    //render calendar
-	    calendarView.render();
+	    //initialize components
+	    controller.initialize();
 	
-	    // return mapView;
+	    //return controller;
 	  },
 	  initZoom: function initZoom(x, y) {
 	    undefined.init();
-	    mapView.zoomToLocation(x, y);
+	    controller.mapView.zoomToLocation(x, y);
 	  }
 	});
 	
@@ -1063,6 +1062,69 @@
 	});
 	
 	module.exports = Calendar;
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	/*
+	Tu Hoang
+	March 2017
+	
+	Controller class that handles map and calendar view 
+	
+	ES6 rocks
+	*/
+	var MapView = __webpack_require__(3);
+	var CalendarView = __webpack_require__(8);
+	
+	var mainController = function () {
+	  function mainController() {
+	    _classCallCheck(this, mainController);
+	
+	    //views
+	    this._mapView = new MapView();
+	    this._calendarView = new CalendarView();
+	  }
+	  //initialize view components 
+	
+	
+	  _createClass(mainController, [{
+	    key: 'initialize',
+	    value: function initialize() {
+	      console.log('Initializing...');
+	      //render map
+	      this._mapView.render();
+	      //wire event callback for calendar
+	      this._calendarView.onEventsLoaded = function (eventData, view) {
+	        console.log('this event is called from controller!');
+	        console.log(eventData);
+	      };
+	      //render calendar
+	      this._calendarView.render();
+	    }
+	  }, {
+	    key: 'mapView',
+	    get: function get() {
+	      return this._mapView;
+	    }
+	  }, {
+	    key: 'calendarView',
+	    get: function get() {
+	      return this._calendarView;
+	    }
+	  }]);
+	
+	  return mainController;
+	}();
+	
+	module.exports = mainController;
 
 /***/ }
 /******/ ]);

@@ -1,14 +1,19 @@
 /*
 Tu Hoang
+March 2017
+
+main router for event/index page
 */
 
-var MapView = require('../view/map.js');
-var CalendarView = require('../view/calendar');
+// var MapView = require('../view/map.js');
+// var CalendarView = require('../view/calendar');
 
-//views
-var mapView = new MapView();
-var calendarView = new CalendarView();
+// //views
+// var mapView = new MapView();
+// var calendarView = new CalendarView();
 
+var MainController = require('../controller/main');
+var controller = new MainController();
 
 //router definition
 var mainRouter = Backbone.Router.extend({
@@ -19,22 +24,14 @@ var mainRouter = Backbone.Router.extend({
   },
   init: () => {
     console.log('Initializing...')
-      //render map
-    mapView.render();
-    //wire event callback for calendar
-    calendarView.onEventsLoaded = (eventData, view) => {
-      console.log(`this event is called from router`);
-      console.log(eventData);
-    };
-    //render calendar
-    calendarView.render();
+    //initialize components
+    controller.initialize();
 
-
-    // return mapView;
+    //return controller;
   },
   initZoom: (x, y) => {
     this.init();
-    mapView.zoomToLocation(x, y);
+    controller.mapView.zoomToLocation(x, y);
   }
 });
 
