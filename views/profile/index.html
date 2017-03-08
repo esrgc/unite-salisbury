@@ -1,32 +1,27 @@
 <div class="page-wrap">
   <div class="container">
-    <h3>Profile</h3>
-    <hr>
     <div class="row">
-      {{#if message}} 
-        {{#unless err}}
-        <div class="alert alert-success text-center">
-          {{message}}
+      {{#if message}} {{#unless err}}
+      <div class="alert alert-success text-center">
+        {{message}}
+      </div>
+      {{/unless}} {{#if err}}
+      <div class="alert alert-danger text-center">
+        {{message}}
+        <div class="validation-summary-errors">
+          <ul class="list-unstyled">
+            {{#each err.errors}}
+            <li>{{message}}</li>
+            {{/each}}
+          </ul>
         </div>
-        {{/unless}} 
-        {{#if err}}
-          <div class="alert alert-danger text-center">
-            {{message}}
-            <div class="validation-summary-errors">
-              <ul class="list-unstyled">
-                {{#each err.errors}}
-                <li>{{message}}</li>
-                {{/each}}
-              </ul>
-            </div>
-          </div>
-        {{/if}} 
-      {{/if}}
+      </div>
+      {{/if}} {{/if}}
       <div class="col-md-8 col-md-offset-2">
+        <h3>Profile</h3>
         <div class="panel panel-default">
           <div class="panel-heading">
-            <strong>Profile Information</strong>
-            &nbsp;
+            <strong>Profile Information</strong> &nbsp;
             <a href="{{rootPath}}profile/edit"><span class="fa fa-pencil"></span></a>
           </div>
           <div class="panel-body">
@@ -40,7 +35,7 @@
             </dl>
           </div>
           <div class="panel-footer">
-            <a href="{{rootPath}}profile/changePassword"> 
+            <a href="{{rootPath}}profile/changePassword">
               <span class="fa fa-key"></span>&nbsp;Change Password
             </a>
           </div>

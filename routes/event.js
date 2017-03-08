@@ -101,8 +101,8 @@ router.get('/feed', function(req, res) {
             console.log(`Event duration: ${eventDuration}`);
 
             //now set displayable datetime
-            e.start = newStart.local().format('dddd, MMMM Do YYYY, h:mm:ss a');
-            e.end = newEnd.local().format('dddd, MMMM Do YYYY, h:mm:ss a');
+            e.start = newStart.local().format();
+            e.end = newEnd.local().format();//.format('dddd, MMMM Do YYYY, h:mm:ss a');
 
             //console.log(`start: ${d.start} end: ${d.end}`);
             console.log(`e.start: ${e.start} e.end: ${e.end}\n`);
@@ -120,9 +120,9 @@ router.get('/feed', function(req, res) {
         firstOccurence.zip = d.zip;
         firstOccurence.name = d.name;
         firstOccurence.start =
-          moment(d.start).local().format('dddd, MMMM Do YYYY, h:mm:ss a');
+          moment(d.start).local().format();
         firstOccurence.end =
-          moment(d.end).local().format('dddd, MMMM Do YYYY, h:mm:ss a');
+          moment(d.end).local().format();
         //push the first occurence
         events.push(firstOccurence);
       }
@@ -246,6 +246,10 @@ router.post('/add', function(req, res) {
             console.log('After geocoding...')
             console.log(newEvent);
 
+            // res.render('event/add',{
+            //   message: 'validated successfully! can be added',
+            //   event: model
+            // });
             //save event and return
             let p = newEvent.save();
 

@@ -88,6 +88,11 @@ var copy = function(dest, source) {
   return dest;
 };
 
+module.exports = {
+  define: define,
+  extend: extend,
+  copy: copy
+};
 var parseDate = function(d) {
   var date = new Date(d);
   return date.toLocaleDateString()+" "+ date.toLocaleTimeString().replace(/:\d\d /,' ');
@@ -130,13 +135,15 @@ Note: this class is defined using dx library
 implements leaflet API 
 operates foodshed application
 */
+var Class = require('../util/class');
+var MapViewer = require('./mapViewer');
 
-app.Map.LeafletViewer = define({
+var LeafletViewer = Class.define({
   name: 'LeafletViewer',
-  extend: app.Map.MapViewer,
+  extend: MapViewer,
   _className: 'LeafletViewer',
   initialize: function(options) {
-    app.Map.MapViewer.prototype.initialize.apply(this, arguments);
+    MapViewer.prototype.initialize.apply(this, arguments);
     //map setup
     var minimal = L.tileLayer('http://{s}.tiles.mapbox.com/v3/esrgc.map-y9awf40v/{z}/{x}/{y}.png');
     //var satellite = L.tileLayer('http://{s}.tiles.mapbox.com/v3/esrgc.map-0y6ifl91/{z}/{x}/{y}.png');
@@ -315,6 +322,7 @@ app.Map.LeafletViewer = define({
 
 });
 
+module.exports = LeafletViewer;
 /*
 Author: Tu hoang
 ESRGC
@@ -323,12 +331,13 @@ Provides base (prototype) functions for mapviewer
 This class implement leaflet API
 */
 
+var Class = require('../util/class');
 
-app.Map.MapViewer = define({
+var MapViewer = Class.define({
     name: 'MapViewer',
     _className: 'MapViewer',
     initialize: function(options) {
-      copy(this, options);//copy all options to this class
+      Class.copy(this, options);//copy all options to this class
     },
     zoomToExtent: function(extent) {
         this.map.fitBounds(new L.LatLngBounds(new L.LatLng(extent.xmin, extent.ymin),
@@ -361,7 +370,7 @@ app.Map.MapViewer = define({
 
 });
 
-
+module.exports = MapViewer;
 /**
  * @param {int} The month number, 0 based
  * @param {int} The year, not zero based, required to account for leap years
@@ -589,7 +598,7 @@ app.Collection.BaseCollection = Backbone.Collection.extend({
 
 /*
 Author: Tu Hoang
-ESRGC2015
+ESRGC2017
 
 View Map
 base map view using backbone.js
@@ -607,8 +616,9 @@ onFeatureMouseout -- fired when mouse is out of a layer (geometry)
 
 setMapClickMode -- set selection mode (single or multi)
 */
+var LeafletViewer = require('../../map/leafletViewer');
 
-app.View.Map = Backbone.View.extend({
+var map = Backbone.View.extend({
   name: 'base-map',
   el: '.map',
   type: 'map',
@@ -654,7 +664,7 @@ app.View.Map = Backbone.View.extend({
     console.log(this.name + ' view has been rendered..')
   },
   makeMap: function() {
-    this.mapViewer = new app.Map.LeafletViewer({
+    this.mapViewer = new LeafletViewer({
       el: this.el,
       center: new L.LatLng( 38.3607, -75.5994 ), //salisbury coordinates
       zoomLevel: 10,
@@ -1131,6 +1141,8 @@ app.View.Map = Backbone.View.extend({
     }
   }
 });
+
+module.exports = map;
 
 
 var startup = function(){ 

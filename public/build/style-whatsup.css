@@ -116,6 +116,16 @@
   border: thin;
   min-height: 400px;
 }
+#calendar-area {
+  margin-top: 10px;
+}
+#calendar-area #calendar {
+  background: white;
+  padding: 10px 15px;
+}
+#calendar-area .fc-button-group button {
+  text-transform: capitalize;
+}
 html {
   min-height: 100%;
   width: 100%;
@@ -146,7 +156,7 @@ a {
 }
 .page-wrap .container,
 .page-wrap .container-fluid {
-  padding-top: 40px;
+  padding-top: 12px;
 }
 .jumbotron {
   background-color: #fff;

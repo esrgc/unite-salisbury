@@ -75,7 +75,13 @@
 	*/
 	
 	var MapView = __webpack_require__(3);
+	var CalendarView = __webpack_require__(8);
 	
+	//views
+	var mapView = new MapView();
+	var calendarView = new CalendarView();
+	
+	//router definition
 	var mainRouter = Backbone.Router.extend({
 	  name: 'EventIndex',
 	  routes: {
@@ -84,10 +90,17 @@
 	  },
 	  init: function init() {
 	    console.log('Initializing...');
-	    var mapView = new MapView();
+	    //render map
 	    mapView.render();
+	    //render calendar
+	    calendarView.render();
+	
+	    return mapView;
 	  },
-	  initZoom: function initZoom(x, y) {}
+	  initZoom: function initZoom(x, y) {
+	    var mapView = undefined.init();
+	    mapView.zoomToLocation(x, y);
+	  }
 	});
 	
 	module.exports = mainRouter;
@@ -978,6 +991,43 @@
 	});
 	
 	module.exports = MapViewer;
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	/*
+	Tu Hoang
+	March 2017
+	
+	Calendar view
+	*/
+	
+	var Calendar = Backbone.View.extend({
+	  name: 'CalendarView',
+	  el: '#calendar-area',
+	  render: function render() {
+	    this.$('#calendar').fullCalendar({
+	      //init full calendar 
+	      header: {
+	        left: 'prev,next,today',
+	        center: 'title',
+	        right: 'month,basicWeek,basicDay,listMonth'
+	      },
+	      editable: false,
+	      events: 'feed',
+	      views: {
+	        month: {},
+	        basicWeek: {},
+	        basicDay: {}
+	      }
+	    });
+	  }
+	});
+	
+	module.exports = Calendar;
 
 /***/ }
 /******/ ]);

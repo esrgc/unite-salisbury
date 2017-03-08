@@ -1,6 +1,8 @@
+{{#contentFor 'customCss'}}
 <link href="{{rootPath}}lib/leaflet-0.7.3/leaflet.css" rel="stylesheet">
 <link rel="stylesheet" href="{{rootPath}}lib/fullcalendar/dist/fullcalendar.css" />
 <link rel="stylesheet" type="text/css" href="{{rootPath}}lib/leaflet-cluster/markerCluster.css">
+{{/contentFor}}
 <div class="page-wrap">
   <div class="container-fluid">
     <div class="row">
@@ -34,22 +36,17 @@
     <div class="row">
       <!--Event list-->
       <div class="col-md-12 col-sm-12" id="calendar-area">
-        <h3>Calendar</h3>
+        <div id="calendar"></div>
       </div>
     </div>
   </div>
 </div>
 </div>
-{{> popupTemplate }} {{#contentFor "scripts"}}
+{{> popupTemplate }} 
+{{#contentFor "scripts"}}
 <script type="text/javascript" src="{{rootPath}}lib/leaflet-0.7.3/leaflet.js"></script>
 <script type="text/javascript" src="{{rootPath}}lib/leaflet-cluster/leaflet.markercluster.js"></script>
 <script src="{{rootPath}}lib/moment/min/moment.min.js"></script>
 <script src="{{rootPath}}lib/fullcalendar/dist/fullcalendar.js"></script>
 <script type="text/javascript" src="{{rootPath}}build/eventIndex-bundle.js"></script>
-<script>
-$(function() {
-  if (typeof startup == 'function')
-    startup();
-});
-</script>
 {{/contentFor}}
