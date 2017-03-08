@@ -6,12 +6,13 @@ Provides base (prototype) functions for mapviewer
 This class implement leaflet API
 */
 
+var Class = require('../util/class');
 
-app.Map.MapViewer = define({
+var MapViewer = Class.define({
     name: 'MapViewer',
     _className: 'MapViewer',
     initialize: function(options) {
-      copy(this, options);//copy all options to this class
+      Class.copy(this, options);//copy all options to this class
     },
     zoomToExtent: function(extent) {
         this.map.fitBounds(new L.LatLngBounds(new L.LatLng(extent.xmin, extent.ymin),
@@ -44,3 +45,4 @@ app.Map.MapViewer = define({
 
 });
 
+module.exports = MapViewer;

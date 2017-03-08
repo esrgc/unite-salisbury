@@ -87,3 +87,9 @@ var copy = function(dest, source) {
   }
   return dest;
 };
+
+module.exports = {
+  define: define,
+  extend: extend,
+  copy: copy
+};

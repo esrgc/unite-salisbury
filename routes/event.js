@@ -132,7 +132,7 @@ router.get('/feed', function(req, res) {
   }); //get all events
 
 });
-
+//add event route
 router.get('/add', function(req, res) {
   var newEvent = new Event();
   res.render('event/add', {
@@ -283,6 +283,10 @@ router.post('/add', function(req, res) {
     }
   });
 });
+
+//edit event route
+
+//edit event route (POST)
 
 
 

@@ -7,13 +7,15 @@ Note: this class is defined using dx library
 implements leaflet API 
 operates foodshed application
 */
+var Class = require('../util/class');
+var MapViewer = require('./mapViewer');
 
-app.Map.LeafletViewer = define({
+var LeafletViewer = Class.define({
   name: 'LeafletViewer',
-  extend: app.Map.MapViewer,
+  extend: MapViewer,
   _className: 'LeafletViewer',
   initialize: function(options) {
-    app.Map.MapViewer.prototype.initialize.apply(this, arguments);
+    MapViewer.prototype.initialize.apply(this, arguments);
     //map setup
     var minimal = L.tileLayer('http://{s}.tiles.mapbox.com/v3/esrgc.map-y9awf40v/{z}/{x}/{y}.png');
     //var satellite = L.tileLayer('http://{s}.tiles.mapbox.com/v3/esrgc.map-0y6ifl91/{z}/{x}/{y}.png');
@@ -191,3 +193,5 @@ app.Map.LeafletViewer = define({
   }
 
 });
+
+module.exports = LeafletViewer;

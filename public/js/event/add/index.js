@@ -7,7 +7,7 @@ add event script
 */
 
 
-var AddEvent = require('./view/addEvent.js');
+var AddEvent = require('./view/addEvent');
 
 let startup = function() {
 	

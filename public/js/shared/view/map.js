@@ -1,6 +1,6 @@
 /*
 Author: Tu Hoang
-ESRGC2015
+ESRGC2017
 
 View Map
 base map view using backbone.js
@@ -18,8 +18,9 @@ onFeatureMouseout -- fired when mouse is out of a layer (geometry)
 
 setMapClickMode -- set selection mode (single or multi)
 */
+var LeafletViewer = require('../../map/leafletViewer');
 
-app.View.Map = Backbone.View.extend({
+var map = Backbone.View.extend({
   name: 'base-map',
   el: '.map',
   type: 'map',
@@ -65,7 +66,7 @@ app.View.Map = Backbone.View.extend({
     console.log(this.name + ' view has been rendered..')
   },
   makeMap: function() {
-    this.mapViewer = new app.Map.LeafletViewer({
+    this.mapViewer = new LeafletViewer({
       el: this.el,
       center: new L.LatLng( 38.3607, -75.5994 ), //salisbury coordinates
       zoomLevel: 10,
@@ -542,3 +543,5 @@ app.View.Map = Backbone.View.extend({
     }
   }
 });
+
+module.exports = map;
