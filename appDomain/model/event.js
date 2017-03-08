@@ -195,13 +195,13 @@ EventSchema.methods.calculateSchedule = function() {
 
 EventSchema.statics.calculateOccurrences = function(event, futureRecurring) {
   // set later to use local time
-  later.date.localTime();
+  //later.date.localTime();
   // console.log(event);
   let scope = event,
     occurences = [],
     futureOccurencesCount,
     schedule = event.schedule;
-  
+  console.log(scope.start);
   
   if (typeof schedule == 'undefined')
     return null;

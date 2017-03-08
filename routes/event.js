@@ -77,7 +77,7 @@ router.get('/feed', function(req, res) {
         //repeating events
         _.each(occurences, (occurence) => {
           //check if the occurence is between start and end time
-          
+
           if (moment(occurence).isBetween(start, end)) {
 
             var e = {};
@@ -135,7 +135,13 @@ router.get('/feed', function(req, res) {
 
 router.get('/add', function(req, res) {
   var newEvent = new Event();
-  res.render('event/add', { title: 'New Event', event: newEvent });
+  res.render('event/add', {
+    title: 'New Event',
+    event: {
+      monthlyOnType: 'dayOfMonth',
+      every: 1
+    }
+  });
 });
 
 //post for add event
