@@ -31,7 +31,7 @@ var mainRouter = Backbone.Router.extend({
   },
   initZoom: (x, y) => {
     this.init();
-    controller.mapView.zoomToLocation(x, y);
+    controller.zoomToLocation(x, y);
   }
 });
 

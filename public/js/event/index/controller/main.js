@@ -37,6 +37,10 @@ class mainController {
   get calendarView() {
     return this._calendarView;
   }
+
+  zoomToLocation(x, y) {
+  	this._mapView.zoomToLocation(x, y);
+  }
 }
 
 module.exports = mainController;

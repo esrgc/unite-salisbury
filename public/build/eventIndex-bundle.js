@@ -103,7 +103,7 @@
 	  },
 	  initZoom: function initZoom(x, y) {
 	    undefined.init();
-	    controller.mapView.zoomToLocation(x, y);
+	    controller.zoomToLocation(x, y);
 	  }
 	});
 	
@@ -1108,6 +1108,11 @@
 	      };
 	      //render calendar
 	      this._calendarView.render();
+	    }
+	  }, {
+	    key: 'zoomToLocation',
+	    value: function zoomToLocation(x, y) {
+	      this._mapView.zoomToLocation(x, y);
 	    }
 	  }, {
 	    key: 'mapView',
