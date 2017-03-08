@@ -1071,7 +1071,7 @@ var map = Backbone.View.extend({
     //add new cluster markers
     _.each(data, function(d) {
       var m = mapViewer.createMarker(d.y_coord, d.x_coord, {});
-      m.bindPopup(d.title, {});
+      m.bindPopup(d.template, {});
       mapViewer.addClusterMarker(m);
     });
 
@@ -1087,11 +1087,12 @@ var map = Backbone.View.extend({
     else
       this.addClusterMarkers(); //passing no param to add the cached marker data
   },
-  zoomToLocation: function(lon, lat) {
+  zoomToLocation: function(lon, lat, level) {
+    let lvl = level || 14;
     this.mapViewer.zoomToPoint({
       x: lon,
       y: lat
-    }, 14);
+    }, lvl);
   },
   setMapClickMode: function(mode) {
     if (mode == 'single')

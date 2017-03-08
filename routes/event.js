@@ -69,7 +69,7 @@ router.get('/feed', function(req, res) {
         //   d.calculateSchedule();
         //calculate occurences
         let occurences = Event.calculateOccurrences(d);
-        console.log(occurences);
+        // console.log(occurences);
         // console.log(occurences);
         if (occurences == null)
           return; //no occurrence then move on to the next event
@@ -86,6 +86,7 @@ router.get('/feed', function(req, res) {
               location: d.location,
               address: d.address,
               city: d.city,
+              state: d.state,
               zip: d.zip,
               title: d.name
             };
@@ -119,6 +120,7 @@ router.get('/feed', function(req, res) {
           location: d.location,
           address: d.address,
           city: d.city,
+          state: d.state,
           zip: d.zip,
           title: d.name,
           start: moment(d.start).local().format(),

@@ -126,6 +126,14 @@
 #calendar-area .fc-button-group button {
   text-transform: capitalize;
 }
+#calendar-area .fc-event-container,
+#calendar-area .fc-list-item {
+  cursor: pointer;
+}
+#calendar-area .fc-event-container .fc-content:hover,
+#calendar-area .fc-list-item .fc-content:hover {
+  background-color: #8B9FC4;
+}
 html {
   min-height: 100%;
   width: 100%;

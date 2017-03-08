@@ -629,7 +629,7 @@
 	    //add new cluster markers
 	    _.each(data, function (d) {
 	      var m = mapViewer.createMarker(d.y_coord, d.x_coord, {});
-	      m.bindPopup(d.title, {});
+	      m.bindPopup(d.template, {});
 	      mapViewer.addClusterMarker(m);
 	    });
 	  },
@@ -641,11 +641,12 @@
 	    this.showMarkers = value;
 	    if (!value) this.clearClusterMarkers();else this.addClusterMarkers(); //passing no param to add the cached marker data
 	  },
-	  zoomToLocation: function zoomToLocation(lon, lat) {
+	  zoomToLocation: function zoomToLocation(lon, lat, level) {
+	    var lvl = level || 14;
 	    this.mapViewer.zoomToPoint({
 	      x: lon,
 	      y: lat
-	    }, 14);
+	    }, lvl);
 	  },
 	  setMapClickMode: function setMapClickMode(mode) {
 	    if (mode == 'single') this.singleSelect = true;else if (mode == 'multi') this.singleSelect = false;else {
@@ -1103,10 +1104,12 @@
 	        console.log('this event is called from controller!');
 	        console.log(eventData);
 	        var data = _.map(eventData, function (value, index) {
+	          var start = value.start.local().format('dddd, MMMM Do YYYY, h:mm:ss a');
+	          var end = value.end != null ? value.end.local().format('dddd, MMMM Do YYYY, h: mm: ss a') : '';
 	          return {
 	            x_coord: value.location.x,
 	            y_coord: value.location.y,
-	            title: value.title
+	            template: '\n      \t\t\t<h4>' + value.title + '</h4>\n      \t\t\t<p>\n      \t\t\t\t<strong>Start</strong>: ' + start + ' <br/>\n      \t\t\t\t<strong>End</strong>: ' + end + ' <br/>\n      \t\t\t\t<strong>Description</strong>: ' + value.description + ' <br/>\n      \t\t\t\t<strong>Location</strong>: ' + value.address + ' ' + value.city + ' ' + value.state + ' ' + value.zip + '\n      \t\t\t</p>\n      \t\t'
 	          };
 	        });
 	
@@ -1128,7 +1131,7 @@
 	  }, {
 	    key: 'zoomToLocation',
 	    value: function zoomToLocation(x, y) {
-	      this._mapView.zoomToLocation(x, y);
+	      this._mapView.zoomToLocation(x, y, 16);
 	    }
 	  }, {
 	    key: 'mapView',

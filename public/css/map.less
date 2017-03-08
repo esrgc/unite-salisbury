@@ -10,9 +10,17 @@
     background: white;
     padding: 10px 15px;
   }
-  .fc-button-group{
-  	button{
-  		text-transform: capitalize;
-  	}
+  .fc-button-group {
+    button {
+      text-transform: capitalize;
+    }
+  }
+  .fc-event-container, .fc-list-item {
+    cursor: pointer;
+    .fc-content {
+      &:hover {
+        background-color: #8B9FC4;
+      }
+    }
   }
 }
