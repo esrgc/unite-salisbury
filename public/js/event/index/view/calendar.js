@@ -36,6 +36,11 @@ var Calendar = Backbone.View.extend({
 
       ],
       eventLimit: true,
+      eventMouseover: (event, jsEvent, view) => {
+        //register call back and trigger here
+        if (typeof scope.onEventMouseOver == 'function')
+          scope.onEventMouseOver.call(scope, event, jsEvent, view);
+      },
       eventClick: (event, jsEvent, view) => {
         console.log(event);
         //register call back and trigger here

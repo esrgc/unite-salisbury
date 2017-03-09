@@ -2,37 +2,42 @@
 <link href="{{rootPath}}lib/leaflet-0.7.3/leaflet.css" rel="stylesheet">
 <link rel="stylesheet" href="{{rootPath}}lib/fullcalendar/dist/fullcalendar.css" />
 <link rel="stylesheet" type="text/css" href="{{rootPath}}lib/leaflet-cluster/markerCluster.css">
-<link rel="stylesheet" type="text/css" href="{{rootPath}}lib/leaflet-cluster/markerCluster.Default.css">
-{{/contentFor}}
+<link rel="stylesheet" type="text/css" href="{{rootPath}}lib/leaflet-cluster/markerCluster.Default.css"> {{/contentFor}}
 <div class="page-wrap">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-        {{#if message}} 
-        	{{#unless err}}
-		        <div class="alert alert-success text-center">
-		          {{message}}
-		        </div>
-        	{{/unless}} 
-        	{{#if err}}
-		        <div class="alert alert-danger text-center">
-		          <ul class="list-unstyled">
-		            {{message}} 
-		            {{#each err.errors}}
-		            	<li>{{message}}</li>
-		            {{/each}}
-		          </ul>
-		        </div>
-	        {{/if}} 
-        {{/if}}
+        {{#if message}} {{#unless err}}
+        <div class="alert alert-success text-center">
+          {{message}}
+        </div>
+        {{/unless}} {{#if err}}
+        <div class="alert alert-danger text-center">
+          <ul class="list-unstyled">
+            {{message}} {{#each err.errors}}
+            <li>{{message}}</li>
+            {{/each}}
+          </ul>
+        </div>
+        {{/if}} {{/if}}
       </div>
     </div>
+    {{#if user}}
+    <div class="row">
+      <div class="col-md-12">
+        <p class="text-right">
+          <a href="add" class="btn btn-default btn-xs"><i class="fa fa-plus"></i> Add EVent</a>
+          <a href="manage" class="btn btn-default btn-xs"><i class="fa fa-list"></i> Manage EVents</a>
+        </p>
+      </div>
+    </div>
+    {{/if}}
     <div class="row">
       <div class="col-md-12">
         <div class="map" id="unite-map">
           <!--Map area-->
         </div>
-      </div>     
+      </div>
     </div>
     <div class="row">
       <!--Event list-->
@@ -43,8 +48,7 @@
   </div>
 </div>
 </div>
-{{> popupTemplate }} 
-{{#contentFor "scripts"}}
+{{> popupTemplate }} {{#contentFor "scripts"}}
 <script type="text/javascript" src="{{rootPath}}lib/leaflet-0.7.3/leaflet.js"></script>
 <script type="text/javascript" src="{{rootPath}}lib/leaflet-cluster/leaflet.markercluster.js"></script>
 <script src="{{rootPath}}lib/moment/min/moment.min.js"></script>

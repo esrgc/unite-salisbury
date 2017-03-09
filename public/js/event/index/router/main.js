@@ -23,7 +23,6 @@ var mainRouter = Backbone.Router.extend({
     ':x/:y': 'initZoom'
   },
   init: () => {
-    console.log('Initializing...')
     //initialize components
     controller.initialize();
 

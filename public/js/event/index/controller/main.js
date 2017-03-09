@@ -26,6 +26,7 @@ class mainController {
     scope._calendarView.onEventsLoaded = (eventData, view) => {
       console.log(`this event is called from controller!`);
       console.log(eventData);
+
       let data = _.map(eventData, (value, index) => {
         let start = value.start.local().format('dddd, MMMM Do YYYY, h:mm:ss a');
         let end = value.end != null ?
@@ -39,7 +40,7 @@ class mainController {
       				<strong>Start</strong>: ${start} <br/>
       				<strong>End</strong>: ${end} <br/>
       				<strong>Description</strong>: ${value.description} <br/>
-      				<strong>Location</strong>: ${value.address} ${value.city} ${value.state} ${value.zip}
+      				<strong>Location</strong>: ${value.address} ${value.city}, ${value.state} ${value.zip}
       			</p>
       		`
         };
@@ -47,15 +48,17 @@ class mainController {
 
       scope._mapView.addClusterMarkers(data);
 
-      /*TO BE WORKED ON*/
-      //popup template needs to be dynamically passed in
     };
 
-    scope._calendarView.onEventClick = (eventDataObj, jsEvent, view) => {
-      var location = eventDataObj.location;
+    scope._calendarView.onEventClick = (event, jsEvent, view) => {
+    	
+    	var location = event.location;
       if (typeof location == 'undefined')
         return;
       scope._mapView.zoomToLocation(location.x, location.y);
+    };
+    scope._calendarView.onEventMouseOver = (event, jsEvent, view) => {
+      //for editing
     };
 
     //render calendar

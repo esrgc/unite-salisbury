@@ -84,7 +84,7 @@
 	// var mapView = new MapView();
 	// var calendarView = new CalendarView();
 	
-	var MainController = __webpack_require__(9);
+	var MainController = __webpack_require__(3);
 	var controller = new MainController();
 	
 	//router definition
@@ -95,7 +95,6 @@
 	    ':x/:y': 'initZoom'
 	  },
 	  init: function init() {
-	    console.log('Initializing...');
 	    //initialize components
 	    controller.initialize();
 	
@@ -111,6 +110,98 @@
 
 /***/ },
 /* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	/*
+	Tu Hoang
+	March 2017
+	
+	Controller class that handles map and calendar view 
+	
+	ES6 rocks
+	*/
+	var MapView = __webpack_require__(4);
+	var CalendarView = __webpack_require__(9);
+	
+	var mainController = function () {
+	  function mainController() {
+	    _classCallCheck(this, mainController);
+	
+	    //views
+	    this._mapView = new MapView();
+	    this._calendarView = new CalendarView();
+	  }
+	  //initialize view components 
+	
+	
+	  _createClass(mainController, [{
+	    key: 'initialize',
+	    value: function initialize() {
+	      console.log('Initializing...');
+	      var scope = this;
+	      //render map
+	      scope._mapView.render();
+	      //wire event callback for calendar
+	      scope._calendarView.onEventsLoaded = function (eventData, view) {
+	        console.log('this event is called from controller!');
+	        console.log(eventData);
+	
+	        var data = _.map(eventData, function (value, index) {
+	          var start = value.start.local().format('dddd, MMMM Do YYYY, h:mm:ss a');
+	          var end = value.end != null ? value.end.local().format('dddd, MMMM Do YYYY, h: mm: ss a') : '';
+	          return {
+	            x_coord: value.location.x,
+	            y_coord: value.location.y,
+	            template: '\n      \t\t\t<h4>' + value.title + '</h4>\n      \t\t\t<p>\n      \t\t\t\t<strong>Start</strong>: ' + start + ' <br/>\n      \t\t\t\t<strong>End</strong>: ' + end + ' <br/>\n      \t\t\t\t<strong>Description</strong>: ' + value.description + ' <br/>\n      \t\t\t\t<strong>Location</strong>: ' + value.address + ' ' + value.city + ', ' + value.state + ' ' + value.zip + '\n      \t\t\t</p>\n      \t\t'
+	          };
+	        });
+	
+	        scope._mapView.addClusterMarkers(data);
+	      };
+	
+	      scope._calendarView.onEventClick = function (event, jsEvent, view) {
+	
+	        var location = event.location;
+	        if (typeof location == 'undefined') return;
+	        scope._mapView.zoomToLocation(location.x, location.y);
+	      };
+	      scope._calendarView.onEventMouseOver = function (event, jsEvent, view) {
+	        //for editing
+	      };
+	
+	      //render calendar
+	      scope._calendarView.render();
+	    }
+	  }, {
+	    key: 'zoomToLocation',
+	    value: function zoomToLocation(x, y) {
+	      this._mapView.zoomToLocation(x, y, 16);
+	    }
+	  }, {
+	    key: 'mapView',
+	    get: function get() {
+	      return this._mapView;
+	    }
+	  }, {
+	    key: 'calendarView',
+	    get: function get() {
+	      return this._calendarView;
+	    }
+	  }]);
+	
+	  return mainController;
+	}();
+	
+	module.exports = mainController;
+
+/***/ },
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -133,7 +224,7 @@
 	
 	setMapClickMode -- set selection mode (single or multi)
 	*/
-	var BaseMap = __webpack_require__(4);
+	var BaseMap = __webpack_require__(5);
 	
 	var map = BaseMap.extend({
 	  name: 'unite-map',
@@ -151,7 +242,7 @@
 	module.exports = map;
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -176,7 +267,7 @@
 	
 	setMapClickMode -- set selection mode (single or multi)
 	*/
-	var LeafletViewer = __webpack_require__(5);
+	var LeafletViewer = __webpack_require__(6);
 	
 	var map = Backbone.View.extend({
 	  name: 'base-map',
@@ -658,7 +749,7 @@
 	module.exports = map;
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -672,8 +763,8 @@
 	implements leaflet API 
 	operates foodshed application
 	*/
-	var Class = __webpack_require__(6);
-	var MapViewer = __webpack_require__(7);
+	var Class = __webpack_require__(7);
+	var MapViewer = __webpack_require__(8);
 	
 	var LeafletViewer = Class.define({
 	  name: 'LeafletViewer',
@@ -846,7 +937,7 @@
 	module.exports = LeafletViewer;
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -946,7 +1037,7 @@
 	};
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -959,7 +1050,7 @@
 	This class implement leaflet API
 	*/
 	
-	var Class = __webpack_require__(6);
+	var Class = __webpack_require__(7);
 	
 	var MapViewer = Class.define({
 	    name: 'MapViewer',
@@ -996,7 +1087,7 @@
 	module.exports = MapViewer;
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1038,6 +1129,10 @@
 	
 	      ],
 	      eventLimit: true,
+	      eventMouseover: function eventMouseover(event, jsEvent, view) {
+	        //register call back and trigger here
+	        if (typeof scope.onEventMouseOver == 'function') scope.onEventMouseOver.call(scope, event, jsEvent, view);
+	      },
 	      eventClick: function eventClick(event, jsEvent, view) {
 	        console.log(event);
 	        //register call back and trigger here
@@ -1059,96 +1154,6 @@
 	});
 	
 	module.exports = Calendar;
-
-/***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	/*
-	Tu Hoang
-	March 2017
-	
-	Controller class that handles map and calendar view 
-	
-	ES6 rocks
-	*/
-	var MapView = __webpack_require__(3);
-	var CalendarView = __webpack_require__(8);
-	
-	var mainController = function () {
-	  function mainController() {
-	    _classCallCheck(this, mainController);
-	
-	    //views
-	    this._mapView = new MapView();
-	    this._calendarView = new CalendarView();
-	  }
-	  //initialize view components 
-	
-	
-	  _createClass(mainController, [{
-	    key: 'initialize',
-	    value: function initialize() {
-	      console.log('Initializing...');
-	      var scope = this;
-	      //render map
-	      scope._mapView.render();
-	      //wire event callback for calendar
-	      scope._calendarView.onEventsLoaded = function (eventData, view) {
-	        console.log('this event is called from controller!');
-	        console.log(eventData);
-	        var data = _.map(eventData, function (value, index) {
-	          var start = value.start.local().format('dddd, MMMM Do YYYY, h:mm:ss a');
-	          var end = value.end != null ? value.end.local().format('dddd, MMMM Do YYYY, h: mm: ss a') : '';
-	          return {
-	            x_coord: value.location.x,
-	            y_coord: value.location.y,
-	            template: '\n      \t\t\t<h4>' + value.title + '</h4>\n      \t\t\t<p>\n      \t\t\t\t<strong>Start</strong>: ' + start + ' <br/>\n      \t\t\t\t<strong>End</strong>: ' + end + ' <br/>\n      \t\t\t\t<strong>Description</strong>: ' + value.description + ' <br/>\n      \t\t\t\t<strong>Location</strong>: ' + value.address + ' ' + value.city + ' ' + value.state + ' ' + value.zip + '\n      \t\t\t</p>\n      \t\t'
-	          };
-	        });
-	
-	        scope._mapView.addClusterMarkers(data);
-	
-	        /*TO BE WORKED ON*/
-	        //popup template needs to be dynamically passed in
-	      };
-	
-	      scope._calendarView.onEventClick = function (eventDataObj, jsEvent, view) {
-	        var location = eventDataObj.location;
-	        if (typeof location == 'undefined') return;
-	        scope._mapView.zoomToLocation(location.x, location.y);
-	      };
-	
-	      //render calendar
-	      scope._calendarView.render();
-	    }
-	  }, {
-	    key: 'zoomToLocation',
-	    value: function zoomToLocation(x, y) {
-	      this._mapView.zoomToLocation(x, y, 16);
-	    }
-	  }, {
-	    key: 'mapView',
-	    get: function get() {
-	      return this._mapView;
-	    }
-	  }, {
-	    key: 'calendarView',
-	    get: function get() {
-	      return this._calendarView;
-	    }
-	  }]);
-	
-	  return mainController;
-	}();
-	
-	module.exports = mainController;
 
 /***/ }
 /******/ ]);

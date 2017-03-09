@@ -22,7 +22,7 @@ var moment = require('moment');
 
 
 //middle ware to check if user is logged in
-router.use(isLoggedIn);
+//router.use(isLoggedIn);
 
 //set root path (used to render partials)
 var rootPath = '../';
@@ -137,7 +137,7 @@ router.get('/feed', function(req, res) {
 
 });
 //add event route
-router.get('/add', function(req, res) {
+router.get('/add', isLoggedIn, function(req, res) {
   var newEvent = new Event();
   res.render('event/add', {
     title: 'New Event',
@@ -149,7 +149,7 @@ router.get('/add', function(req, res) {
 });
 
 //post for add event
-router.post('/add', function(req, res) {
+router.post('/add', isLoggedIn, function(req, res) {
   var model = req.body;
   console.log(model);
   var newEvent = new Event();

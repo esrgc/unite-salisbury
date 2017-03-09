@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "nodemon server.js",
-    "compile-dev": "webpack",
+    "compile-dev": "webpack -w",
     "compile-prod": "webpack -p"
   },
   "repository": {
