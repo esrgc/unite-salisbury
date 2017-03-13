@@ -546,6 +546,66 @@ router.post('/edit', isLoggedIn, authorized.can('manage event'), function(req, r
       }
     });
   });
+
+
+
+});
+
+
+//delete event 
+router.get('/delete', isLoggedIn, authorized.can('manage event'), function(req, res, next) {
+  var id = req.query.id;
+
+  if (typeof id == 'undefined') {
+    req.flash('message', 'Invalid event ID. ');
+    res.redirect('manage');
+    return;
+  }
+
+  Event.findById(id, function(err, event) {
+    if (err) {
+      result.error = err;
+      console.log(err);
+      req.flash('message', 'Error finding event with id ' + id);
+      return res.redirect('manage');
+    }
+
+    res.render('event/delete', {
+      event: event
+    });
+  });
+});
+
+//delete event post
+router.post('/delete', isLoggedIn, authorized.can('manage event'), function(req, res, next) {
+  var id = req.body.id;
+  if (typeof id == 'undefined') {
+    req.flash('message', 'Invalid event ID. ');
+    res.redirect('manage');
+    return;
+  }
+
+  Event.findById(id, function(err, event) {
+    if (err) {
+      result.error = err;
+      console.log(err);
+      req.flash('message', 'Error finding event with id ' + id);
+      return res.redirect('manage');
+    }
+
+    //event found -> delete it
+    event.remove(function(err) {
+      if (err) {
+        result.error = err;
+        console.log(err);
+        req.flash('message', 'Error deleting event with id ' + id);
+        return res.redirect('manage');
+      }
+
+      req.flash('message', 'Event has been deleted successfully!');
+      res.redirect('manage');
+    });
+  });
 });
 
 

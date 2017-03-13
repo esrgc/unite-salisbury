@@ -89,7 +89,13 @@
                   {{#each data}}
                   <tr>
                     <!-- <td>{{id}}</td> -->
-                    <td><a href="edit?id={{_id}}">{{name}}</a></td>
+                    <td>
+                      <a href="delete?id={{_id}}" class="btn btn-xs btn-danger">
+                        <i class="fa fa-trash-o"></i>
+                      </a>
+                      &nbsp;
+                      <a href="edit?id={{_id}}">{{name}}</a> 
+                    </td>
                     <!-- <td>{{parseDateTime date}}</td> -->
                     <td>{{_creator.firstName}}&nbsp;{{_creator.lastName}}</td>
                     <!-- <td>{{role}}</td> -->
@@ -112,6 +118,13 @@
       <div class="col-md-12">
         <div class="text-center">
           {{{generatePagination this 'manage'}}}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="text-center">
+          <a href="index" class="btn btn-default">Back to Map</a>
         </div>
       </div>
     </div>
