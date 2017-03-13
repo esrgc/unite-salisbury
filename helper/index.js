@@ -171,13 +171,15 @@ module.exports = {
       if (list.length == 0)
         return;
 
-      if(typeof list[0] == 'string')
+      if (typeof list[0] == 'string')
         el = el.toString();
+      else if (typeof list[0] == 'number')
+        el = parseInt(el);
 
       // console.log(`${el} ${list}`);
-      if (list.indexOf(el) > -1) {
-        return options.fn(this);
-      }
+        if (list.indexOf(el) > -1) {
+          return options.fn(this);
+        }
       return options.inverse(this);
     });
 
@@ -187,7 +189,7 @@ module.exports = {
       //console.log(model);
       var html = '';
       for (var i = min; i <= max; i++) {
-        html += options.fn({ i: i , model: model});
+        html += options.fn({ i: i, model: model });
       }
       return html;
     });

@@ -14,6 +14,8 @@ var Event = domain.dataRepository.Event;
 
 var geoCoder = require('../appDomain/mdimapgeocoder');
 var isLoggedIn = domain.authentication.isLoggedIn;
+var authorized = domain.authorization;
+
 var http = require('http');
 geoCoder.browser = false; //for windows
 
@@ -88,7 +90,8 @@ router.get('/feed', function(req, res) {
               city: d.city,
               state: d.state,
               zip: d.zip,
-              title: d.name
+              title: d.name,
+              repeating: true
             };
 
             //calculate new start and end time
@@ -249,6 +252,8 @@ router.post('/add', isLoggedIn, function(req, res) {
             // console.log(occurrences);
             console.log('After geocoding...')
             console.log(newEvent);
+            //saving owner ref
+            newEvent._creator = req.user._id;
 
             // res.render('event/add',{
             //   message: 'validated successfully! can be added',
@@ -292,10 +297,256 @@ router.post('/add', isLoggedIn, function(req, res) {
   });
 });
 
+//manage route
+router.get('/manage', isLoggedIn, function(req, res, next) {
+  var user = req.user;
+  req.events = [];
+  //grab data with paging
+  //data at first page
+  //get query strings
+  var data = req.query;
+
+  //params setup
+  var pageIndex = (data.page - 1) || 0,
+    pageSize = parseInt(data.pageSize) || 10,
+    sortBy = data.sortBy || 'name',
+    order = data.order || 'asc',
+    searchBy = data.searchBy || 'name',
+    search = data.search || '',
+    sortOrder = '';
+
+  //setup sortby order for query criteria
+  if (order == 'desc')
+    sortOrder = '-' + sortBy;
+
+  //retrieve users
+  var query = null;
+
+  if (search != '') { //search
+    var criteria = {};
+    if (user.role == 'admin')
+      criteria._creator = user._id;
+    // criteria[searchBy] = new RegExp('^' + search + '$', "i");
+    criteria[searchBy] = { '$regex': search, '$options': 'i' }
+    query = Event.find(criteria);
+  } else
+    query = Event.find();
+
+  //paging and sort then executes
+  query.skip(pageIndex * pageSize)
+    .limit(pageSize)
+    .populate('_creator')
+    .sort(sortOrder)
+    .exec(function(err, result) {
+      if (err) {
+        console.log(err);
+        req.flash('message', 'Error reading data from database. Please try again!');
+        return res.redirect('index');
+      }
+      //if nothing is wrong render the results
+      console.log('Data returned successfully...');
+      // console.log(result);
+      Event.count(function(err, count) {
+        // console.log(count);
+        //render
+        res.render('event/manage', {
+          message: req.flash('message'),
+          data: result,
+          pageSize: pageSize,
+          page: pageIndex + 1,
+          sortBy: sortBy,
+          order: order,
+          searchBy: searchBy,
+          search: search,
+          pageCount: Math.ceil(parseFloat(count / pageSize)) || 1
+        });
+      });
+    });
+
+
+});
 //edit event route
+router.get('/edit', isLoggedIn, authorized.can('manage event'), function(req, res) {
+  var id = req.query.id;
+  if (typeof id == 'undefined') {
+    req.flash('message', 'No valid ID was provided.');
+    res.redirect('manage');
+  }
 
+  let p = Event.findOne({ _id: id });
+
+  p.then((data) => {
+    let d = data.toObject();
+    //got data 
+    switch (d.frequency) {
+      case 'weekly':
+        d.weeklyDayOfWeek = d.dayOfWeek;
+        break;
+      case 'monthly':
+        if (d.dayOfWeekCount != null)
+          d.monthlyOnType = 'dayOfWeek';
+        else
+          d.monthlyOnType = 'dayOfMonth';
+
+        d.monthlyDayOfMonth = d.dayOfMonth;
+        d.monthlyDayOfWeekCount = d.dayOfWeekCount;
+        d.monthlyDayOfWeek = d.dayOfWeek;
+        break;
+      case 'yearly':
+        d.monthOfYear = d.monthOfYear;
+        d.yearlyDayOfWeekMode = (d.dayOfWeekCount != null).toString();
+        d.yearlyDayOfWeekCount = d.dayOfWeekCount;
+        d.yearlyDayOfWeek = d.dayOfWeek;
+        break
+    };
+    console.log(d);
+    res.render('event/edit', {
+      event: d
+    });
+  }, (err) => {
+    //error occurs
+    req.flash('message', 'Error reading from database...');
+    res.redirect('manage');
+  });
+});
 //edit event route (POST)
+router.post('/edit', isLoggedIn, authorized.can('manage event'), function(req, res) {
+  var model = req.body;
+  let id = model.id;
+  console.log(model);
+  let promise = Event.findOne({ _id: id });
 
+  //copy the model properties
+  promise.then(function(data) {
+    let editingEvent = data;
+
+    console.log('Checking for existing event...');
+    editingEvent = Object.assign(editingEvent, model);
+
+
+    console.log('No existing event...proceeding to create a new one.');
+    //parse recurring event to generate schedule
+    if (editingEvent.repeat) {
+      let frequency = editingEvent.frequency;
+      switch (frequency) {
+        case 'daily':
+          break;
+        case 'weekly':
+          if (typeof model.weeklyDayOfWeek == 'undefined')
+            return res.render('event/edit', {
+              message: 'Please specify day of week for weekly recurring!',
+              err: true,
+              event: model
+            });
+          editingEvent.dayOfWeek = model.weeklyDayOfWeek;
+
+          break;
+        case 'monthly':
+          //day of week
+          if (model.monthlyOnType == 'dayOfWeek') {
+            editingEvent.dayOfWeek = model.monthlyDayOfWeek;
+            editingEvent.dayOfWeekCount = model.monthlyDayOfWeekCount;
+            console.log('day of week count ' + editingEvent.dayOfWeekCount);
+          }
+          //day of month
+          if (model.monthlyOnType == 'dayOfMonth') {
+            editingEvent.dayOfMonth = model.monthlyDayOfMonth;
+          }
+          break;
+        case 'yearly':
+          editingEvent.monthOfYear = model.monthOfYear;
+          if (model.yearlyDayOfWeekMode == 'true') {
+            editingEvent.dayOfWeekCount = model.yearlyDayOfWeekCount;
+            editingEvent.dayOfWeek = model.yearlyDayOfWeek;
+          }
+          break;
+      }
+    }
+    // console.log(model);
+    //validate event
+    editingEvent.validate((err) => {
+      if (err) {
+        //do a flash message here
+        res.render('event/edit', {
+          message: 'Error creating new event. Please try again!',
+          err: err,
+          event: model
+        });
+      } else {
+        //calculate and save model the event recurrence      
+        editingEvent.calculateSchedule();
+
+        //now geocode
+        geoCoder.search({ //Use geocoder to lookup
+          Street: model.aAddress,
+          City: model.city,
+          State: model.state,
+          ZIP: model.zip
+        }, function(err, response) {
+          if (err) {
+            editingEvent.location = null;
+            return;
+          }
+          if (response.candidates.length == 0) { //If no candidates
+            req.flash('eventsMessage', 'Could not find that address, please try again.');
+            editingEvent.location = null;
+            return;
+          }
+          for (var i in response.candidates) {
+            var place = response.candidates[i];
+            if (place.score > 79) {
+              let location = place.location; //Else select first candidate
+              editingEvent.location = location;
+              break;
+            }
+          }
+
+          // console.log(occurrences);
+          console.log('After geocoding...')
+          console.log(editingEvent);
+          //saving owner ref
+          //editingEvent._creator = req.user._id;
+
+          // res.render('event/edit',{
+          //   message: 'validated successfully! can be added',
+          //   event: model
+          // });
+          //save event and return
+          let p = editingEvent.save();
+
+          p.then(function(data) {
+            req.flash('message', `Event ${data.name} was edited successfully!`)
+            res.redirect('manage');
+          }, function(error) {
+            res.render('event/edit', {
+              message: 'Error saving event! Please try again!',
+              err: error,
+              event: model
+            });
+          })
+
+        });
+
+
+        return;
+
+        // if (newEvent) {
+        // newEvent.save((err) => {
+        //   if (err)
+        //     res.render('event/add', {
+        //       event: newEvent,
+        //       message: 'Error saving event...Please try again!'
+        //     }); //do a flash message and redisplay
+        //   else {
+        //     req.flash('message', 'Event added successfully!');
+        //     res.redirect('/'); //redirect to index page;          
+        //   }
+        // });
+        // }
+      }
+    });
+  });
+});
 
 
 module.exports = router;

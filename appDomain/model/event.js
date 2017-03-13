@@ -226,4 +226,6 @@ EventSchema.statics.calculateOccurrences = function(event, futureRecurring) {
   return occurences;
 }
 
+// EventSchema.set('toObject', { getters: true });
+
 module.exports = mongoose.model('Event', EventSchema);

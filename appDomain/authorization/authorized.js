@@ -16,7 +16,7 @@ authorized.role('admin', function(req, done) {
     done(new Error('User was not found'));
   else {
     console.log('Authorizing user now....');
-    console.log('User %s', user.firstName );
+    console.log('User %s', user.firstName);
     if (typeof user.role != 'undefined') {
       console.log('Retrieving role information...');
       console.log(user.role);
@@ -28,22 +28,25 @@ authorized.role('admin', function(req, done) {
   }
 });
 //getter for 'owner role'
-authorized.role('owner', function( req, done ){
-  console.log( req.body );
+authorized.role('editor', function(req, done) {
+  console.log(req.body);
   var user = req.user;
   var eventId = req.body.id;
-  if( typeof user == 'undefined' )
-    done( new Error('User was not found') );
-  else{
-    console.log("Getting owner info", user );
-    for( i in user.events )//For each event id with user
-      if( user.events[i] == eventId ) //Check if match to id requested
-        return done( null , true );//If yes return authorized
-    
-    done( null, false );//Else not authorized
+  if (typeof user == 'undefined')
+    done(new Error('User was not found'));
+  else {
+    if(user.role == 'admin')
+      return done(null, true);
+
+    console.log("Getting owner info", user);    
+    for (i in user.events) //For each event id with user
+      if (user.events[i] == eventId) //Check if match to id requested
+        return done(null, true); //If yes return authorized
+
+    done(null, false); //Else not authorized
   }
-});      
+});
 //action for admin
 authorized.action('access admin', ['admin']);
-authorized.action('manage event', ['owner']);
+authorized.action('manage event', ['editor']);
 module.exports = authorized;

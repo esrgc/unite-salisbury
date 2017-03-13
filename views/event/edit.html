@@ -1,143 +1,360 @@
-
+{{#contentFor 'customCss'}}
+<link rel="stylesheet" href="{{rootPath}}lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" /> {{/contentFor}}
 <div class="page-wrap">
   <div class="container">
-    {{#if message}}
-    {{#unless err}}
-    <div class="alert alert-success text-center">
-      {{message}}
-    </div>
-    {{/unless}}
-    {{#if err}}
-    <div class="alert alert-danger text-center">
-      {{message}}
-      {{#each err.errors}}
-      <li>{{message}}</li>
-      {{/each}}
-    </div>
-    {{/if}}
-    {{/if}}
-    <div class="panel panel-default">    
-      <form action="{{rootPath}}event/edit" class="form-horizontal" method="post">
-        <input name="id" value="{{id}}" type="hidden"/>
-        <div class = "form-group">
-          <div class= "col-md-10 col-md-offset-1">
-            <h3 class="text-center"><i class="fa fa-wrench"></i>&nbsp;Edit Event</h3>
-          </div>
+    <div class="row">
+      <div class="col-md-12">
+        {{#if message}} {{#unless err}}
+        <div class="alert alert-success text-center">
+          {{message}}
         </div>
-
-        <div class = "form-group">
-          <label class="col-md-3 control-label"> Event Title </label>
-          <div class= "col-md-6">
-            <div class="input-group inputLong">
-              <input class="input-validation-error form-control"id="eventTitle" name="eventTitle" value="{{event.name}}"/>
+        {{/unless}} {{#if err}}
+        <div class="alert alert-danger text-center">
+          <ul class="list-unstyled">
+            {{message}} {{#each err.errors}}
+            <li>{{message}}</li>
+            {{/each}}
+          </ul>
+        </div>
+        {{/if}} {{/if}}
+        <h3 class="text-left"><i class="fa fa-calendar"></i>&nbsp;Edit Event</h3>
+        <form action="edit" class="form-horizontal" method="post" id="event-form">
+          <input type="hidden" value="{{event._id}}" name="id"/>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="form-group">
+                <div class="col-md-10 col-md-offset-1">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 control-label">Title</label>
+                <div class="col-md-6">
+                  <input class="form-control" id="eventTitle" name="name" value="{{event.name}}" placeholder="Event name" required />
+                  <!--<span class="label label-default">Required</span>-->
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 control-label">Starts On</label>
+                <div class="col-md-6">
+                  <div class="input-group date" data-provide="datepicker">
+                    <input required class="form-control" id="start" name="start" type="text" value="{{parseDateTime event.start}}" placeholder="MM/DD/YYYY" role="datetime-picker" />
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                  </div>
+                  <!--<span class="label label-default">Required</span>-->
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 control-label">Ends</label>
+                <div class="col-md-6">
+                  <div class="input-group date" data-provide="datepicker">
+                    <input required class="form-control" id="end" name="end" type="text" value="{{parseDateTime event.end}}" placeholder="MM/DD/YYYY" role="datetime-picker" />
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                  </div>
+                  <!--<span class="label label-default">Required</span>-->
+                </div>
+              </div>
+              <!--repeat-->
+              <div class="form-group">
+                <label class="col-md-3 control-label">Repeat</label>
+                <!--cusomized controls to capture repeat event-->
+                <div class="checkbox col-md-1">
+                  <label id="repeat-switch">
+                    <input type="checkbox" name="repeat" {{#if event.repeat}}checked{{/if}}>
+                  </label>
+                </div>
+                <label class="control-label col-md-2">Repeat Ends On</label>
+                <div class="col-md-3">
+                  <div class="input-group date" data-provide="datepicker">
+                    <input class="form-control" id="repeatEnd" name="repeatEnd" type="text" value="{{parseDate event.repeatEnd}}" placeholder="MM/DD/YYYY" data-format="MM/dd/YYYY" />
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                  </div>
+                </div>
+              </div>
+              <!--Frequency, hidden controls -- only displayed when repeat is true-->
+              <div class="switchable {{#if event.repeat}}active{{/if}}" id="repeat-frequency-controls">
+                <div class="form-group">
+                  <label class="col-md-3 control-label">Frequency</label>
+                  <div class="col-md-2">
+                    <select class="form-control" name="frequency" id="frequency-control">
+                      <option {{#ifCond event.frequency 'daily'}}selected{{/ifCond}} value='daily'>Daily</option>
+                      <option {{#ifCond event.frequency 'weekly'}}selected{{/ifCond}} value='weekly'>Weekly</option>
+                      <!-- <option value='biweekly'>Bi-Weekly</option> -->
+                      <option {{#ifCond event.frequency 'monthly'}}selected{{/ifCond}} value='monthly'>Monthly</option>
+                      <option {{#ifCond event.frequency 'yearly'}}selected{{/ifCond}} value='yearly'>Yearly</option>
+                    </select>
+                  </div>
+                  <label class="col-md-1 control-label">Every</label>
+                  <div class="col-md-1">
+                    <input class="form-control" id="every-count" name="every" type="number" min="1" value="{{event.every}}">
+                  </div>
+                  <label class="col-md-1 control-label" id="every-type" style="text-align: left;"></label>
+                </div>
+                <!--OPTIONAL options based on frequency-->
+                <!--Daily-->
+                <!-- <div class="form-group switchable" id="daily-on">
+            </div> -->
+                <!--Weekly-->
+                <div class="form-group switchable detail-frequency {{#ifCond event.frequency 'weekly'}}active{{/ifCond}}" id="weekly-on">
+                  <label class="control-label col-md-3">On</label>
+                  <div class="col-md-9">
+                    <div class="checkbox">
+                      <!--monday-->
+                      <label id="monday-switch">
+                        <input type="checkbox" name="weeklyDayOfWeek" value="2" {{#ifIn '2' event.weeklyDayOfWeek}}checked{{/ifIn}}> Monday
+                      </label>
+                    </div>
+                    <div class="checkbox">
+                      <!--tuesday-->
+                      <label id="tuesday-switch">
+                        <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn '3' event.weeklyDayOfWeek}}checked{{/ifIn}} value="3"> Tuesday
+                      </label>
+                    </div>
+                    <div class="checkbox">
+                      <!--wednesday-->
+                      <label id="wednesday-switch">
+                        <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn '4' event.weeklyDayOfWeek}}checked{{/ifIn}} value="4"> Wednesday
+                      </label>
+                    </div>
+                    <div class="checkbox">
+                      <!--thursday-->
+                      <label id="thursday-switch">
+                        <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn '5' event.weeklyDayOfWeek}}checked{{/ifIn}} value="5"> Thursday
+                      </label>
+                    </div>
+                    <div class="checkbox">
+                      <!--Friday-->
+                      <label id="Friday-switch">
+                        <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn '6' event.weeklyDayOfWeek}}checked{{/ifIn}} value="6"> Friday
+                      </label>
+                    </div>
+                    <div class="checkbox">
+                      <!--Saturday-->
+                      <label id="Saturday-switch">
+                        <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn '7' event.weeklyDayOfWeek}}checked{{/ifIn}} value="7"> Saturday
+                      </label>
+                    </div>
+                    <div class="checkbox">
+                      <!--Sunday-->
+                      <label id="sunday-switch">
+                        <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn '1' event.weeklyDayOfWeek}}checked{{/ifIn}} value="1"> Sunday
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <!--Monthly-->
+                <div class="form-group switchable detail-frequency {{#ifCond event.frequency 'monthly'}}active{{/ifCond}}" id="monthly-on">
+                  <label class="control-label col-md-3">On</label>
+                  <div class="col-md-3">
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="monthlyOnType" value="dayOfMonth" {{#ifCond 'dayOfMonth' event.monthlyOnType}}checked{{/ifCond}}>Date of Month
+                      </label>
+                    </div>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="monthlyOnType" value="dayOfWeek" {{#ifCond 'dayOfWeek' event.monthlyOnType}}checked{{/ifCond}}>Day of Week
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div id="monthly-on-each" class="switchable monthly-freq-type {{#ifCond 'dayOfMonth' event.monthlyOnType}}active{{/ifCond}}">
+                      {{#for 1 31}}
+                      <div class="checkbox">
+                        <!--{{i}}-->
+                        <label id="{{i}}-switch">
+                          <input type="checkbox" name="monthlyDayOfMonth" value="{{i}}" {{#ifIn i model.monthlyDayOfMonth}}checked{{/ifIn}}>{{i}}
+                        </label>
+                      </div>
+                      {{/for}}
+                      <!-- <div class="btn-group btn-group-sm" data-toggle="buttons-radio" role="group" aria-label="1">
+                    {{#for 1 31}}
+                    <button type="button" class="btn btn-default {{#ifCond event.dayOfMonth i}}active{{/ifCond}}" value="{{i}}">{{i}}</button>
+                    {{/for}}
+                  </div> -->
+                      <div id="dayOfMonth-container">
+                        <!--Contains hidden fields for monthly day of month-->
+                      </div>
+                    </div>
+                    <div id="monthly-on-day-of-week" class="switchable monthly-freq-type {{#ifCond 'dayOfWeek' event.monthlyOnType}}active{{/ifCond}}">
+                      <select id="monthly-day-of-week" class="form-control" name="monthlyDayOfWeekCount">
+                        <option value="1" {{#ifCond '1' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>First</option>
+                        <option value="2" {{#ifCond '2' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>Second</option>
+                        <option value="3" {{#ifCond '3' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>Third</option>
+                        <option value="4" {{#ifCond '4' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>Fourth</option>
+                        <option value="5" {{#ifCond '5' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>Fifth</option>
+                        <option value="0" {{#ifCond '0' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>Last</option>
+                      </select>
+                      <select id="monthly-day-of-week" class="form-control" multiple name="monthlyDayOfWeek">
+                        <option value="2" {{#ifIn 2 event.monthlyDayOfWeek}}selected{{/ifIn}}>Monday</option>
+                        <option value="3" {{#ifIn 3 event.monthlyDayOfWeek}}selected{{/ifIn}}>Tuesday</option>
+                        <option value="4" {{#ifIn 4 event.monthlyDayOfWeek}}selected{{/ifIn}}>Wednesday</option>
+                        <option value="5" {{#ifIn 5 event.monthlyDayOfWeek}}selected{{/ifIn}}>Thursday</option>
+                        <option value="6" {{#ifIn 6 event.monthlyDayOfWeek}}selected{{/ifIn}}>Friday</option>
+                        <option value="7" {{#ifIn 7 event.monthlyDayOfWeek}}selected{{/ifIn}}>Saturday</option>
+                        <option value="1" {{#ifIn 1 event.monthlyDayOfWeek}}selected{{/ifIn}}>Sunday</option>
+                      </select>
+                      <small class="text-info">Hold down <kbd>CTRL</kbd> to select multiple items</small>
+                    </div>
+                  </div>
+                  <input type="hidden" name="monthlyOnValue" value="">
+                </div>
+                <!--Yearly-->
+                <div class="detail-frequency switchable {{#ifCond event.frequency 'yearly'}}active{{/ifCond}}" id="yearly-on">
+                  <div class="form-group">
+                    <label class="control-label col-md-3">In</label>
+                    <div class="col-md-4">
+                      <div id="month-of-year" data-toggle="buttons-radio" role="group" aria-label="1">
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" {{#ifIn '1' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="1" />Jan
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" {{#ifIn '2' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="2" />Feb
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" {{#ifIn '3' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="3" />Mar
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" {{#ifIn '4' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="4" />Apr
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" {{#ifIn '5' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="5" />May
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" {{#ifIn '6' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="6" />Jun
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" {{#ifIn '7' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="7" />Jul
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" {{#ifIn '8' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="8" />Aug
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" {{#ifIn '9' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="9" />Sep
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" {{#ifIn '10' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="10" />Oct
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" {{#ifIn '11' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="11" />Nov
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" {{#ifIn '12' event.monthOfYear}}checked{{/ifIn}} name="monthOfYear" value="12" />Dec
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group" id="yearly-day-of-week-count">
+                    <label class="control-label col-md-3">Day of Week</label>
+                    <div class="checkbox col-md-3">
+                      <label id="yearly-day-of-week-count-switch">
+                        <input type="checkbox" name="yearlyDayOfWeekMode" {{#ifCond 'true' event.yearlyDayOfWeekMode}}checked{{/ifCond}} value="true">
+                      </label>
+                    </div>
+                    <div class="col-md-3">
+                      <div id="yearly-on-day-of-week-count-container" class="switchable {{#ifCond 'true' event.yearlyDayOfWeekMode}}active{{/ifCond}}">
+                        <select id="yearly-day-of-week-count" name="yearlyDayOfWeekCount" class="form-control">
+                          <option value="1" {{#ifCond '1' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>First</option>
+                          <option value="2" {{#ifCond '2' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Second</option>
+                          <option value="3" {{#ifCond '3' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Third</option>
+                          <option value="4" {{#ifCond '4' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Fourth</option>
+                          <option value="5" {{#ifCond '5' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Fifth</option>
+                          <option value="0" {{#ifCond '0' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Last</option>
+                        </select>
+                        <select multiple id="yearly-day-of-week" name="yearlyDayOfWeek" class="form-control">
+                          <option value="2" {{#ifIn 2 event.yearlyDayOfWeek}}selected{{/ifIn}}>Monday</option>
+                          <option value="3" {{#ifIn 3 event.yearlyDayOfWeek}}selected{{/ifIn}}>Tuesday</option>
+                          <option value="4" {{#ifIn 4 event.yearlyDayOfWeek}}selected{{/ifIn}}>Wednesday</option>
+                          <option value="5" {{#ifIn 5 event.yearlyDayOfWeek}}selected{{/ifIn}}>Thursday</option>
+                          <option value="6" {{#ifIn 6 event.yearlyDayOfWeek}}selected{{/ifIn}}>Friday</option>
+                          <option value="7" {{#ifIn 7 event.yearlyDayOfWeek}}selected{{/ifIn}}>Saturday</option>
+                          <option value="1" {{#ifIn 1 event.yearlyDayOfWeek}}selected{{/ifIn}}>Sunday</option>
+                        </select>
+                        <small class="text-info">Hold down <kbd>CTRL</kbd> to select multiple items.</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- TO BE IMPLEMENTED -->
+                <div class="form-group">
+                  <div class="col-md-6 col-md-offset-3">
+                    <span class="text-success" id="repeat-summary">Event will occur every 1 day(s)</span> &nbsp;
+                    <span class="text-success" id="repeat-summary-details"></span>
+                  </div>
+                </div>
+              </div>
+              <!--end of repeat-->
+              <div class="form-group">
+                <label class="col-md-3 control-label">Street Address</label>
+                <div class="col-md-6">
+                  <input class="form-control" id="streetAddress" name="address" value="{{event.address}}" placeholder="Event location or address" />
+                  <!--<span class="label label-default">Required</span>-->
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 control-label">City/State/Zip</label>
+                <div class="col-md-3">
+                  <input class="form-control" id="city" name="city" value="{{event.city}}" placeholder="City" />
+                  <!--<span class="label label-default">Required</span>-->
+                </div>
+                <div class="col-md-1">
+                  <input class="form-control" id="state" name="state" value="{{event.state}}" placeholder="MD" />
+                  <!--<span class="label label-default">Required</span>-->
+                </div>
+                <div class="col-md-2">
+                  <input class="form-control" id="zip" name="zip" value="{{event.zip}}" placeholder="21801" />
+                  <!--<span class="label label-default">Required</span>-->
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 control-label">Description</label>
+                <div class="col-md-6">
+                  <div class="input-group inputLong">
+                    <textarea class="form-control" id="description" name="description" placeholder="Event Description..." required>{{event.description}}</textarea>
+                    <!--<span class="label label-default">Required</span>-->
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-6 col-md-offset-3">
+                  <button class="btn btn-primary" id="proceedBtn" type="submit">
+                    Submit
+                  </button>
+                  <a class="btn btn-default" href="manage">Cancel</a>
+                </div>
+              </div>
             </div>
-            <span class="label label-default">Required</span>
           </div>
-        </div>
-
-        <div class = "form-group">
-          <label class="col-md-3 control-label" > Start Date </label>
-          <div class= "col-md-6">
-            <div class="input-group date" data-provide="datepicker">
-              <input class="input-validation-error form-control"id="startDate" name="startDate" type="text" value="{{parseDateForEdit detail.startDate}}"/>
-              <div class="input-group-addon"><span class="glyphicon glyphicon-th"></span></div>
-            </div>
-            <span class="label label-default">Required</span>
-          </div>
-        </div>
-
-
-        <div class = "form-group">
-          <label class="col-md-3 control-label" > Start Time </label>
-          <div class="col-md-6">
-            <div class= "input-group bootstrap-timepicker timepicker">
-              <input class="input-validation-error form-control"id="startTime" name="startTime" type="text" value="{{parseTimeForEdit detail.startDate}}">
-              <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-            </div>
-            <span class="label label-default">Required</span>
-          </div>
-        </div>
-
-        <div class = "form-group">
-          <label class="col-md-3 control-label" > End Date </label>
-          <div class= "col-md-6">
-            <div class="input-group date" data-provide="datepicker">
-              <input class="input-validation-error form-control"id="endDate" name="endDate" type="text" value="{{parseDateForEdit detail.endDate}}" />
-              <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-            </div>
-            <span class="label label-default">Required</span>
-          </div>
-        </div>
-
-        <div class = "form-group">
-          <label class="col-md-3 control-label" > End Time </label>
-          <div class= "col-md-6">
-            <div class="input-group bootstrap-timepicker timepicker">
-              <input class="input-validation-error form-control"id="endTime" name="endTime" type="text" value="{{parseTimeForEdit detail.endDate}}" />
-              <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-            </div>
-            <span class="label label-default">Required</span>
-          </div>
-        </div>
-
-        <div class = "form-group">
-          <label class="col-md-3 control-label" > Street Address </label>
-          <div class= "col-md-6"> 
-            <div class="input-group inputLong">
-              <input class="input-validation-error form-control"id="streetAddress" name="streetAddress" value="{{detail.address}}"/>
-              <span class="label label-default">Required</span>
-            </div>
-          </div>
-        </div>
-        <div class = "form-group">
-          <label class="col-md-3 control-label" > City </label>
-          <div class= "col-md-6">
-            <div class="input-group inputLong">
-              <input class="input-validation-error form-control"id="city" name="city" value="{{detail.city}}"/>
-              <span class="label label-default">Required</span>
-            </div>
-          </div>
-        </div>
-
-        <div class = "form-group">
-          <label class="col-md-3 control-label" > State </label>
-          <div class= "col-md-6">
-            <div class="input-group inputLong">
-              <input class="input-validation-error form-control"id="state" name="state" value="{{detail.state}}"/>
-              <span class="label label-default">Required</span>
-            </div>
-          </div>
-        </div>
-
-        <div class = "form-group">
-          <label class="col-md-3 control-label" > ZIP </label>
-          <div class= "col-md-6">
-            <div class="input-group inputLong">
-              <input class="input-validation-error form-control"id="zip" name="zip" value="{{detail.zip}}" />
-              <span class="label label-default">Required</span>
-            </div>
-          </div>
-        </div>
-
-        <div class = "form-group">
-          <label class="col-md-3 control-label" > Description </label>
-          <div class= "col-md-6">
-            <div class="input-group inputLong">
-              <textarea class="input-validation-error form-control"id="description" name="description" value="{{detail.description}}" ></textarea>
-              <span class="label label-default">Required</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <div class="col-md-6 col-md-offset-3">
-            <button class="btn btn-primary" id="proceedBtn" type="submit">
-              Submit
-            </button>
-            <a class="btn btn-default" href="{{rootPath}}event">Cancel</a>
-          </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
 </div>
+{{#contentFor 'scripts'}}
+<script type="text/javascript" src="{{rootPath}}lib/moment/min/moment.min.js"></script>
+<script type="text/javascript" src="{{rootPath}}lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<script src="{{rootPath}}/build/eventAdd-bundle.js"></script>
+{{/contentFor}}
