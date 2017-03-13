@@ -26,16 +26,23 @@ class mainController {
     scope._calendarView.onEventsLoaded = (eventData, view) => {
       console.log(`this event is called from controller!`);
       console.log(eventData);
-
-      let data = _.map(eventData, (value, index) => {
+      let group = _.groupBy(eventData, (v)=>{return v.id;});
+      let data = _.map(group, (v, index) => {
+        let value = v[0];//only take the first element
         let start = value.start.local().format('dddd, MMMM Do YYYY, h:mm:ss a');
         let end = value.end != null ?
           value.end.local().format('dddd, MMMM Do YYYY, h: mm: ss a') : '';
         return {
+          id: value._id,
           x_coord: value.location.x,
           y_coord: value.location.y,
           template: `
-      			<h4>${value.title}</h4>
+      			<h4>
+              <strong>${value.title}</strong>
+              <small>
+                <a href="edit?id=${value._id}"><i class="fa fa-pencil"></i></a>
+              </small>
+            </h4>
       			<p>
       				<strong>Start</strong>: ${start} <br/>
       				<strong>End</strong>: ${end} <br/>
@@ -45,6 +52,9 @@ class mainController {
       		`
         };
       });
+
+      
+      // console.log(g);
 
       scope._mapView.addClusterMarkers(data);
 

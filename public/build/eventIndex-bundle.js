@@ -151,16 +151,22 @@
 	      scope._calendarView.onEventsLoaded = function (eventData, view) {
 	        console.log('this event is called from controller!');
 	        console.log(eventData);
-	
-	        var data = _.map(eventData, function (value, index) {
+	        var group = _.groupBy(eventData, function (v) {
+	          return v.id;
+	        });
+	        var data = _.map(group, function (v, index) {
+	          var value = v[0]; //only take the first element
 	          var start = value.start.local().format('dddd, MMMM Do YYYY, h:mm:ss a');
 	          var end = value.end != null ? value.end.local().format('dddd, MMMM Do YYYY, h: mm: ss a') : '';
 	          return {
+	            id: value._id,
 	            x_coord: value.location.x,
 	            y_coord: value.location.y,
-	            template: '\n      \t\t\t<h4>' + value.title + '</h4>\n      \t\t\t<p>\n      \t\t\t\t<strong>Start</strong>: ' + start + ' <br/>\n      \t\t\t\t<strong>End</strong>: ' + end + ' <br/>\n      \t\t\t\t<strong>Description</strong>: ' + value.description + ' <br/>\n      \t\t\t\t<strong>Location</strong>: ' + value.address + ' ' + value.city + ', ' + value.state + ' ' + value.zip + '\n      \t\t\t</p>\n      \t\t'
+	            template: '\n      \t\t\t<h4>\n              <strong>' + value.title + '</strong>\n              <small>\n                <a href="edit?id=' + value._id + '"><i class="fa fa-pencil"></i></a>\n              </small>\n            </h4>\n      \t\t\t<p>\n      \t\t\t\t<strong>Start</strong>: ' + start + ' <br/>\n      \t\t\t\t<strong>End</strong>: ' + end + ' <br/>\n      \t\t\t\t<strong>Description</strong>: ' + value.description + ' <br/>\n      \t\t\t\t<strong>Location</strong>: ' + value.address + ' ' + value.city + ', ' + value.state + ' ' + value.zip + '\n      \t\t\t</p>\n      \t\t'
 	          };
 	        });
+	
+	        // console.log(g);
 	
 	        scope._mapView.addClusterMarkers(data);
 	      };
