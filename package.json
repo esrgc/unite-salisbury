@@ -1,6 +1,6 @@
 {
   "name": "whatsup",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "private": true,
   "description": "Events around Salisbury",
   "main": "index.js",
