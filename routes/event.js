@@ -226,7 +226,7 @@ router.post('/add', isLoggedIn, function(req, res) {
 
           //now geocode
           geoCoder.search({ //Use geocoder to lookup
-            Street: model.address,
+            Street: model.address.replace('.', ''),
             City: model.city,
             State: model.state,
             ZIP: model.zip
@@ -478,7 +478,7 @@ router.post('/edit', isLoggedIn, authorized.can('manage event'), function(req, r
 
         //now geocode
         geoCoder.search({ //Use geocoder to lookup
-          Street: model.address,
+          Street: model.address.replace('.', ''),
           City: model.city,
           State: model.state,
           ZIP: model.zip
