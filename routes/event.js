@@ -226,7 +226,7 @@ router.post('/add', isLoggedIn, function(req, res) {
 
           //now geocode
           geoCoder.search({ //Use geocoder to lookup
-            Street: model.aAddress,
+            Street: model.address,
             City: model.city,
             State: model.state,
             ZIP: model.zip
@@ -478,28 +478,32 @@ router.post('/edit', isLoggedIn, authorized.can('manage event'), function(req, r
 
         //now geocode
         geoCoder.search({ //Use geocoder to lookup
-          Street: model.aAddress,
+          Street: model.address,
           City: model.city,
           State: model.state,
           ZIP: model.zip
         }, function(err, response) {
+          console.log(response);
           if (err) {
             editingEvent.location = null;
-            return;
-          }
-          if (response.candidates.length == 0) { //If no candidates
-            req.flash('eventsMessage', 'Could not find that address, please try again.');
-            editingEvent.location = null;
-            return;
-          }
-          for (var i in response.candidates) {
-            var place = response.candidates[i];
-            if (place.score > 79) {
-              let location = place.location; //Else select first candidate
-              editingEvent.location = location;
-              break;
+            // return;
+          } else {
+            if (response.candidates.length == 0) { //If no candidates
+              req.flash('eventsMessage', 'Could not find that address, please try again.');
+              editingEvent.location = null;
+              // return;
+            } else {
+              for (var i in response.candidates) {
+                var place = response.candidates[i];
+                if (place.score > 79) {
+                  let location = place.location; //Else select first candidate
+                  editingEvent.location = location;
+                  break;
+                }
+              }
             }
           }
+
 
           // console.log(occurrences);
           console.log('After geocoding...')

@@ -10,7 +10,8 @@ function MDiMapGeocoder() {
     get_url: {
       protocol: 'http:',
       host: 'geodata.md.gov',
-      pathname: 'imap/rest/services/GeocodeServices/MD_CompositeLocatorWithZIPCodeCentroids/GeocodeServer/findAddressCandidates'
+      //pathname: 'imap/rest/services/GeocodeServices/MD_CompositeLocatorWithZIPCodeCentroids/GeocodeServer/findAddressCandidates'
+      pathname: 'imap/rest/services/GeocodeServices/MD_AddressPointLocator/GeocodeServer/findAddressCandidates'
     }
   }
 
