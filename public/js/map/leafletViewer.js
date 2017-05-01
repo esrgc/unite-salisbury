@@ -4,7 +4,7 @@ ESRGC
 Provides base (prototype) functions for mapviewer
 Note: this class is defined using dx library
 
-implements leaflet API 
+implements leaflet API
 operates foodshed application
 */
 var Class = require('../util/class');
@@ -17,7 +17,7 @@ var LeafletViewer = Class.define({
   initialize: function(options) {
     MapViewer.prototype.initialize.apply(this, arguments);
     //map setup
-    var minimal = L.tileLayer('http://{s}.tiles.mapbox.com/v3/esrgc.map-y9awf40v/{z}/{x}/{y}.png');
+    var minimal = L.tileLayer('https://{s}.tiles.mapbox.com/v3/esrgc.map-y9awf40v/{z}/{x}/{y}.png');
     //var satellite = L.tileLayer('http://{s}.tiles.mapbox.com/v3/esrgc.map-0y6ifl91/{z}/{x}/{y}.png');
 
     var baseMaps = {
