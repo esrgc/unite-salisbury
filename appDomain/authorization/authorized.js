@@ -27,6 +27,8 @@ authorized.role('admin', function(req, done) {
     }
   }
 });
+
+
 //getter for 'owner role'
 authorized.role('editor', function(req, done) {
   console.log(req.body);
@@ -46,7 +48,28 @@ authorized.role('editor', function(req, done) {
     done(null, false); //Else not authorized
   }
 });
+
+//getter for 'approved account'
+authorized.role('approved', function(req, done) {
+  var user = req.user;
+  if (typeof user == 'undefined')
+    done(new Error('User was not found'));
+  else {
+    console.log('Authorizing user now....');
+    console.log('User %s', user.firstName);
+    if (typeof user.approved != 'undefined') {
+      console.log('Retrieving approved information...');
+      console.log(user.approved);
+      done(null, user.approved);
+    } else {
+      console.log('No approved information found...');
+      done(null, false);
+    }
+  }
+});
+
 //action for admin
 authorized.action('access admin', ['admin']);
 authorized.action('manage event', ['editor']);
+authorized.action('create event', ['approved'])
 module.exports = authorized;

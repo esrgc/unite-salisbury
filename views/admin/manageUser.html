@@ -68,6 +68,7 @@
             <div id="user-table">
               <table class="table table-hover">
                 <thead>
+                  
                   <th>
                     {{{generateSortUrl this 'manageUser' 'firstName' 'First Name'}}}
                   </th>
@@ -78,6 +79,9 @@
                     {{{generateSortUrl this 'manageUser' 'email' 'Email'}}}
                   </th>
                   <th>
+                    Status
+                  </th>
+                  <th>
                     {{{generateSortUrl this 'manageUser' 'role' 'Role'}}}
                   </th>
                   <th></th>
@@ -86,9 +90,14 @@
                   {{#each data}}
                   <tr>
                     <!-- <td>{{id}}</td> -->
+                    
                     <td>{{firstName}}</td>
                     <td>{{lastName}}</td>
                     <td>{{email}}</td>
+                    <td>
+                      {{#ifCond approved true}}<span class="label label-success">Approved</span>{{/ifCond}}
+                      {{#ifCond approved false}}<span class="label label-warning">Not approved</span>{{/ifCond}}
+                    </td>
                     <td>{{role}}</td>
                     <td>
                       <div class="btn-group" role="group" aria-label="actions">

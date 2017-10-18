@@ -140,19 +140,19 @@ router.get('/feed', function(req, res) {
 
 });
 //add event route
-router.get('/add', isLoggedIn, function(req, res) {
+router.get('/add', isLoggedIn, authorized.can('create event'), function(req, res) {
   var newEvent = new Event();
   res.render('event/add', {
     title: 'New Event',
     event: {
       monthlyOnType: 'dayOfMonth',
       every: 1
-    }
+    } 
   });
 });
 
 //post for add event
-router.post('/add', isLoggedIn, function(req, res) {
+router.post('/add', isLoggedIn, authorized.can('create event'), function(req, res) {
   var model = req.body;
   console.log(model);
   var newEvent = new Event();
