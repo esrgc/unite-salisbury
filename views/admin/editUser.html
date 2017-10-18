@@ -98,15 +98,18 @@
 
                 <div class="form-group">
                   <label for="firstName" class="col-md-3 control-label">Status</label>
-                  <div class="col-md-6">
+                  <div class="col-md-3">
+                    <select name="approved" id="approved" class="form-control">
+                      <option value="true" {{#ifCond user.approved true}}selected{{/ifCond}}>Approved</option>
+                      <option value="false" {{#ifCond user.approved false}}selected{{/ifCond}}>Not Approved</option>
+                    </select>
                     <p>
-                      {{#ifCond user.approved true}}<span class="label label-success">Approved</span>{{/ifCond}}
-                      {{#ifCond user.approved false}}<span class="label label-warning">Not approved</span>{{/ifCond}}
+                      {{#ifCond user.approved true}}<span class="label label-success">User is approved to post events</span>{{/ifCond}}
+                      {{#ifCond user.approved false}}<span class="label label-warning">User is not approved to post events</span>{{/ifCond}}                      
                     </p>
 
                     <span class="label label-default"></span>
-                    <span class="help-block">
-                      Indicates whether of not user is allowed to post events
+                    <span class="help-block">                      
                       <span class="">
                         <!--validation message-->
                       </span>

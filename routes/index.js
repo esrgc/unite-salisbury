@@ -44,7 +44,7 @@ router.use(function(err, req, res, next) {
     res.status(401)
       .send([
         '<h3>',
-        'Unauthorized Access. Your account does not have enough privilege or not approved to access this area!',
+        'Unauthorized Access. Your account does not have enough privilege or not approved to access this area. Click back to go back to previous page!',
         '</h3>'
       ].join(''));
   } else {
