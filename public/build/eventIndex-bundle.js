@@ -1,2 +1,1166 @@
-!function(e){function t(n){if(o[n])return o[n].exports;var a=o[n]={exports:{},id:n,loaded:!1};return e[n].call(a.exports,a,a.exports,t),a.loaded=!0,a.exports}var o={};return t.m=e,t.c=o,t.p="",t(0)}([function(e,t,o){"use strict";var n=o(4);$(function(){new n;Backbone.history.start(),console.log("App initiated...")})},function(e,t){"use strict";var o=function(e){var t=e,o=t.extend,r=null;return null==o||"undefined"==typeof o?(r=function(){"undefined"!=typeof this.initialize&&this.initialize.apply(this,arguments)},r.prototype=t):(r=function(){var e="function"==typeof this.initialize?this.initialize:"undefined";"function"==typeof e&&e.apply(this,arguments)},n(r,o),a(r.prototype,t)),r},n=function(e,t){var o=function(){};o.prototype=t.prototype,e.prototype=new o,e.prototype.constructor=e,e.parent=t.prototype},a=function(e,t){if(e=e||{},t){for(var o in t){var n=t[o];void 0!==n&&(e[o]=n)}var a="function"==typeof window.Event&&t instanceof window.Event;!a&&t.hasOwnProperty&&t.hasOwnProperty("toString")&&(e.toString=t.toString)}return e};e.exports={define:o,extend:n,copy:a}},,function(e,t,o){"use strict";function n(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var a=function(){function e(e,t){for(var o=0;o<t.length;o++){var n=t[o];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,o,n){return o&&e(t.prototype,o),n&&e(t,n),t}}(),r=o(6),i=o(5),s=function(){function e(){n(this,e),this._mapView=new r,this._calendarView=new i}return a(e,[{key:"initialize",value:function(){console.log("Initializing...");var e=this;e._mapView.render(),e._calendarView.onEventsLoaded=function(t,o){console.log("this event is called from controller!"),console.log(t);var n=_.groupBy(t,function(e){return e.id}),a=_.map(n,function(e,t){var o=e[0],n=o.start.local().format("dddd, MMMM Do YYYY, h:mm:ss a"),a=null!=o.end?o.end.local().format("dddd, MMMM Do YYYY, h: mm: ss a"):"";return{id:o._id,x_coord:o.location.x,y_coord:o.location.y,template:"\n      \t\t\t<h4>\n              <strong>"+o.title+'</strong>\n              <small>\n                <a href="edit?id='+o._id+'"><i class="fa fa-pencil"></i></a>\n              </small>\n            </h4>\n      \t\t\t<p>\n      \t\t\t\t<strong>Start</strong>: '+n+" <br/>\n      \t\t\t\t<strong>End</strong>: "+a+" <br/>\n      \t\t\t\t<strong>Description</strong>: "+o.description+" <br/>\n      \t\t\t\t<strong>Location</strong>: "+o.address+" "+o.city+", "+o.state+" "+o.zip+"\n      \t\t\t</p>\n      \t\t"}});e._mapView.addClusterMarkers(a)},e._calendarView.onEventClick=function(t,o,n){var a=t.location;"undefined"!=typeof a&&e._mapView.zoomToLocation(a.x,a.y)},e._calendarView.onEventMouseOver=function(e,t,o){},e._calendarView.render()}},{key:"zoomToLocation",value:function(e,t){this._mapView.zoomToLocation(e,t,16)}},{key:"mapView",get:function(){return this._mapView}},{key:"calendarView",get:function(){return this._calendarView}}]),e}();e.exports=s},function(e,t,o){"use strict";var n=o(3),a=new n,r=Backbone.Router.extend({name:"EventIndex",routes:{"":"init",":x/:y":"initZoom"},init:function(){a.initialize()},initZoom:function(e,t){(void 0).init(),a.zoomToLocation(e,t)}});e.exports=r},function(e,t){"use strict";var o=Backbone.View.extend({name:"CalendarView",el:"#calendar-area",render:function(){var e=this;this.$("#calendar").fullCalendar({header:{left:"prev,next,today",center:"title",right:"month,agendaWeek,agendaDay,listMonth"},editable:!1,eventSources:[{url:"feed"}],eventLimit:!0,eventMouseover:function(t,o,n){"function"==typeof e.onEventMouseOver&&e.onEventMouseOver.call(e,t,o,n)},eventClick:function(t,o,n){console.log(t),"function"==typeof e.onEventClick&&e.onEventClick.call(e,t,o,n)},loading:function(t,o){if(!t){console.log("done fetching event data!");var n=$("#calendar").fullCalendar("clientEvents");"function"==typeof e.onEventsLoaded&&e.onEventsLoaded.call(e,n,o)}}})}});e.exports=o},function(e,t,o){"use strict";var n=o(9),a=n.extend({name:"unite-map",el:".map",mapData:[],render:function(){var e=this;e.makeMap(),"function"==typeof e.onMapLoaded&&e.onMapLoaded()}});e.exports=a},function(e,t,o){"use strict";var n=o(1),a=o(8),r=n.define({name:"LeafletViewer",extend:a,_className:"LeafletViewer",initialize:function(e){a.prototype.initialize.apply(this,arguments);var t=L.tileLayer("https://{s}.tiles.mapbox.com/v3/esrgc.map-y9awf40v/{z}/{x}/{y}.png"),o={"Base Map":t};this.features=new L.FeatureGroup([]),this.geoJsonFeatures=L.geoJson(),this.clusterGroup=new L.MarkerClusterGroup(this.clusterOptions);var n={Overlays:this.geoJsonFeatures};if(this.map=L.map(this.el,{layers:[t,this.features,this.geoJsonFeatures,this.clusterGroup],center:this.center||new L.LatLng(39,-76.7),zoom:this.zoomLevel||7,scrollWheelZoom:this.scrollZoom||!1}),"undefined"!=typeof this.baseLayers)for(var r in this.baseLayers){var i=this.baseLayers[r];void 0!==i&&(o[r]=i)}var n={Overlays:this.geoJsonFeatures};if("undefined"!=typeof this.overlays)for(var r in this.overlays){var i=this.overlays[r];n[r]=i}},getGeoJsonGroup:function(){return this.geoJsonFeatures},getFeatureGroup:function(){return this.features},addGeoJsonLayer:function(e,t){return"undefined"==typeof e?void console.log("No data found"):(console.log("Adding data to map..."),"undefined"!=this.geoJsonFeatures&&("undefined"==typeof t?this.geoJsonFeatures.addLayer(L.geoJson(e)):this.geoJsonFeatures.addLayer(L.geoJson(e,t))),void console.log("------Data added to map"))},clearGeoJsonFeatures:function(){"undefined"!=this.geoJsonFeatures&&this.geoJsonFeatures.clearLayers()},addFeatureToFeatureGroup:function(e){var t=this.features;return"undefined"==typeof t?void console.log("No feature group found"):void(null!=e&&t.addLayer(e))},clearFeatures:function(){var e=this.features;return"undefined"==typeof e?void console.log("No feature group found"):void e.clearLayers()},createFeature:function(e){var t=new Wkt.Wkt;t.read(e);var o=t.toObject();return o},createMarker:function(e,t,o){return L.marker(L.latLng(e,t),o)},addClusterMarker:function(e){"undefined"!=typeof this.clusterGroup&&this.clusterGroup.addLayer(e)},clearClusterMarkers:function(){this.clusterGroup.clearLayers()},getClusterGroup:function(){return this.clusterGroup},getFeaturesBound:function(){var e=this.features;return"undefined"==typeof e?void console.log("No feature group found"):e.getBounds()},getGeoJsonFeaturesBound:function(){var e=this.geoJsonFeatures;return"undefined"==typeof e?void console.log("No geojson feature found"):e.getBounds()},zoomToFeatures:function(){var e=this.getFeaturesBound();"undefined"!=typeof e&&this.map.fitBounds(e)},zoomToGeoJsonFeatures:function(){var e=this.getGeoJsonFeaturesBound();"undefined"!=typeof e&&this.map.fitBounds(e)},zoomToPoint:function(e,t){var o=t||this.map.getMaxZoom();if("undefined"!=typeof e.x&&"undefined"!=typeof e.y){var n=new L.LatLng(e.y,e.x);this.map.setView(n,o)}else this.map.setView(e,o)},pointInPolygon:function(e,t){for(var o=e[0],n=e[1],a=!1,r=0,i=t.length-1;r<t.length;i=r++){var s=t[r][0],l=t[r][1],u=t[i][0],c=t[i][1],d=l>n!=c>n&&o<(u-s)*(n-l)/(c-l)+s;d&&(a=!a)}return a}});e.exports=r},function(e,t,o){"use strict";var n=o(1),a=n.define({name:"MapViewer",_className:"MapViewer",initialize:function(e){n.copy(this,e)},zoomToExtent:function(e){this.map.fitBounds(new L.LatLngBounds(new L.LatLng(e.xmin,e.ymin),new L.LatLng(e.xmax,e.ymax)))},zoomToFullExtent:function(){},zoomToXY:function(e,t,o){"undefined"==typeof o?this.map.setView(new L.LatLng(t,e),this.map.getMaxZoom()):this.map.setView(new L.LatLng(t,e),o)},zoomIn:function(){this.map.zoomIn()},zoomOut:function(){this.map.zoomOut()},zoomToDataExtent:function(e){this.map.fitBounds(e.getBounds())},panTo:function(e,t){this.map.panTo(new L.LatLng(t,e))},locate:function(){this.map.locateAndSetView(this.map.getMaxZoom()-2)}});e.exports=a},function(e,t,o){"use strict";var n=o(7),a=Backbone.View.extend({name:"base-map",el:".map",type:"map",mapControlsTemplate:"#map-control-tpl",mapData:[],mapDataLoaded:!1,selectedLayer:"County",selectedFeature:null,selectedFeatureName:"",selectedLayers:[],singleSelect:!1,mapParams:{areatype:"01",areacode:"0"},showMarkers:!0,clusterMarkerCache:[],initialize:function(){},render:function(e){this.makeMap(),this.loadMapData(e),this.renderControls(),console.log(this.name+" view has been rendered..")},makeMap:function(){this.mapViewer=new n({el:this.el,center:new L.LatLng(38.3607,-75.5994),zoomLevel:10,scrollZoom:!0,clusterOptions:{showCoverageOnHover:!1,spiderfyOnMaxZoom:!0,maxClusterRadius:40,iconCreateFunction:function(e){var t=e.getChildCount(),o=" marker-cluster-";return o+=t<=5?"small":t<=10?"medium":"large",new L.DivIcon({html:"<div><span>"+t+"</span></div>",className:"marker-cluster"+o,iconSize:new L.Point(40,40)})}}})},loadMapData:function(e){var t=this,o=new Backbone.Model,n=this.mapData,a=0,r=function r(i){return"undefined"==typeof i?void("function"==typeof t.onMapLoaded&&t.onMapLoaded()):void("layer"==i.type?(o.url=i.url,o.fetch({success:function(o){console.log("loaded map data for "+i.name);var s=o.toJSON();i.data=s,a++,a<n.length?r(n[a]):(t.mapDataLoaded=!0,t.showLayer(t.selectedLayer,e),"function"==typeof t.onMapLoaded&&t.onMapLoaded())}})):(a++,a<n.length?this.loadData(n[a]):(t.mapDataLoaded=!0,t.showLayer(t.selectedLayer,e),"function"==typeof t.onMapLoaded&&t.onMapLoaded())))};r(n[a])},showLayer:function(e,t){console.log("showing  layer "+e);var o=this,n=!1,a=this.getLayer(e);if("undefined"!=typeof a){o.selectedLayer=e,o.selectedFeatureName="",o.selectedFeature=null,o.selectedLayers=[];o.getGeomName();o.updateHoverText();var r=this.mapViewer,i=a.data,s=a.nameField,l=a.style,u={fillOpacity:.2},c=a.selectedStyle||{opacity:1,color:"#FCFF00",weight:4};console.log(t),"undefined"!=typeof t&&(t.style&&(l=t.style),t.mouseoverStyle&&(u=t.mouseoverStyle),t.selectedStyle&&(c=t.selectedStyle)),r.clearGeoJsonFeatures(),r.addGeoJsonLayer(i,{style:l,onEachFeature:function(e,t){n||(n=!0,o.mapParams.areatype=e.properties.areatype),t.on("click",function(t){var n=r.getGeoJsonGroup();_.each(n.getLayers(),function(e){_.each(e.getLayers(),function(t){e.resetStyle(t)})});for(var a=t.target,i=null,l=0;l<o.selectedLayers.length;l++){var u=o.selectedLayers[l];a.feature.properties.areacode==u.feature.properties.areacode&&(i=l)}if(null!=i?o.selectedLayers.splice(i,1):(1==o.singleSelect&&(o.selectedLayers=[]),o.selectedLayers.push(a)),o.selectedLayers.length>0){var d=o.selectedLayers[o.selectedLayers.length-1];o.selectedFeature=d,o.selectedFeatureName=d.feature.properties.name||d.feature.properties.region||d.feature.properties[s]||""}else o.selectedFeature=null;var f,p=null,h=[];_.each(o.selectedLayers,function(e){e.setStyle(c);var t=e.feature.properties;"undefined"!=typeof t.areatype&&"undefined"!=typeof t.areacode&&(null==p&&(p=t.areatype),h.push(t.areacode))}),f=h.length>0?{areatype:p,areacode:h.join(",")}:{areatype:p,areacode:"0"},o.mapParams=f,"function"==typeof o.onGeomSelected&&o.onGeomSelected.call(o,e,o.selectedLayers)}),t.on("mouseover",function(e){var t=e.target;t.setStyle(u),L.Browser.ie||L.Browser.opera||t.bringToFront();var n=e.target.feature.properties,a=n.name||n.region||n[s]||"";o.$("#hoverOverlay").text(a),"function"==typeof o.onFeatureMouseover&&o.onFeatureMouseover(t)}),t.on("mouseout",function(e){var n=r.getGeoJsonGroup();_.each(n.getLayers(),function(t){t.resetStyle(e.target)}),_.each(o.selectedLayers,function(e){e.setStyle(c)}),o.updateHoverText(),"function"==typeof o.onFeatureMouseout&&o.onFeatureMouseout(t)})}})}},getLayer:function(e){for(var t in this.mapData){var o=this.mapData[t];if(o.name==e)return o}},renderControls:function(){var e=this,t=this.mapData,o=Handlebars.compile($(this.mapControlsTemplate).html()),n=o({models:t});this.$("div.leaflet-bottom.leaflet-left").html(n),this.$(".overlays div.layers").on("click",function(t){e.mapControlClick.call(e,t)}),this.$("div.leaflet-top.leaflet-right").append('<div id="hoverOverlay" class="layerToggle" style="display: block;"></div>'),this.$("div.leaflet-top.leaflet-left .leaflet-control-zoom-in").after([' <a class="leaflet-control-zoom-out" id="zoomToExtent"',' href="#" title="Zoom to Full-extent">','<i class="fa fa-globe"></i>',"</a>"].join("")),this.$("#zoomToExtent").on("click",function(t){return e.mapViewer.zoomToGeoJsonFeatures(),!1})},mapControlClick:function(e){var t=e.currentTarget,o=$(t).attr("data-name");console.log("map layer "+o+" control clicked"),this.showLayer(o),this.$(t).parent().find('i[role="checkbox"]').remove(),$(t).find("p").append('<i class="fa fa-check" role="checkbox"></i>'),"function"==typeof this.onLayerChanged&&this.onLayerChanged.call(this,o)},getGeomName:function(){var e="";return e=this.selectedLayers.length>1?"Multi Areas":null==this.selectedFeature?"Statewide":this.selectedLayer+" "+this.selectedFeatureName},updateHoverText:function(){var e=this.getGeomName();this.$("#hoverOverlay").text(e)},getCurrentParams:function(){var e=this,t=null,o=[];return _.each(e.selectedLayers,function(e){var n=e.feature.properties;"undefined"!=typeof n.areatype&&"undefined"!=typeof n.areacode&&(null==t&&(t=n.areatype),o.push(n.areacode))}),o.length>0?{areatype:t,areacode:o.join(",")}:{areatype:t,areacode:"0"}},selectGeom:function(e,t){var o=this,n=this.mapViewer,a=n.getGeoJsonGroup(),r=t||{fillOpacity:.5};_.each(e,function(e){var t=null;a.getLayers()[0].eachLayer(function(n){t=n.feature,"undefined"!=typeof t&&t.properties.name.toLowerCase()==e.toLowerCase()&&(n.setStyle(r),o.selectedFeature=n,o.selectedFeatureName=e,o.selectedLayers.push(n))}),o.updateHoverText(),"function"==typeof this.onGeomSelected&&this.onGeomSelected.call(this,t)})},addClusterMarkers:function(e,t){var o=this.mapViewer;return o.clearClusterMarkers(),"undefined"==typeof e?e=this.clusterMarkerCache:this.clusterMarkerCache=e,0==e.length?void console.log("Can not add cluster markers. Data is empty."):void(this.showMarkers&&_.each(e,function(e){var t=o.createMarker(e.y_coord,e.x_coord,{});t.bindPopup(e.template,{}),o.addClusterMarker(t)}))},clearClusterMarkers:function(){var e=this.mapViewer;e.clearClusterMarkers()},setShowMarkers:function(e){this.showMarkers=e,e?this.addClusterMarkers():this.clearClusterMarkers()},zoomToLocation:function(e,t,o){var n=o||14;this.mapViewer.zoomToPoint({x:e,y:t},n)},setMapClickMode:function(e){"single"==e?this.singleSelect=!0:"multi"==e?this.singleSelect=!1:this.singleSelect?console.log("Map click mode is: Single selection"):console.log("Map click mode is: Multi selection")}});e.exports=a}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	/*
+	Tu Hoang	
+	ESRGC2017
+	
+	map view package
+	
+	*/
+	
+	var MainRouter = __webpack_require__(2);
+	
+	$(function () {
+	  var router = new MainRouter();
+	  //finally starts backbone history;
+	  Backbone.history.start();
+	  console.log('App initiated...');
+	});
+
+/***/ },
+/* 1 */,
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	/*
+	Tu Hoang
+	March 2017
+	
+	main router for event/index page
+	*/
+	
+	// var MapView = require('../view/map.js');
+	// var CalendarView = require('../view/calendar');
+	
+	// //views
+	// var mapView = new MapView();
+	// var calendarView = new CalendarView();
+	
+	var MainController = __webpack_require__(3);
+	var controller = new MainController();
+	
+	//router definition
+	var mainRouter = Backbone.Router.extend({
+	  name: 'EventIndex',
+	  routes: {
+	    '': 'init',
+	    ':x/:y': 'initZoom'
+	  },
+	  init: function init() {
+	    //initialize components
+	    controller.initialize();
+	
+	    //return controller;
+	  },
+	  initZoom: function initZoom(x, y) {
+	    undefined.init();
+	    controller.zoomToLocation(x, y);
+	  }
+	});
+	
+	module.exports = mainRouter;
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	/*
+	Tu Hoang
+	March 2017
+	
+	Controller class that handles map and calendar view 
+	
+	ES6 rocks
+	*/
+	var MapView = __webpack_require__(4);
+	var CalendarView = __webpack_require__(9);
+	
+	var mainController = function () {
+	  function mainController() {
+	    _classCallCheck(this, mainController);
+	
+	    //views
+	    this._mapView = new MapView();
+	    this._calendarView = new CalendarView();
+	  }
+	  //initialize view components 
+	
+	
+	  _createClass(mainController, [{
+	    key: 'initialize',
+	    value: function initialize() {
+	      console.log('Initializing...');
+	      var scope = this;
+	      //render map
+	      scope._mapView.render();
+	      //wire event callback for calendar
+	      scope._calendarView.onEventsLoaded = function (eventData, view) {
+	        console.log('this event is called from controller!');
+	        console.log(eventData);
+	        var group = _.groupBy(eventData, function (v) {
+	          return v.id;
+	        });
+	        var data = _.map(group, function (v, index) {
+	          var value = v[0]; //only take the first element
+	          var start = value.start.local().format('dddd, MMMM Do YYYY, h:mm:ss a');
+	          var end = value.end != null ? value.end.local().format('dddd, MMMM Do YYYY, h: mm: ss a') : '';
+	          return {
+	            id: value._id,
+	            x_coord: value.location.x,
+	            y_coord: value.location.y,
+	            template: '\n      \t\t\t<h4>\n              <strong>' + value.title + '</strong>\n              <small>\n                <a href="edit?id=' + value._id + '"><i class="fa fa-pencil"></i></a>\n              </small>\n            </h4>\n      \t\t\t<p>\n      \t\t\t\t<strong>Start</strong>: ' + start + ' <br/>\n      \t\t\t\t<strong>End</strong>: ' + end + ' <br/>\n      \t\t\t\t<strong>Description</strong>: ' + value.description + ' <br/>\n      \t\t\t\t<strong>Location</strong>: ' + value.address + ' ' + value.city + ', ' + value.state + ' ' + value.zip + '\n      \t\t\t</p>\n      \t\t'
+	          };
+	        });
+	
+	        // console.log(g);
+	
+	        scope._mapView.addClusterMarkers(data);
+	      };
+	
+	      scope._calendarView.onEventClick = function (event, jsEvent, view) {
+	
+	        var location = event.location;
+	        if (typeof location == 'undefined') return;
+	        scope._mapView.zoomToLocation(location.x, location.y);
+	      };
+	      scope._calendarView.onEventMouseOver = function (event, jsEvent, view) {
+	        //for editing
+	      };
+	
+	      //render calendar
+	      scope._calendarView.render();
+	    }
+	  }, {
+	    key: 'zoomToLocation',
+	    value: function zoomToLocation(x, y) {
+	      this._mapView.zoomToLocation(x, y, 16);
+	    }
+	  }, {
+	    key: 'mapView',
+	    get: function get() {
+	      return this._mapView;
+	    }
+	  }, {
+	    key: 'calendarView',
+	    get: function get() {
+	      return this._calendarView;
+	    }
+	  }]);
+	
+	  return mainController;
+	}();
+	
+	module.exports = mainController;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	/*
+	Author: Tu Hoang
+	ESRGC2017
+	
+	View Map
+	
+	
+	Requires leaflet.js
+	
+	Events 
+	onMapLoaded --fired when map is done initialized
+	onLayerChanged -- fired when new data is loaded to geojson
+	onGeomSelected -- fired when mouse clicked layer (geometry)
+	onFeatureMouseover -- fired when mouse is over a layer (geometry)
+	onFeatureMouseout -- fired when mouse is out of a layer (geometry)
+	
+	setMapClickMode -- set selection mode (single or multi)
+	*/
+	var BaseMap = __webpack_require__(5);
+	
+	var map = BaseMap.extend({
+	  name: 'unite-map',
+	  el: '.map',
+	  mapData: [], //specified geojson layers (in sub views)
+	  render: function render() {
+	    var scope = this;
+	    scope.makeMap(); //set up map
+	    if (typeof scope.onMapLoaded == 'function') {
+	      scope.onMapLoaded();
+	    }
+	  }
+	});
+	
+	module.exports = map;
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	/*
+	Author: Tu Hoang
+	ESRGC2017
+	
+	View Map
+	base map view using backbone.js
+	element: '.map'
+	render basic map for dashboards
+	
+	Requires leaflet.js
+	
+	Events 
+	onMapLoaded --fired when map is done initialized
+	onLayerChanged -- fired when new data is loaded to geojson
+	onGeomSelected -- fired when mouse clicked layer (geometry)
+	onFeatureMouseover -- fired when mouse is over a layer (geometry)
+	onFeatureMouseout -- fired when mouse is out of a layer (geometry)
+	
+	setMapClickMode -- set selection mode (single or multi)
+	*/
+	var LeafletViewer = __webpack_require__(6);
+	
+	var map = Backbone.View.extend({
+	  name: 'base-map',
+	  el: '.map',
+	  type: 'map',
+	  mapControlsTemplate: '#map-control-tpl',
+	  mapData: [
+	    //defined in sub-classes
+	    // For example
+	    // {
+	    //   name: 'Region',
+	    //   type: 'layer',
+	    //   label: '',
+	    //   url: 'data/mdRegion.geojson',
+	    //   nameField: 'Regions',
+	    //   style: {
+	    //     fill: true,
+	    //     weight: 1,
+	    //     fillOpacity: 0.1,
+	    //     fillColor: '#2163B5',
+	    //     color: '#000'
+	    //   },
+	    //   selected: true
+	    // }
+	  ], //specified geojson layers (in sub views)
+	  mapDataLoaded: false,
+	  selectedLayer: 'County', //geometry type "County" or "Region"
+	  selectedFeature: null,
+	  selectedFeatureName: '',
+	  selectedLayers: [],
+	  singleSelect: false,
+	  mapParams: {
+	    areatype: '01',
+	    areacode: '0'
+	  },
+	  showMarkers: true,
+	  clusterMarkerCache: [],
+	  initialize: function initialize() {
+	    //this.render();
+	  },
+	  render: function render(options) {
+	    this.makeMap(); //set up map
+	    this.loadMapData(options); //load geometry       
+	    this.renderControls(); //render layer controls
+	    console.log(this.name + ' view has been rendered..');
+	  },
+	  makeMap: function makeMap() {
+	    this.mapViewer = new LeafletViewer({
+	      el: this.el,
+	      center: new L.LatLng(38.3607, -75.5994), //salisbury coordinates
+	      zoomLevel: 10,
+	      scrollZoom: true,
+	      clusterOptions: {
+	        showCoverageOnHover: false,
+	        spiderfyOnMaxZoom: true,
+	        maxClusterRadius: 40,
+	        iconCreateFunction: function iconCreateFunction(cluster) {
+	          var childCount = cluster.getChildCount();
+	          var c = ' marker-cluster-';
+	          if (childCount <= 5) {
+	            c += 'small';
+	          } else if (childCount <= 10) {
+	            c += 'medium';
+	          } else {
+	            c += 'large';
+	          }
+	
+	          return new L.DivIcon({
+	            html: '<div><span>' + childCount + '</span></div>',
+	            className: 'marker-cluster' + c,
+	            iconSize: new L.Point(40, 40)
+	          });
+	        }
+	      }
+	    });
+	  },
+	  loadMapData: function loadMapData(options) {
+	    var scope = this;
+	    //use backbone model to load layer data
+	    var model = new Backbone.Model();
+	    var mapData = this.mapData;
+	    var counter = 0;
+	    var loadData = function loadData(layer) {
+	      if (typeof layer == 'undefined') {
+	        if (typeof scope.onMapLoaded == 'function') {
+	          scope.onMapLoaded();
+	        }
+	        return;
+	      }
+	      if (layer.type == 'layer') {
+	        model.url = layer.url;
+	        model.fetch({
+	          success: function success(data) {
+	            console.log('loaded map data for ' + layer.name);
+	            var newData = data.toJSON();
+	            layer.data = newData;
+	            //move to the next one
+	            counter++;
+	            if (counter < mapData.length) {
+	              //load more if exists
+	              loadData(mapData[counter]);
+	            } else {
+	
+	              scope.mapDataLoaded = true;
+	              //show the state layer by default
+	              scope.showLayer(scope.selectedLayer, options);
+	              // scope.updateCharts(); //initially load charts data
+	
+	              if (typeof scope.onMapLoaded == 'function') {
+	                scope.onMapLoaded();
+	              }
+	            }
+	          }
+	        });
+	      } else {
+	        //if data is not a layer skip to the next one
+	        counter++;
+	        if (counter < mapData.length) {
+	          //load more if exists
+	          this.loadData(mapData[counter]);
+	        } else {
+	
+	          scope.mapDataLoaded = true;
+	          //show the state layer by default
+	          scope.showLayer(scope.selectedLayer, options);
+	          // scope.updateCharts(); //initially load charts data
+	
+	          if (typeof scope.onMapLoaded == 'function') {
+	            scope.onMapLoaded();
+	          }
+	        }
+	      }
+	    };
+	    loadData(mapData[counter]);
+	  },
+	  //clear geometry and add the layer that is being requested to show
+	  showLayer: function showLayer(name, options) {
+	    console.log("showing  layer " + name);
+	    var scope = this;
+	    var setInitialAreaType = false;
+	    var layer = this.getLayer(name);
+	    if (typeof layer == 'undefined') return;
+	    scope.selectedLayer = name;
+	    scope.selectedFeatureName = '';
+	    scope.selectedFeature = null;
+	    scope.selectedLayers = [];
+	    var title = scope.getGeomName();
+	    scope.updateHoverText();
+	    var mapViewer = this.mapViewer;
+	    var newData = layer.data;
+	    var nameField = layer.nameField; //name of the property that contains geom name
+	
+	    //determine layer styles (either a function returning style or a style object)
+	    var layerStyle = layer.style;
+	    var mouseoverStyle = {
+	      fillOpacity: 0.2
+	    };
+	    var selectedStyle = layer.selectedStyle || {
+	      //fillOpacity: 0.5
+	      //dashArray: '',
+	      opacity: 1,
+	      color: '#FCFF00',
+	      //color: '#E2E600',
+	      weight: 4
+	    };
+	    console.log(options); //custom styles passed in options --this will bypass default style and styled specified in layer data
+	    if (typeof options != 'undefined') {
+	      if (options.style) layerStyle = options.style; //using function or style object
+	      if (options.mouseoverStyle) mouseoverStyle = options.mouseoverStyle;
+	      if (options.selectedStyle) selectedStyle = options.selectedStyle;
+	    }
+	
+	    mapViewer.clearGeoJsonFeatures(); //clear old features
+	    mapViewer.addGeoJsonLayer(newData, {
+	      style: layerStyle,
+	      //this call back handles mouse events on feature selection
+	      onEachFeature: function onEachFeature(feature, layer) {
+	
+	        //set initial areatype once layer is loaded
+	        if (!setInitialAreaType) {
+	          setInitialAreaType = true;
+	          scope.mapParams.areatype = feature.properties.areatype;
+	        }
+	        //console.log(feature);
+	        layer.on('click', function (e) {
+	          //console.log(e.target);
+	          //clear style (selected)       
+	          var layerGroup = mapViewer.getGeoJsonGroup();
+	          //console.log(e.target);
+	          //reset style for the whole layer group
+	          _.each(layerGroup.getLayers(), function (layers) {
+	            _.each(layers.getLayers(), function (l) {
+	              layers.resetStyle(l);
+	            });
+	          });
+	          //process selected feature
+	          var l = e.target; //get selected feature
+	          var index = null;
+	          //check whether the layer is currently selected
+	          for (var i = 0; i < scope.selectedLayers.length; i++) {
+	            var layer = scope.selectedLayers[i];
+	            if (l.feature.properties.areacode == layer.feature.properties.areacode) {
+	              index = i;
+	            }
+	          }
+	          //simulate toggle selection
+	          if (index != null) {
+	            scope.selectedLayers.splice(index, 1); //remove current layer from selected
+	          } else {
+	            if (scope.singleSelect == true) scope.selectedLayers = []; //reset selected layers when single select mode is on
+	            // scope.selectedFeature = l;
+	            scope.selectedLayers.push(l); //add selected layer to the collection
+	          }
+	
+	          //set the last selected layer
+	          if (scope.selectedLayers.length > 0) {
+	            var sl = scope.selectedLayers[scope.selectedLayers.length - 1];
+	            scope.selectedFeature = sl;
+	            scope.selectedFeatureName = sl.feature.properties.name || sl.feature.properties.region || sl.feature.properties[nameField] || ''; //store selected feature name                                     
+	          } else scope.selectedFeature = null;
+	
+	          //map updates
+	          var areatype = null,
+	              areacodes = [],
+	              params;
+	
+	          //re-hilight the selected features
+	          _.each(scope.selectedLayers, function (sl) {
+	            sl.setStyle(selectedStyle);
+	            var props = sl.feature.properties;
+	            //access properties to get area type and code            
+	            if (typeof props.areatype != 'undefined' && typeof props.areacode != 'undefined') {
+	              //get areatype
+	              if (areatype == null) areatype = props.areatype; //only set once
+	
+	              //get area code
+	              areacodes.push(props.areacode);
+	            }
+	          });
+	          if (areacodes.length > 0) params = {
+	            areatype: areatype,
+	            areacode: areacodes.join(',')
+	          };else params = {
+	            areatype: areatype,
+	            areacode: '0'
+	          };
+	          //update charts
+	          // scope.updateCharts(params);
+	          scope.mapParams = params;
+	
+	          //finally run geom selected call back 
+	          if (typeof scope.onGeomSelected == 'function') {
+	            scope.onGeomSelected.call(scope, feature, scope.selectedLayers); //pass selected feature as an argument
+	          }
+	        });
+	        layer.on('mouseover', function (e) {
+	          //set selected style
+	          var layer = e.target;
+	          layer.setStyle(mouseoverStyle);
+	
+	          if (!L.Browser.ie && !L.Browser.opera) {
+	            layer.bringToFront();
+	          }
+	
+	          //show text on the hover box
+	          var prop = e.target.feature.properties;
+	          var area = prop.name || prop.region || prop[nameField] || '';
+	          //settext
+	          scope.$('#hoverOverlay').text(area);
+	
+	          if (typeof scope.onFeatureMouseover == 'function') scope.onFeatureMouseover(layer);
+	        });
+	        layer.on('mouseout', function (e) {
+	          var layerGroup = mapViewer.getGeoJsonGroup();
+	          //console.log(e.target);
+	          //reset style for current target
+	          _.each(layerGroup.getLayers(), function (l) {
+	            l.resetStyle(e.target);
+	          });
+	
+	          //re-hilight the selected features
+	          _.each(scope.selectedLayers, function (l) {
+	            l.setStyle(selectedStyle);
+	          });
+	          //show text on the hover box
+	          scope.updateHoverText();
+	          if (typeof scope.onFeatureMouseout == 'function') scope.onFeatureMouseout(layer);
+	        });
+	      }
+	    });
+	  },
+	  getLayer: function getLayer(name) {
+	    for (var i in this.mapData) {
+	      var layer = this.mapData[i];
+	
+	      if (layer.name == name) return layer;
+	    }
+	  },
+	  renderControls: function renderControls() {
+	    var scope = this;
+	    var data = this.mapData;
+	    // console.log(data);
+	    var template = Handlebars.compile($(this.mapControlsTemplate).html());
+	    var html = template({
+	      models: data
+	    });
+	    this.$('div.leaflet-bottom.leaflet-left').html(html);
+	    //wire layer controls events
+	    this.$('.overlays div.layers').on('click', function (e) {
+	      scope.mapControlClick.call(scope, e); //call callback in this view context
+	    });
+	    //hover box
+	    this.$('div.leaflet-top.leaflet-right').append('<div id="hoverOverlay" class="layerToggle" style="display: block;"></div>');
+	    //zoom to extent - insert the zoom to extent button to the 2 zoom in/out buttons
+	    this.$('div.leaflet-top.leaflet-left .leaflet-control-zoom-in').after([' <a class="leaflet-control-zoom-out" id="zoomToExtent"', ' href="#" title="Zoom to Full-extent">', '<i class="fa fa-globe"></i>', '</a>'].join(''));
+	    //zoom to extent button
+	    this.$('#zoomToExtent').on('click', function (e) {
+	      scope.mapViewer.zoomToGeoJsonFeatures(); //zoom to extent of current geojson layer
+	      return false;
+	    });
+	  },
+	  mapControlClick: function mapControlClick(e) {
+	    var c = e.currentTarget;
+	    var name = $(c).attr('data-name');
+	    console.log('map layer ' + name + ' control clicked');
+	    //show layer on the map
+	    this.showLayer(name);
+	    //add/remove check sign
+	    this.$(c).parent().find('i[role="checkbox"]').remove();
+	    $(c).find('p').append('<i class="fa fa-check" role="checkbox"></i>');
+	    // this.updateCharts(); //load defaults.
+	    if (typeof this.onLayerChanged == 'function') this.onLayerChanged.call(this, name);
+	  },
+	  getGeomName: function getGeomName() {
+	    var title = '';
+	    if (this.selectedLayers.length > 1) {
+	      title = 'Multi Areas';
+	    } else if (this.selectedFeature == null) title = 'Statewide';else title = this.selectedLayer + ' ' + this.selectedFeatureName;
+	    return title;
+	
+	    // switch (this.selectedLayer) {
+	    //   case 'State':
+	    //     title = 'Statewide'
+	    //     break;
+	    //   case 'County':
+	    //     if (this.selectedLayers.length > 1) {
+	    //       title = 'Multi counties';
+	    //       break;
+	    //     }
+	    //     if (this.selectedFeature == null)
+	    //       title = 'All counties';
+	    //     else
+	    //       title = 'County: ' + this.selectedFeatureName;
+	    //     break;
+	    //   case 'Region':
+	    //   case 'WIA':
+	    //     if (this.selectedLayers.length > 1) {
+	    //       title = 'Multi areas';
+	    //       break;
+	    //     }
+	    //     if (this.selectedFeature == null)
+	    //       title = 'All areas';
+	    //     else
+	    //       title = 'Area: ' + this.selectedFeatureName;
+	    //     break;
+	    //   case 'Zip':
+	    //     if (this.selectedFeature == null)
+	    //       title = 'All zips';
+	    //     else
+	    //       title = 'Zip: ' + this.selectedFeatureName;
+	    //     break;
+	    // }
+	    return title;
+	  },
+	  updateHoverText: function updateHoverText() {
+	    var title = this.getGeomName();
+	    //show text on the hover box
+	    this.$('#hoverOverlay').text(title);
+	  },
+	  getCurrentParams: function getCurrentParams() {
+	    var scope = this,
+	        areatype = null,
+	        areacodes = [];
+	
+	    _.each(scope.selectedLayers, function (sl) {
+	      var props = sl.feature.properties;
+	      //access properties to get area type and code            
+	      if (typeof props.areatype != 'undefined' && typeof props.areacode != 'undefined') {
+	        //get areatype
+	        if (areatype == null) areatype = props.areatype; //only set once
+	
+	        //get area code
+	        areacodes.push(props.areacode);
+	      }
+	    });
+	    if (areacodes.length > 0) return {
+	      areatype: areatype,
+	      areacode: areacodes.join(',')
+	    };else return {
+	      areatype: areatype,
+	      areacode: '0'
+	    };
+	  },
+	  //select geometry by name
+	  selectGeom: function selectGeom(featureNames, selectStyle) {
+	    var scope = this;
+	    var mapViewer = this.mapViewer;
+	    var geoJsonGrp = mapViewer.getGeoJsonGroup();
+	
+	    var style = selectStyle || {
+	      fillOpacity: .5
+	    };
+	
+	    _.each(featureNames, function (f) {
+	      //loop through featureNames to find the selected geom
+	      var feature = null;
+	      //console.log(geoJsonGrp);
+	      geoJsonGrp.getLayers()[0].eachLayer(function (layer) {
+	        feature = layer.feature;
+	        if (typeof feature != 'undefined') {
+	          //console.log(feature);
+	          if (feature.properties.name.toLowerCase() == f.toLowerCase()) {
+	            //found the feature, now select it
+	            layer.setStyle(style);
+	            //keep up with last selected feature
+	            scope.selectedFeature = layer;
+	            scope.selectedFeatureName = f;
+	            scope.selectedLayers.push(layer);
+	          }
+	        }
+	      });
+	      //show text on the hover box
+	      scope.updateHoverText();
+	      //select fetures with the attributes specified..to be implemented
+	      if (typeof this.onGeomSelected == 'function') this.onGeomSelected.call(this, feature);
+	    });
+	  },
+	  addClusterMarkers: function addClusterMarkers(data, popupTemplate) {
+	    var mapViewer = this.mapViewer;
+	    mapViewer.clearClusterMarkers(); //clear current clustermakers
+	    if (typeof data == 'undefined') data = this.clusterMarkerCache;else this.clusterMarkerCache = data;
+	
+	    if (data.length == 0) {
+	      console.log('Can not add cluster markers. Data is empty.');
+	      return;
+	    }
+	    //check switch value
+	    if (!this.showMarkers) return;
+	
+	    //add new cluster markers
+	    _.each(data, function (d) {
+	      var m = mapViewer.createMarker(d.y_coord, d.x_coord, {});
+	      m.bindPopup(d.template, {});
+	      mapViewer.addClusterMarker(m);
+	    });
+	  },
+	  clearClusterMarkers: function clearClusterMarkers() {
+	    var mapViewer = this.mapViewer;
+	    mapViewer.clearClusterMarkers(); //clear current clustermakers
+	  },
+	  setShowMarkers: function setShowMarkers(value) {
+	    this.showMarkers = value;
+	    if (!value) this.clearClusterMarkers();else this.addClusterMarkers(); //passing no param to add the cached marker data
+	  },
+	  zoomToLocation: function zoomToLocation(lon, lat, level) {
+	    var lvl = level || 14;
+	    this.mapViewer.zoomToPoint({
+	      x: lon,
+	      y: lat
+	    }, lvl);
+	  },
+	  setMapClickMode: function setMapClickMode(mode) {
+	    if (mode == 'single') this.singleSelect = true;else if (mode == 'multi') this.singleSelect = false;else {
+	      if (this.singleSelect) console.log('Map click mode is: Single selection');else console.log('Map click mode is: Multi selection');
+	    }
+	  }
+	});
+	
+	module.exports = map;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	/*
+	Author: Tu hoang
+	ESRGC
+	Provides base (prototype) functions for mapviewer
+	Note: this class is defined using dx library
+	
+	implements leaflet API
+	operates foodshed application
+	*/
+	var Class = __webpack_require__(7);
+	var MapViewer = __webpack_require__(8);
+	
+	var LeafletViewer = Class.define({
+	  name: 'LeafletViewer',
+	  extend: MapViewer,
+	  _className: 'LeafletViewer',
+	  initialize: function initialize(options) {
+	    MapViewer.prototype.initialize.apply(this, arguments);
+	    //map setup
+	    var minimal = L.tileLayer('https://{s}.tiles.mapbox.com/v3/esrgc.map-y9awf40v/{z}/{x}/{y}.png');
+	    //var satellite = L.tileLayer('http://{s}.tiles.mapbox.com/v3/esrgc.map-0y6ifl91/{z}/{x}/{y}.png');
+	
+	    var baseMaps = {
+	      "Base Map": minimal
+	      //"Satellite": satellite
+	    };
+	    this.features = new L.FeatureGroup([
+	      //new L.Marker([39.0, -76.70]).bindPopup('Some organization'),
+	      //new L.Marker([39.0, -76.20]).bindPopup('Abc company'),
+	      //new L.Marker([38.9, -76.0]).bindPopup('Eastern shore company'),
+	      //new L.Marker([38.36, -75.59]).bindPopup('Salisbury University')
+	    ]);
+	    this.geoJsonFeatures = L.geoJson();
+	    this.clusterGroup = new L.MarkerClusterGroup(this.clusterOptions);
+	
+	    var overlayMaps = {
+	      //'State': stateBoundary,
+	      //'Counties': counties,
+	      'Overlays': this.geoJsonFeatures
+	
+	    };
+	    this.map = L.map(this.el, {
+	      layers: [minimal, this.features, this.geoJsonFeatures, this.clusterGroup],
+	      center: this.center || new L.LatLng(39.0, -76.70),
+	      zoom: this.zoomLevel || 7,
+	      scrollWheelZoom: this.scrollZoom || false
+	    });
+	
+	    //copy layers to layer controls
+	    if (typeof this.baseLayers != 'undefined') for (var i in this.baseLayers) {
+	      var layer = this.baseLayers[i];
+	      if (layer !== undefined) baseMaps[i] = layer;
+	    }
+	    var overlayMaps = {
+	      //other overlay layers go here
+	      //feature layer
+	      //'Features': this.features,
+	      'Overlays': this.geoJsonFeatures
+	    };
+	    if (typeof this.overlays != 'undefined') {
+	      for (var i in this.overlays) {
+	        var layer = this.overlays[i];
+	        overlayMaps[i] = layer;
+	      }
+	    }
+	    //L.control.layers(baseMaps, overlayMaps).addTo(this.map);
+	    //L.control.scale().addTo(this.map);
+	  },
+	  getGeoJsonGroup: function getGeoJsonGroup() {
+	    return this.geoJsonFeatures;
+	  },
+	  getFeatureGroup: function getFeatureGroup() {
+	    return this.features;
+	  },
+	  addGeoJsonLayer: function addGeoJsonLayer(data, option) {
+	    if (typeof data == 'undefined') {
+	      console.log('No data found');
+	      return;
+	    }
+	    console.log('Adding data to map...');
+	    //console.log(data);
+	    if (this.geoJsonFeatures != 'undefined') {
+	      if (typeof option == 'undefined') this.geoJsonFeatures.addLayer(L.geoJson(data));else this.geoJsonFeatures.addLayer(L.geoJson(data, option));
+	    }
+	    console.log('------Data added to map');
+	  },
+	  clearGeoJsonFeatures: function clearGeoJsonFeatures() {
+	    if (this.geoJsonFeatures != 'undefined') this.geoJsonFeatures.clearLayers();
+	  },
+	  addFeatureToFeatureGroup: function addFeatureToFeatureGroup(feature) {
+	    var features = this.features;
+	    if (typeof features == 'undefined') {
+	      console.log('No feature group found');
+	      return;
+	    }
+	    if (feature != null) features.addLayer(feature);
+	  },
+	  clearFeatures: function clearFeatures() {
+	    var features = this.features;
+	    if (typeof features == 'undefined') {
+	      console.log('No feature group found');
+	      return;
+	    }
+	    features.clearLayers();
+	  },
+	  createFeature: function createFeature(obj) {
+	    var wkt = new Wkt.Wkt();
+	    wkt.read(obj);
+	    var f = wkt.toObject();
+	    return f;
+	  },
+	  createMarker: function createMarker(lat, lng, options) {
+	    return L.marker(L.latLng(lat, lng), options);
+	  },
+	  addClusterMarker: function addClusterMarker(marker) {
+	    if (typeof this.clusterGroup == 'undefined') return;
+	    this.clusterGroup.addLayer(marker);
+	  },
+	  clearClusterMarkers: function clearClusterMarkers() {
+	    this.clusterGroup.clearLayers();
+	  },
+	  getClusterGroup: function getClusterGroup() {
+	    return this.clusterGroup;
+	  },
+	  getFeaturesBound: function getFeaturesBound() {
+	    var features = this.features;
+	    if (typeof features == 'undefined') {
+	      console.log('No feature group found');
+	      return;
+	    }
+	    return features.getBounds();
+	  },
+	  getGeoJsonFeaturesBound: function getGeoJsonFeaturesBound() {
+	    var features = this.geoJsonFeatures;
+	    if (typeof features == 'undefined') {
+	      console.log('No geojson feature found');
+	      return;
+	    }
+	    return features.getBounds();
+	  },
+	  zoomToFeatures: function zoomToFeatures() {
+	    var bounds = this.getFeaturesBound();
+	    if (typeof bounds != 'undefined') this.map.fitBounds(bounds);
+	  },
+	  zoomToGeoJsonFeatures: function zoomToGeoJsonFeatures() {
+	    var bounds = this.getGeoJsonFeaturesBound();
+	    if (typeof bounds != 'undefined') this.map.fitBounds(bounds);
+	  },
+	  zoomToPoint: function zoomToPoint(point, zoom) {
+	    var z = zoom || this.map.getMaxZoom(); //default zoom
+	    if (typeof point.x != 'undefined' && typeof point.y != 'undefined') {
+	      var latlng = new L.LatLng(point.y, point.x);
+	      this.map.setView(latlng, z);
+	    } else {
+	      this.map.setView(point, z);
+	    }
+	  },
+	  pointInPolygon: function pointInPolygon(point, vs) {
+	    // ray-casting algorithm based on
+	    // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+	
+	    var x = point[0],
+	        y = point[1];
+	
+	    var inside = false;
+	    for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+	      var xi = vs[i][0],
+	          yi = vs[i][1];
+	      var xj = vs[j][0],
+	          yj = vs[j][1];
+	
+	      var intersect = yi > y != yj > y && x < (xj - xi) * (y - yi) / (yj - yi) + xi;
+	      if (intersect) inside = !inside;
+	    }
+	
+	    return inside;
+	  }
+	
+	});
+	
+	module.exports = LeafletViewer;
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	/*
+	Tu Hoang
+	ESRGC
+	2014
+	
+	class.js
+	utility functions that implements OOP
+	*/
+	
+	/*
+	function that defines a new class by passing a new
+	prototype object (literal) as parameter. New classes
+	can extend/inherit from other classes by passing the 
+	inherit class name to extend property of the new class 
+	prototype object
+	
+	Example:
+	var newClass = dx.define({
+	extend: OtherClass,
+	initialize: function(options){
+	};
+	});
+	*/
+	var define = function define(child) {
+	  var ch = child;
+	  var p = ch.extend;
+	  var _class_ = null;
+	  if (p == null || typeof p == 'undefined') {
+	    _class_ = function _class_() {
+	      if (typeof this.initialize != 'undefined') this.initialize.apply(this, arguments);
+	    };
+	    _class_.prototype = ch;
+	  } else {
+	    _class_ = function _class_() {
+	      var init = typeof this.initialize == 'function' ? this.initialize : 'undefined';
+	      //run child initialize function if exists
+	      if (typeof init == 'function') {
+	        init.apply(this, arguments);
+	      }
+	    };
+	    extend(_class_, p); //inherit prototype
+	    copy(_class_.prototype, ch); //augment prototype
+	  }
+	  return _class_;
+	};
+	/*
+	Deep copy object prototype by new keyword.
+	This method creates a new prototype object, whose prototype 
+	is a copy of the parent's prototype, and assign it to the child prototype.
+	Finally, sets the child's prototype constructor to the child's constructor
+	*/
+	var extend = function extend(child, parent) {
+	  var F = function F() {};
+	  F.prototype = parent.prototype;
+	  child.prototype = new F();
+	  child.prototype.constructor = child;
+	  child.parent = parent.prototype;
+	};
+	//copy object properties
+	var copy = function copy(dest, source) {
+	  dest = dest || {};
+	  if (source) {
+	    for (var property in source) {
+	      var value = source[property];
+	      if (value !== undefined) {
+	        dest[property] = value;
+	      }
+	    }
+	    /**
+	     * IE doesn't include the toString property when iterating over an object's
+	     * properties with the for(property in object) syntax.  Explicitly check if
+	     * the source has its own toString property.
+	     */
+	    /*
+	     * FF/Windows < 2.0.0.13 reports "Illegal operation on WrappedNative
+	     * prototype object" when calling hawOwnProperty if the source object
+	     * is an instance of window.Event.
+	     */
+	
+	    var sourceIsEvt = typeof window.Event == "function" && source instanceof window.Event;
+	
+	    if (!sourceIsEvt && source.hasOwnProperty && source.hasOwnProperty("toString")) {
+	      dest.toString = source.toString;
+	    }
+	  }
+	  return dest;
+	};
+	
+	module.exports = {
+	  define: define,
+	  extend: extend,
+	  copy: copy
+	};
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	/*
+	Author: Tu hoang
+	ESRGC
+	Provides base (prototype) functions for mapviewer
+	
+	This class implement leaflet API
+	*/
+	
+	var Class = __webpack_require__(7);
+	
+	var MapViewer = Class.define({
+	    name: 'MapViewer',
+	    _className: 'MapViewer',
+	    initialize: function initialize(options) {
+	        Class.copy(this, options); //copy all options to this class
+	    },
+	    zoomToExtent: function zoomToExtent(extent) {
+	        this.map.fitBounds(new L.LatLngBounds(new L.LatLng(extent.xmin, extent.ymin), new L.LatLng(extent.xmax, extent.ymax)));
+	    },
+	    zoomToFullExtent: function zoomToFullExtent() {},
+	    //zoom to xy (if level exists then zoom to that level otherwise maxlevel is used)
+	    zoomToXY: function zoomToXY(x, y, level) {
+	        if (typeof level == 'undefined') this.map.setView(new L.LatLng(y, x), this.map.getMaxZoom());else this.map.setView(new L.LatLng(y, x), level);
+	    },
+	    zoomIn: function zoomIn() {
+	        this.map.zoomIn();
+	    },
+	    zoomOut: function zoomOut() {
+	        this.map.zoomOut();
+	    },
+	    zoomToDataExtent: function zoomToDataExtent(layer) {
+	        this.map.fitBounds(layer.getBounds());
+	    },
+	    panTo: function panTo(x, y) {
+	        this.map.panTo(new L.LatLng(y, x));
+	    },
+	    locate: function locate() {
+	        this.map.locateAndSetView(this.map.getMaxZoom() - 2);
+	    }
+	
+	});
+	
+	module.exports = MapViewer;
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	/*
+	Tu Hoang
+	March 2017
+	
+	Calendar view
+	
+	event callbacks: 
+	onEventClick(event, jsEvent, view)
+	onEventsLoaded(eventData, view)
+	
+	*/
+	
+	var Calendar = Backbone.View.extend({
+	  name: 'CalendarView',
+	  el: '#calendar-area',
+	  render: function render() {
+	    var scope = this;
+	    this.$('#calendar').fullCalendar({
+	      //init full calendar 
+	      header: {
+	        left: 'prev,next,today',
+	        center: 'title',
+	        right: 'month,agendaWeek,agendaDay,listMonth'
+	      },
+	      editable: false,
+	      eventSources: [
+	      //event feed
+	      {
+	        url: 'feed' // use the `url` property
+	        // color: 'yellow', // an option!
+	        // textColor: 'black' // an option!
+	      }
+	
+	      // any other sources...
+	
+	      ],
+	      eventLimit: true,
+	      eventMouseover: function eventMouseover(event, jsEvent, view) {
+	        //register call back and trigger here
+	        if (typeof scope.onEventMouseOver == 'function') scope.onEventMouseOver.call(scope, event, jsEvent, view);
+	      },
+	      eventClick: function eventClick(event, jsEvent, view) {
+	        console.log(event);
+	        //register call back and trigger here
+	        if (typeof scope.onEventClick == 'function') scope.onEventClick.call(scope, event, jsEvent, view);
+	      },
+	      loading: function loading(isLoading, view) {
+	        if (!isLoading) {
+	          console.log('done fetching event data!');
+	          var eventData = $('#calendar').fullCalendar('clientEvents');
+	          // console.log(eventData);
+	          if (typeof scope.onEventsLoaded == 'function') {
+	            scope.onEventsLoaded.call(scope, eventData, view);
+	          }
+	        }
+	      }
+	
+	    });
+	  }
+	});
+	
+	module.exports = Calendar;
+
+/***/ }
+/******/ ]);
 //# sourceMappingURL=eventIndex-bundle.js.map

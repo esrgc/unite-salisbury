@@ -152,9 +152,12 @@ router.get('/manageUser', function(req, res) {
 
   //retrieve users
   var query = null;
-
-  if (search != '') { //search
-    var criteria = {};
+  var criteria = {};
+  
+  if (searchBy == 'awaiting approval') {
+    query = User.find({approved: false});
+  }
+  else if (search != '') { //search
     //criteria[searchBy] = new RegExp('^' + search + '$', "i");
     criteria[searchBy] = { '$regex': search, '$options': 'i' }
     query = User.find(criteria);
