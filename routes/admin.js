@@ -215,7 +215,7 @@ router.get('/editUser/:id', function(req, res) {
 
     res.render('admin/editUser', {
 
-      user: result,
+      editUser: result,
       rootPath: '../../'
     });
   });
@@ -228,12 +228,14 @@ router.post('/editUser/:id', function(req, res) {
   console.log('Updating user');
   console.log(data);
 
+
+
   //done callback
   var done = function(err, user, validationError) {
     res.render('admin/editUser', {
 
       message: req.flash('flashMessage'),
-      user: user, //user model that contains previous user data
+      editUser: user, //user model that contains previous user data
       valErr: validationError, //show all error messages
       rootPath: '../../'
     });
@@ -244,6 +246,10 @@ router.post('/editUser/:id', function(req, res) {
       req.flash('flashMessage', 'Error finding user.');
       res.redirect('manageUser');
     }
+
+    //encrypt password
+    data.password = user.generateHash(data.password);
+
     //no error now bind new updated data
     helpers.copy(user, data);
     //validate
