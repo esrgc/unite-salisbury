@@ -25,10 +25,23 @@
     {{#if user}}
     <div class="row">
       <div class="col-md-12">
+        {{#if user.approved}}
         <p class="text-right">
           <a href="add" class="btn btn-default btn-xs"><i class="fa fa-plus"></i> Add Event</a>
           <a href="manage" class="btn btn-default btn-xs"><i class="fa fa-list"></i> Manage Event</a>
         </p>
+        {{/if}}
+        {{#unless user.approved}} 
+          <div class="alert alert-warning text-center">
+            <h3>Attention!</h3>
+            <p>
+              <strong>
+                Your account has not been approved to post events. Please contact Administrator for approval.
+                <a href="mailto:{{adminEmail}}?subject=Please%20approve%20my%20account {{user.email}}">Contact Admin</a>
+              </strong>
+            </p>
+          </div>
+        {{/unless}}
       </div>
     </div>
     {{/if}}
