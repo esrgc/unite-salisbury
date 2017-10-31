@@ -245,7 +245,7 @@ router.post('/add', isLoggedIn, authorized.can('create event'), function(req, re
             if (response.candidates.length == 0) { //If no candidates
               console.log('No address found...')              
               // newEvent.location = null;
-              
+
               return res.render('event/add', {
                 message: 'Error locating new event. Please try another address!',
                 err: {},
@@ -480,7 +480,7 @@ router.post('/edit', isLoggedIn, authorized.can('manage event'), function(req, r
     editingEvent.validate((err) => {
       if (err) {
         //do a flash message here
-        res.render('event/edit', {
+        return res.render('event/edit', {
           message: 'Error creating new event. Please try again!',
           err: err,
           event: model
@@ -502,7 +502,12 @@ router.post('/edit', isLoggedIn, authorized.can('manage event'), function(req, r
             // return;
           } else {
             if (response.candidates.length == 0) { //If no candidates
-              req.flash('eventsMessage', 'Could not find that address, please try again.');
+              // req.flash('eventsMessage', 'Could not find that address, please try again.');
+              return res.render('event/edit', {
+                message: 'Could not locate the address. Please try another address!',
+                err: {},
+                event: model
+              });
               editingEvent.location = null;
               // return;
             } else {
