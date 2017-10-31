@@ -46,8 +46,7 @@
                   </div>
                 </div>
                 <div class="col-md-1">
-                  <select class="form-control" name="pageSize" title="Showing size" id="pageSize">
-                    <option value="5" {{#ifCond pageSize 5}}selected{{/ifCond}}>5</option>
+                  <select class="form-control" name="pageSize" title="Showing size" id="pageSize">                   
                     <option value="10" {{#ifCond pageSize 10}}selected{{/ifCond}}>10</option>
                     <option value="20" {{#ifCond pageSize 20}}selected{{/ifCond}}>20</option>
                     <option value="30" {{#ifCond pageSize 30}}selected{{/ifCond}}>30</option>
@@ -80,7 +79,7 @@
                     {{{generateSortUrl this 'manageUser' 'email' 'Email'}}}
                   </th>
                   <th>
-                    Account Status
+                    {{{generateSortUrl this 'manageUser' 'approved' 'Account Status'}}}
                   </th>
                   <th>
                     {{{generateSortUrl this 'manageUser' 'role' 'Role'}}}

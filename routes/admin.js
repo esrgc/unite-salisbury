@@ -26,7 +26,7 @@ router.get('/', function(req, res) {
   res.redirect('admin/index');
 });
 
-router.get('/index', function(req, res){
+router.get('/index', function(req, res) {
   res.render('admin/index', {
     message: req.flash('flashMessage')
   });
@@ -138,26 +138,24 @@ router.get('/manageUser', function(req, res) {
 
   //params setup
   var pageIndex = (data.page - 1) || 0,
-    pageSize = parseInt(data.pageSize) || 5,
+    pageSize = parseInt(data.pageSize) || 10,
     sortBy = data.sortBy || 'firstName',
     order = data.order || 'asc',
     searchBy = data.searchBy || '',
     search = data.search || '',
-    sortOrder = '';
+    sortOrder = {};
 
   //setup sortby order for query criteria
-  if (order == 'desc')
-    sortOrder = '-' + sortBy;
+  sortOrder[sortBy] = order;
 
 
   //retrieve users
   var query = null;
   var criteria = {};
-  
+
   if (searchBy == 'awaiting approval') {
-    query = User.find({approved: false});
-  }
-  else if (search != '') { //search
+    query = User.find({ approved: false });
+  } else if (search != '') { //search
     //criteria[searchBy] = new RegExp('^' + search + '$', "i");
     criteria[searchBy] = { '$regex': search, '$options': 'i' }
     query = User.find(criteria);
@@ -355,11 +353,14 @@ router.get('/manageEvent', function(req, res) {
     order = data.order || 'asc',
     searchBy = data.searchBy || 'name',
     search = data.search || '',
-    sortOrder = '';
+    sortOrder = {};
 
   //setup sortby order for query criteria
-  if (order == 'desc')
-    sortOrder = '-' + sortBy;
+  sortOrder[sortBy] = order;
+  // if (order == 'desc')
+  //   sortOrder[sortby] = 'desc';
+  // else
+  //   sortOrder[sortby] = 'asc';
 
   //retrieve users
   var query = null;
@@ -373,10 +374,11 @@ router.get('/manageEvent', function(req, res) {
     query = Event.find();
 
   //paging and sort then executes
-  query.skip(pageIndex * pageSize)
-    .limit(pageSize)
+  query
     .populate('_creator')
     .sort(sortOrder)
+    .skip(pageIndex * pageSize)
+    .limit(pageSize)
     .exec(function(err, result) {
       if (err) {
         console.log(err);
