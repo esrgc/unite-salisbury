@@ -243,7 +243,7 @@ router.post('/add', isLoggedIn, authorized.can('create event'), function(req, re
             }
             console.log(response);
             if (response.candidates.length == 0) { //If no candidates
-              console.log('No address found...')              
+              console.log('No address found...')
               // newEvent.location = null;
 
               return res.render('event/add', {
@@ -500,6 +500,11 @@ router.post('/edit', isLoggedIn, authorized.can('manage event'), function(req, r
           if (err) {
             editingEvent.location = null;
             // return;
+            return res.render('event/edit', {
+              message: 'Error locating the address. Please try another address!',
+              err: {},
+              event: model
+            });
           } else {
             if (response.candidates.length == 0) { //If no candidates
               // req.flash('eventsMessage', 'Could not find that address, please try again.');
