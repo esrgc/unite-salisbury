@@ -543,9 +543,9 @@ router.post('/edit', isLoggedIn, authorized.can('manage event'), function(req, r
 
           p.then(function(data) {
             req.flash('message', `Event ${data.name} was edited successfully!`)
-            res.redirect('manage');
+            return res.redirect('manage');
           }, function(error) {
-            res.render('event/edit', {
+            return res.render('event/edit', {
               message: 'Error saving event! Please try again!',
               err: error,
               event: model

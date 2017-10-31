@@ -17,5 +17,6 @@ let startup = function() {
 
 //fire up the app
 $(() => {
+	console.log('Starting up....')
   startup();
 });

@@ -63,6 +63,7 @@
 	
 	//fire up the app
 	$(function () {
+	  console.log('Starting up....');
 	  startup();
 	});
 

@@ -26,6 +26,7 @@
   "dependencies": {
     "authorized": "^1.0.0",
     "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.5.1",
     "body-parser": "~1.6.6",
     "bootstrap-timepicker": "~0.5.2",
     "connect-flash": "~0.1.1",

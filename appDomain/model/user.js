@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt-nodejs');
 
+mongoose.Promise = require('bluebird');
 //Validators ========================================
 //
 //

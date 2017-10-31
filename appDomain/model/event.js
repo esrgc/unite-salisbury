@@ -10,6 +10,7 @@ var moment = require('moment'); //for datetime math
 var later = require('later'); //for recurring event
 var config = require('../../config');
 
+mongoose.Promise = require('bluebird');
 // mongoose.connect(connectionStr);
 // Validators ============================================
 
