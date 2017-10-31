@@ -147,7 +147,7 @@ router.get('/add', isLoggedIn, authorized.can('create event'), function(req, res
     event: {
       monthlyOnType: 'dayOfMonth',
       every: 1
-    } 
+    }
   });
 });
 
@@ -224,6 +224,7 @@ router.post('/add', isLoggedIn, authorized.can('create event'), function(req, re
           //calculate and save model the event recurrence      
           newEvent.calculateSchedule();
 
+          console.log('Geocoding address now...!')
           //now geocode
           geoCoder.search({ //Use geocoder to lookup
             Street: model.address.replace('.', ''),
@@ -232,14 +233,26 @@ router.post('/add', isLoggedIn, authorized.can('create event'), function(req, re
             ZIP: model.zip
           }, function(err, response) {
             if (err) {
+              console.log('Error geocoding...')
               newEvent.location = null;
-              return;
+              return res.render('event/add', {
+                message: 'Error locating new event. Please try another address!',
+                err: err,
+                event: model
+              });;
             }
+            console.log(response);
             if (response.candidates.length == 0) { //If no candidates
-              req.flash('eventsMessage', 'Could not find that address, please try again.');
-              newEvent.location = null;
-              return;
+              console.log('No address found...')              
+              // newEvent.location = null;
+              
+              return res.render('event/add', {
+                message: 'Error locating new event. Please try another address!',
+                err: {},
+                event: model
+              });;
             }
+
             for (var i in response.candidates) {
               var place = response.candidates[i];
               if (place.score > 79) {

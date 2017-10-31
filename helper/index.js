@@ -44,8 +44,11 @@ module.exports = {
       return scope.pad(d.getHours()) + ":" + scope.pad(d.getMinutes()) + ":" + scope.pad(d.getSeconds());
     });
     hbs.registerHelper('parseDateTime', function(d) {
+      console.log('Parsing date time....');
+      
       if (typeof d == 'undefined' || d == null)
         return '';
+      console.log(d.toLocaleString());
       return d.toLocaleString();
     });
     hbs.registerHelper('generateMapUrl', function(data) {
