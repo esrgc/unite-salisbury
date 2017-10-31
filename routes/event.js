@@ -277,9 +277,9 @@ router.post('/add', isLoggedIn, authorized.can('create event'), function(req, re
 
             p.then(function(data) {
               req.flash('message', 'Event added successfully!')
-              res.redirect('index');
+              return res.redirect('index');
             }, function(error) {
-              res.render('event/add', {
+              return res.render('event/add', {
                 message: 'Error saving event! Please try again!',
                 err: error,
                 event: model

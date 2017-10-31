@@ -36,7 +36,7 @@ module.exports = {
       if (typeof d == 'string')
         return d;
       else
-        return d.toLocaleDateString();
+        return d.toLocaleDateString('en-US');
     });
     hbs.registerHelper('parseTime', function(d) {
       if (typeof d == 'undefined' || d == null)
@@ -48,8 +48,8 @@ module.exports = {
       
       if (typeof d == 'undefined' || d == null)
         return '';
-      console.log(d.toLocaleString());
-      return d.toLocaleString();
+      console.log(d.toLocaleString('en-US'));
+      return d.toLocaleString('en-US');
     });
     hbs.registerHelper('generateMapUrl', function(data) {
       return data.location.x + "/" + data.location.y;
