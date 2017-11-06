@@ -27,6 +27,7 @@ var map = BaseMap.extend({
   render: function() {
     var scope = this;
     scope.makeMap(); //set up map
+    scope.renderControls(); //render layer controls
     if (typeof scope.onMapLoaded == 'function') {
       scope.onMapLoaded();
     }
