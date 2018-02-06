@@ -7,7 +7,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/index', function(req, res) {
-  res.redirect('event');
+  res.render('index', { title: 'Unite Salisbury'});
 });
 
 module.exports = router;
