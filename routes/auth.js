@@ -71,10 +71,13 @@ router.post('/signup', function(req, res, next) {
   var newUser = new User({
     email: data.email,
     password: data.password,
+    organization: data.organization,
+    isYouthOrganization: data.isYouthOrganization,
     firstName: data.firstName,
     lastName: data.lastName,
     role: 'user' //default
   });
+  console.log(newUser);
 
   //done callback
   var done = function(err, user, validationError) {

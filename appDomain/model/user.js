@@ -54,6 +54,8 @@ var UserSchema = new Schema({
     required: [true, 'Password is required.'],
     validate: passwordValidators
   },
+  organization: { type: String, required: [true, 'Organization is required']},
+  isYouthOrganization: { type: Boolean, default: false},
   firstName: { type: String, required: [true, 'First name is required'] },
   lastName: { type: String, required: [true, 'Last name is required'] },
   role: String,
@@ -70,6 +72,10 @@ var UserSchema = new Schema({
 UserSchema.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.password);
 };
+
+UserSchema.methods.organizationContact = function() {
+  return this.firstName + ' ' + this.lastName;
+}
 
 // generating a hash
 UserSchema.methods.generateHash = function(password) {

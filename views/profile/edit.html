@@ -24,6 +24,30 @@
               <h3 class="text-center"><i class="fa fa-edit"></i>&nbsp;Edit Profile</h3>
             </div>
           </div>
+          <div class="form-group" id="youthOrg-form-group">
+            <div class="col-md-10 col-md-offset-3">
+              <label class="checkbox">
+                <input data-val="true" data-val-required="This field is required." id="isYouthOrganization" name="isYouthOrganization" type="checkbox" value="{{user.isYouthOrganization}}" {{#if user.isYouthOrganization }}checked{{/if}}>
+                <input name="isYouthOrganization" type="hidden" value="false">Youth Service Organization, 501c3, and/or Religious Organization?
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="organization" class="col-md-3 control-label">Organization Name</label>
+            <div class="col-md-6">
+              <input class="input-validation-error form-control" data-val="true" data-val-required="Please enter your organization name" id="organization" name="organization" placeholder="" type="text" value="{{user.organization}}">
+              <span class="help-block">
+                <span class="field-validation-error" data-valmsg-for="organization" data-valmsg-replace="true">
+                  <!--validation message-->
+                </span>
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-9 col-md-offset-3">
+              <label for="organization" class="control-label">Organization Contact</label>
+            </div>
+          </div>
           <div class="form-group">
             <label for="firstName" class="col-md-3 control-label">First Name</label>
             <div class="col-md-6">

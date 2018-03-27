@@ -67,11 +67,14 @@ router.post('/edit', function(req, res) {
   }
 
   var data = req.body;
+  console.log(data);
   var updateInstructions = {
     $set: {
       firstName: data.firstName,
       lastName: data.lastName,
-      email: data.email
+      email: data.email,
+      organization: data.organization,
+      isYouthOrganization: data.isYouthOrganization
     }
   }
   var updateOptions = { runValidators: true, new: true };
