@@ -1,7 +1,7 @@
 <div class="page-wrap">
   <div class="container">
-   <div class="page-header">
-    <h3>
+    <div class="page-header">
+      <h3>
       <a href="{{rootPath}}admin">Administration</a> - <small>Edit User</small>
     </h3>
     </div>
@@ -20,13 +20,33 @@
                   <div class="validation-summary-errors">
                     <ul class="list-unstyled">
                       {{#each valErr.errors}}
-                        <li>{{message}}</li>
+                      <li>{{message}}</li>
                       {{/each}}
                     </ul>
                   </div>
                   {{/if}}
                 </div>
                 {{/if}}
+                <div class="form-group" id="youthOrg-form-group">
+                  <div class="col-md-10 col-md-offset-3">
+                    <label class="checkbox">
+                      <input data-val="true" data-val-required="This field is required." id="isYouthOrganization" name="isYouthOrganization" type="checkbox" value="{{editUser.isYouthOrganization}}" {{#if editUser.isYouthOrganization }}checked{{/if}}>
+                      <input name="isYouthOrganization" type="hidden" value="false">Is a Youth Service Organization, 501c3, and/or Religious Organization?
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="organization" class="col-md-3 control-label">Organization Name</label>
+                  <div class="col-md-6">
+                    <input class="input-validation-error form-control" data-val="true" data-val-required="Please enter your organization name" id="organization" name="organization" placeholder="" type="text" value="{{editUser.organization}}">
+                    <span class="label label-default">Required</span>
+                    <span class="help-block">
+                <span class="field-validation-error" data-valmsg-for="organization" data-valmsg-replace="true">
+                  <!--validation message-->
+                </span>
+                    </span>
+                  </div>
+                </div>
                 <div class="form-group">
                   <label for="firstName" class="col-md-3 control-label">First Name</label>
                   <div class="col-md-6">
@@ -48,7 +68,6 @@
                       <span class="">
                          <!--validation message-->
                       </span>
-
                     </span>
                   </div>
                 </div>
@@ -64,13 +83,13 @@
                     </span>
                   </div>
                 </div>
-               <div class="form-group">
+                <div class="form-group">
                   <label for="Password" class="col-md-3 control-label">Password</label>
                   <div class="col-md-6">
                     <input class="form-control" id="Password" name="password" placeholder="Password" type="text" value="">
                     <span class="label label-default">Required</span>
                     <span class="help-block"><span class="">Set new password. Leave blank if not changed.</span></span>
-                 </div>
+                  </div>
                 </div>
                 <!-- <div class="form-group">
                   <label for="ConfirmPassword" class="col-md-3 control-label">Confirm password</label>
@@ -95,7 +114,6 @@
                     </span>
                   </div>
                 </div>
-
                 <div class="form-group">
                   <label for="firstName" class="col-md-3 control-label">Status</label>
                   <div class="col-md-3">
@@ -104,10 +122,8 @@
                       <option value="false" {{#ifCond editUser.approved false}}selected{{/ifCond}}>Not Approved</option>
                     </select>
                     <p>
-                      {{#ifCond editUser.approved true}}<span class="label label-success">User is approved to post events</span>{{/ifCond}}
-                      {{#ifCond editUser.approved false}}<span class="label label-warning">User is not approved to post events</span>{{/ifCond}}                      
+                      {{#ifCond editUser.approved true}}<span class="label label-success">User is approved to post events</span>{{/ifCond}} {{#ifCond editUser.approved false}}<span class="label label-warning">User is not approved to post events</span>{{/ifCond}}
                     </p>
-
                     <span class="label label-default"></span>
                     <span class="help-block">                      
                       <span class="">
@@ -116,7 +132,6 @@
                     </span>
                   </div>
                 </div>
-
                 <div class="form-group">
                   <div class="col-md-6 col-md-offset-3">
                     <button class="btn btn-primary" id="proceedBtn" type="submit">

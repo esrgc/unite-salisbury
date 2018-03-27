@@ -25,14 +25,20 @@
             <a href="{{rootPath}}profile/edit"><span class="fa fa-pencil"></span></a>
           </div>
           <div class="panel-body">
+            {{#if user.isYouthOrganization}}
+              <label class="label label-success col-md-offset-3">Youth Service Organization</label>
+            {{else}}
+              <label class="label label-default col-md-offset-3">Non-Youth Service Organization</label>
+            {{/if}}
             <dl class="dl-horizontal">
+              <dt>Organization</dt>
+              <dd>{{user.organization}}</dd>
+              <dt>Contact</dt>
+              <dd>{{user.firstName}} {{user.lastName}}</dd>
               <dt>Email</dt>
               <dd>{{user.email}}</dd>
-              <dt>First Name</dt>
-              <dd>{{user.firstName}}</dd>
-              <dt>Last Name</dt>
-              <dd>{{user.lastName}}</dd>
             </dl>
+
           </div>
           <div class="panel-footer">
             <a href="{{rootPath}}profile/changePassword">
