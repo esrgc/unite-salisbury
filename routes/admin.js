@@ -139,7 +139,7 @@ router.get('/manageUser', function(req, res) {
   //params setup
   var pageIndex = (data.page - 1) || 0,
     pageSize = parseInt(data.pageSize) || 10,
-    sortBy = data.sortBy || 'firstName',
+    sortBy = data.sortBy || 'organization',
     order = data.order || 'asc',
     searchBy = data.searchBy || '',
     search = data.search || '',

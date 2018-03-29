@@ -39,6 +39,7 @@ passport.use('local-login', new LocalStrategy({
         console.log(err);
         return done(err);
       }
+      console.log(user);
       // if no user is found, return the message
       if (!user){
         console.log("No user");
