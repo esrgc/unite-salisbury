@@ -14,11 +14,11 @@ var list = require('./list');
 
 //authorized middleware
 var authorized = require('../appDomain').authorization;
-
+var config = require('../config');
 //this middleware is to detect user and pass an instance 
 //of current logged in user to locals to make available in view
 router.use(function(req, res, next) {
-  res.locals.adminEmail = 'esrgc@salisbury.edu';
+  res.locals.adminEmail = config.adminEmail;
   if (req.isAuthenticated()) {
     console.log("router middleware: there's a logged in user");
     res.locals.user = req.user;    
