@@ -73,6 +73,8 @@ router.post('/signup', function(req, res, next) {
     password: data.password,
     organization: data.organization,
     isYouthOrganization: data.isYouthOrganization,
+    is501c3: data.is501c3,
+    isReligiousOg: data.isReligiousOg,
     firstName: data.firstName,
     lastName: data.lastName,
     role: 'user' //default

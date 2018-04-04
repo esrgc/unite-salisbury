@@ -1,7 +1,7 @@
 <div class="page-wrap">
   <div class="container">
-   <div class="page-header">
-    <h3>
+    <div class="page-header">
+      <h3>
       <a href="{{rootPath}}admin">Administration</a> - <small>Add User</small>
     </h3>
     </div>
@@ -19,13 +19,55 @@
                   <div class="validation-summary-errors">
                     <ul class="list-unstyled">
                       {{#each valErr.errors}}
-                        <li>{{message}}</li>
+                      <li>{{message}}</li>
                       {{/each}}
                     </ul>
                   </div>
                   {{/if}}
                 </div>
                 {{/if}}
+                <h3 class="text-center">Add a New User</h3>
+                <div class="form-group">
+                  <label for="organization" class="col-md-3 control-label">Organization Name</label>
+                  <div class="col-md-6">
+                    <input class="input-validation-error form-control" data-val="true" data-val-required="Please enter your organization name" id="organization" name="organization" placeholder="" type="text" value="{{newUser.organization}}">
+                    <span class="label label-default">Required</span>
+                    <span class="help-block">
+                <span class="field-validation-error" data-valmsg-for="organization" data-valmsg-replace="true">
+                  <!--validation message-->
+                </span>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group youthOrg-form-group">
+                  <div class="col-md-10 col-md-offset-3">
+                    <label class="checkbox">
+                      <input data-val="true" data-val-required="This field is required." id="isYouthOrganization" name="isYouthOrganization" type="checkbox" value="{{newUser.isYouthOrganization}}" {{#if newUser.isYouthOrganization }}checked{{/if}}>
+                      <input name="isYouthOrganization" type="hidden" value="false">Are you a Youth Service Organization?
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group youthOrg-form-group">
+                  <div class="col-md-10 col-md-offset-3">
+                    <label class="checkbox">
+                      <input data-val="true" data-val-required="This field is required." id="is501c3" name="is501c3" type="checkbox" value="{{newUser.is501c3}}" {{#if newUser.is501c3 }}checked{{/if}}>
+                      <input name="is501c3" type="hidden" value="false">Are you a 501c3 Organization?
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group youthOrg-form-group">
+                  <div class="col-md-10 col-md-offset-3">
+                    <label class="checkbox">
+                      <input data-val="true" data-val-required="This field is required." id="isReligiousOrg" name="isReligiousOrg" type="checkbox" value="{{newUser.isReligiousOrg}}" {{#if newUser.isReligiousOrg }}checked{{/if}}>
+                      <input name="isReligiousOrg" type="hidden" value="false">Are you a Religious Organization?
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-9 col-md-offset-3">
+                    <label for="organization" class="control-label">Organization Contact</label>
+                  </div>
+                </div>
                 <div class="form-group">
                   <label for="firstName" class="col-md-3 control-label">First Name</label>
                   <div class="col-md-6">
@@ -47,7 +89,6 @@
                       <span class="">
                          <!--validation message-->
                       </span>
-
                     </span>
                   </div>
                 </div>
@@ -66,7 +107,7 @@
                 <div class="form-group">
                   <label for="Password" class="col-md-3 control-label">Password</label>
                   <div class="col-md-6">
-                    <input class="form-control"id="Password" name="password" placeholder="Password" type="password">
+                    <input class="form-control" id="Password" name="password" placeholder="Password" type="password">
                     <span class="label label-default">Required</span>
                     <span class="help-block"><span class=""> <!--validation message--></span></span>
                   </div>
@@ -88,6 +129,24 @@
                     </select>
                     <span class="label label-default">Admin role allows this user to access administration</span>
                     <span class="help-block">
+                      <span class="">
+                        <!--validation message-->
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="status" class="col-md-3 control-label">Status</label>
+                  <div class="col-md-3">
+                    <select name="approved" id="approved" class="form-control">
+                      <option value="true" {{#ifCond editUser.approved true}}selected{{/ifCond}}>Approved</option>
+                      <option value="false" {{#ifCond editUser.approved false}}selected{{/ifCond}}>Not Approved</option>
+                    </select>
+                    <p>
+                      {{#ifCond editUser.approved true}}<span class="label label-success">User is approved to post events</span>{{/ifCond}} {{#ifCond editUser.approved false}}<span class="label label-warning">User is not approved to post events</span>{{/ifCond}}
+                    </p>
+                    <span class="label label-default"></span>
+                    <span class="help-block">                      
                       <span class="">
                         <!--validation message-->
                       </span>

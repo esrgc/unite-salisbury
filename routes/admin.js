@@ -44,8 +44,13 @@ router.post('/addUser', function(req, res, next) {
   var newUser = new User({
     email: data.email,
     password: data.password,
+    organization: data.organization,
+    isYouthOrganization: data.isYouthOrganization,
+    is501c3: data.is501c3,
+    isReligiousOg: data.isReligiousOg,
     firstName: data.firstName,
     lastName: data.lastName,
+    approved: data.approved,
     role: 'user' //default
   });
   console.log(data.email);

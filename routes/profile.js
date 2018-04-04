@@ -74,9 +74,11 @@ router.post('/edit', function(req, res) {
       lastName: data.lastName,
       email: data.email,
       organization: data.organization,
-      isYouthOrganization: data.isYouthOrganization
+      isYouthOrganization: data.isYouthOrganization,
+      is501c3: data.is501c3,
+      isReligiousOrg: data.isReligiousOrg
     }
-  }
+  };
   var updateOptions = { runValidators: true, new: true };
   User.findOneAndUpdate({ email: req.user.email }, updateInstructions, updateOptions, function(err, user) {
     if (err) {

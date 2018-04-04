@@ -23,14 +23,6 @@
               <h3 class="text-center"><i class="fa fa-edit"></i>&nbsp;Sign up</h3>
             </div>
           </div>
-          <div class="form-group" id="youthOrg-form-group">
-            <div class="col-md-10 col-md-offset-3">
-              <label class="checkbox">
-                <input data-val="true" data-val-required="This field is required." id="isYouthOrganization" name="isYouthOrganization" type="checkbox" value="{{newUser.isYouthOrganization}}" {{#if newUser.isYouthOrganization }}checked{{/if}}>
-                <input name="isYouthOrganization" type="hidden" value="false">Are you a Youth Service Organization, 501c3, and/or Religious Organization?
-              </label>
-            </div>
-          </div>
           <div class="form-group">
             <label for="organization" class="col-md-3 control-label">Organization Name</label>
             <div class="col-md-6">
@@ -43,6 +35,34 @@
               </span>
             </div>
           </div>
+
+          <div class="form-group youthOrg-form-group">
+            <div class="col-md-10 col-md-offset-3">
+              <label class="checkbox">
+                <input data-val="true" data-val-required="This field is required." id="isYouthOrganization" name="isYouthOrganization" type="checkbox" value="{{newUser.isYouthOrganization}}" {{#if newUser.isYouthOrganization }}checked{{/if}}>
+                <input name="isYouthOrganization" type="hidden" value="false">Are you a Youth Service Organization?
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group youthOrg-form-group">
+            <div class="col-md-10 col-md-offset-3">
+              <label class="checkbox">
+                <input data-val="true" data-val-required="This field is required." id="is501c3" name="is501c3" type="checkbox" value="{{newUser.is501c3}}" {{#if newUser.is501c3 }}checked{{/if}}>
+                <input name="is501c3" type="hidden" value="false">Are you a 501c3 Organization?
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group youthOrg-form-group">
+            <div class="col-md-10 col-md-offset-3">
+              <label class="checkbox">
+                <input data-val="true" data-val-required="This field is required." id="isReligiousOrg" name="isReligiousOrg" type="checkbox" value="{{newUser.isReligiousOrg}}" {{#if newUser.isReligiousOrg }}checked{{/if}}>
+                <input name="isReligiousOrg" type="hidden" value="false">Are you a Religious Organization?
+              </label>
+            </div>
+          </div>
+          
           <div class="form-group">
             <div class="col-md-9 col-md-offset-3">
               <label for="organization" class="control-label">Organization Contact</label>

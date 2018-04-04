@@ -56,6 +56,8 @@ var UserSchema = new Schema({
   },
   organization: { type: String, required: [true, 'Organization is required']},
   isYouthOrganization: { type: Boolean, default: false},
+  is501c3: { type: Boolean, default: false},
+  isReligiousOrg: { type: Boolean, default: false},
   firstName: { type: String, required: [true, 'First name is required'] },
   lastName: { type: String, required: [true, 'Last name is required'] },
   role: String,

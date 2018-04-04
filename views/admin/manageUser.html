@@ -70,6 +70,8 @@
                 <thead>
                   <th>{{{generateSortUrl this 'manageUser' 'organization' 'Organization'}}}</th>
                   <th>{{{generateSortUrl this 'manageUser' 'isYouthOrganization' 'Youth Org?'}}}</th>
+                  <th>{{{generateSortUrl this 'manageUser' 'is501c3' '501c3?'}}}</th>
+                  <th>{{{generateSortUrl this 'manageUser' 'isReligiousOrg' 'Religious Org?'}}}</th>
                   <th>
                     {{{generateSortUrl this 'manageUser' 'firstName' 'First Name'}}}
                   </th>
@@ -94,11 +96,26 @@
                     <td>{{organization}}</td>
                     <td>
                       {{#if isYouthOrganization}}
-                        Yes
+                        <label class="label label-success">Yes</label>
                       {{else}}
-                        No
+                        <label class="label label-danger">No</label>
                       {{/if}}
                     </td>
+                    <td>
+                      {{#if is501c3}}
+                        <label class="label label-success">Yes</label>
+                      {{else}}
+                        <label class="label label-danger">No</label>
+                      {{/if}}
+                    </td>
+                    <td>
+                      {{#if isReligiousOrg}}
+                        <label class="label label-success">Yes</label>
+                      {{else}}
+                        <label class="label label-danger">No</label>
+                      {{/if}}
+                    </td>
+
                     <td>{{firstName}}</td>
                     <td>{{lastName}}</td>
                     <td>{{email}}</td>
