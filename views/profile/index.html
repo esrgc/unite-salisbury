@@ -25,26 +25,28 @@
             <a href="{{rootPath}}profile/edit"><span class="fa fa-pencil"></span></a>
           </div>
           <div class="panel-body">
-            {{#if user.isYouthOrganization}}
-              <label class="label label-success col-md-offset-3">Youth Service Organization</label>
-            {{/if}}
-
-            {{#if user.is501c3}}
-              <label class="label label-primary">501c3 Organization</label>           
-            {{/if}}
-
-            {{#if user.isYouthOrganization}}
-              <label class="label label-warning">Religious Organization</label>           
-            {{/if}}
             <dl class="dl-horizontal">
               <dt>Organization</dt>
-              <dd>{{user.organization}}</dd>
+              <dd><strong>{{user.organization}}</strong></dd>
+              <dd class="">
+                {{#if user.isYouthOrganization}}
+                <label class="label label-success">
+                  <i class="fa fa-check"></i>&nbsp;Youth Service Organization</label>
+                {{/if}} {{#if user.is501c3}}
+                <label class="label label-primary">
+                  <i class="fa fa-check"></i>&nbsp;501c3 Organization</label>
+                {{/if}} {{#if user.isReligiousOrg}}
+                <label class="label label-warning">
+                  <i class="fa fa-check"></i>&nbsp;Religious Organization</label>
+                {{/if}}
+              </dd>
+              
               <dt>Contact</dt>
               <dd>{{user.firstName}} {{user.lastName}}</dd>
               <dt>Email</dt>
               <dd>{{user.email}}</dd>
-            </dl>
 
+            </dl>
           </div>
           <div class="panel-footer">
             <a href="{{rootPath}}profile/changePassword">
