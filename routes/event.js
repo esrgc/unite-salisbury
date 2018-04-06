@@ -91,6 +91,7 @@ router.get('/feed', function(req, res) {
               state: d.state,
               zip: d.zip,
               title: d.name,
+              eventUrl: d.url,
               repeating: true
             };
 
@@ -126,6 +127,7 @@ router.get('/feed', function(req, res) {
           state: d.state,
           zip: d.zip,
           title: d.name,
+          eventUrl: d.url,
           start: moment(d.start).local().format(),
           end: moment(d.end).local().format()
         };

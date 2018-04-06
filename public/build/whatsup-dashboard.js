@@ -99,7 +99,7 @@ ESRGC
 Provides base (prototype) functions for mapviewer
 Note: this class is defined using dx library
 
-implements leaflet API 
+implements leaflet API
 operates foodshed application
 */
 var Class = require('../util/class');
@@ -112,7 +112,7 @@ var LeafletViewer = Class.define({
   initialize: function(options) {
     MapViewer.prototype.initialize.apply(this, arguments);
     //map setup
-    var minimal = L.tileLayer('http://{s}.tiles.mapbox.com/v3/esrgc.map-y9awf40v/{z}/{x}/{y}.png');
+    var minimal = L.tileLayer('https://{s}.tiles.mapbox.com/v3/esrgc.map-y9awf40v/{z}/{x}/{y}.png');
     //var satellite = L.tileLayer('http://{s}.tiles.mapbox.com/v3/esrgc.map-0y6ifl91/{z}/{x}/{y}.png');
 
     var baseMaps = {
@@ -290,6 +290,7 @@ var LeafletViewer = Class.define({
 });
 
 module.exports = LeafletViewer;
+
 /*
 Author: Tu hoang
 ESRGC
@@ -633,7 +634,7 @@ var map = Backbone.View.extend({
   makeMap: function() {
     this.mapViewer = new LeafletViewer({
       el: this.el,
-      center: new L.LatLng( 38.3607, -75.5994 ), //salisbury coordinates
+      center: new L.LatLng(38.3607, -75.5994), //salisbury coordinates
       zoomLevel: 10,
       scrollZoom: true,
       clusterOptions: {
@@ -667,7 +668,7 @@ var map = Backbone.View.extend({
     var mapData = this.mapData;
     var counter = 0;
     var loadData = function(layer) {
-      if (typeof layer == 'undefined'){
+      if (typeof layer == 'undefined') {
         if (typeof scope.onMapLoaded == 'function') {
           scope.onMapLoaded();
         }
@@ -898,22 +899,22 @@ var map = Backbone.View.extend({
   },
   renderControls: function() {
     var scope = this;
-    var data = this.mapData;
-    // console.log(data);
-    var template = Handlebars.compile($(this.mapControlsTemplate).html());
-    var html = template({
-      models: data
-    });
-    this.$('div.leaflet-bottom.leaflet-left').html(html);
-    //wire layer controls events
-    this.$('.overlays div.layers').on('click', function(e) {
-      scope.mapControlClick.call(scope, e); //call callback in this view context
-    });
-    //hover box
-    this.$('div.leaflet-top.leaflet-right').append(
-      '<div id="hoverOverlay" class="layerToggle" style="display: block;"></div>'
-    );
-    //zoom to extent - insert the zoom to extent button to the 2 zoom in/out buttons
+    // var data = this.mapData;
+    // // console.log(data);
+    // var template = Handlebars.compile($(this.mapControlsTemplate).html());
+    // var html = template({
+    //   models: data
+    // });
+    // this.$('div.leaflet-bottom.leaflet-left').html(html);
+    // //wire layer controls events
+    // this.$('.overlays div.layers').on('click', function(e) {
+    //   scope.mapControlClick.call(scope, e); //call callback in this view context
+    // });
+    // //hover box
+    // this.$('div.leaflet-top.leaflet-right').append(
+    //   '<div id="hoverOverlay" class="layerToggle" style="display: block;"></div>'
+    // );
+    // //zoom to extent - insert the zoom to extent button to the 2 zoom in/out buttons
     this.$('div.leaflet-top.leaflet-left .leaflet-control-zoom-in').after([
       ' <a class="leaflet-control-zoom-out" id="zoomToExtent"',
       ' href="#" title="Zoom to Full-extent">',
@@ -922,7 +923,8 @@ var map = Backbone.View.extend({
     ].join(''));
     //zoom to extent button
     this.$('#zoomToExtent').on('click', function(e) {
-      scope.mapViewer.zoomToGeoJsonFeatures(); //zoom to extent of current geojson layer
+      // new L.LatLng(39.0, -76.70)
+      scope.mapViewer.zoomToXY(-75.5994, 38.3607, 10); //zoom to extent of current geojson layer
       return false;
     });
   },
@@ -935,7 +937,7 @@ var map = Backbone.View.extend({
     //add/remove check sign
     this.$(c).parent().find('i[role="checkbox"]').remove();
     $(c).find('p').append('<i class="fa fa-check" role="checkbox"></i>')
-      // this.updateCharts(); //load defaults.
+    // this.updateCharts(); //load defaults.
     if (typeof this.onLayerChanged == 'function')
       this.onLayerChanged.call(this, name);
   },

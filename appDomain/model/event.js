@@ -89,7 +89,8 @@ var EventSchema = new Schema({
     max: [12, 'Invalid value. Please enter value from 1-12']
   }], //jan, feb, mar,...dec (1-12)
   schedule: Schema.Types.Mixed, //later.js calculated schedule
-  occurences: [Date] //proccessed occurences
+  occurences: [Date], //proccessed occurences
+  url: { type: String, default: null }
 
 }, {
   validateBeforeSave: false //prevent pre-save validation

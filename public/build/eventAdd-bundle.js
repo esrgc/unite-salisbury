@@ -42,7 +42,7 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -67,9 +67,9 @@
 	  startup();
 	});
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -244,6 +244,6 @@
 	
 	module.exports = AddEvent;
 
-/***/ }
+/***/ })
 /******/ ]);
 //# sourceMappingURL=eventAdd-bundle.js.map

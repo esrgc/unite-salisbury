@@ -42,7 +42,7 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -63,10 +63,10 @@
 	  console.log('App initiated...');
 	});
 
-/***/ },
+/***/ }),
 /* 1 */,
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -108,9 +108,9 @@
 	
 	module.exports = mainRouter;
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -162,11 +162,11 @@
 	            id: value._id,
 	            x_coord: value.location.x,
 	            y_coord: value.location.y,
-	            template: '\n      \t\t\t<h4>\n              <strong>' + value.title + '</strong>\n              <small>\n                <a href="edit?id=' + value._id + '"><i class="fa fa-pencil"></i></a>\n              </small>\n            </h4>\n      \t\t\t<p>\n      \t\t\t\t<strong>Start</strong>: ' + start + ' <br/>\n      \t\t\t\t<strong>End</strong>: ' + end + ' <br/>\n      \t\t\t\t<strong>Description</strong>: ' + value.description + ' <br/>\n      \t\t\t\t<strong>Location</strong>: ' + value.address + ' ' + value.city + ', ' + value.state + ' ' + value.zip + '\n      \t\t\t</p>\n      \t\t'
+	            template: '\n            <h4>\n              <strong>' + value.title + '</strong>\n              <small>\n                <a href="edit?id=' + value._id + '"><i class="fa fa-pencil"></i></a>\n              </small>\n            </h4>\n            <p>\n              <strong>Start</strong>: ' + start + ' <br/>\n              <strong>End</strong>: ' + end + ' <br/>\n              <strong>Description</strong>: ' + value.description + ' <br/>\n              <strong>Location</strong>: ' + value.address + ' ' + value.city + ', ' + value.state + ' ' + value.zip + '<br/>\n              <strong>Url</strong>: ' + value.eventUrl + '\n            </p>\n          '
 	          };
 	        });
 	
-	        // console.log(g);
+	        console.log(data);
 	
 	        scope._mapView.addClusterMarkers(data);
 	      };
@@ -206,9 +206,9 @@
 	
 	module.exports = mainController;
 
-/***/ },
+/***/ }),
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -248,9 +248,9 @@
 	
 	module.exports = map;
 
-/***/ },
+/***/ }),
 /* 5 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -758,9 +758,9 @@
 	
 	module.exports = map;
 
-/***/ },
+/***/ }),
 /* 6 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -946,9 +946,9 @@
 	
 	module.exports = LeafletViewer;
 
-/***/ },
+/***/ }),
 /* 7 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -1046,9 +1046,9 @@
 	  copy: copy
 	};
 
-/***/ },
+/***/ }),
 /* 8 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -1096,9 +1096,9 @@
 	
 	module.exports = MapViewer;
 
-/***/ },
+/***/ }),
 /* 9 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -1165,6 +1165,6 @@
 	
 	module.exports = Calendar;
 
-/***/ }
+/***/ })
 /******/ ]);
 //# sourceMappingURL=eventIndex-bundle.js.map
