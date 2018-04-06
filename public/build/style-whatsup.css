@@ -167,6 +167,10 @@ a {
 }
 .banner {
   border: solid;
+  border-radius: 0;
+}
+.banner #logo {
+  width: 100px;
 }
 .page-wrap .container,
 .page-wrap .container-fluid {
@@ -186,10 +190,12 @@ a {
 }
 .navbar-default {
   background-color: #2771bc !important;
+  border: none;
+  border-radius: 0;
 }
 .navbar-default li {
   padding: 25px 10px;
-  font-size: 20px;
+  font-size: 18px;
 }
 .navbar-default li > a {
   color: #fff !important;
