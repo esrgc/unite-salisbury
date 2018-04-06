@@ -162,7 +162,7 @@
 	            id: value._id,
 	            x_coord: value.location.x,
 	            y_coord: value.location.y,
-	            template: '\n            <h4>\n              <strong>' + value.title + '</strong>\n              <small>\n                <a href="edit?id=' + value._id + '"><i class="fa fa-pencil"></i></a>\n              </small>\n            </h4>\n            <p>\n              <strong>Start</strong>: ' + start + ' <br/>\n              <strong>End</strong>: ' + end + ' <br/>\n              <strong>Description</strong>: ' + value.description + ' <br/>\n              <strong>Location</strong>: ' + value.address + ' ' + value.city + ', ' + value.state + ' ' + value.zip + '<br/>\n              <strong>Url</strong>: ' + value.eventUrl + '\n            </p>\n          '
+	            template: '\n            <h4>\n              <strong>' + value.title + '</strong>\n              <small>\n                <a href="edit?id=' + value._id + '"><i class="fa fa-pencil"></i></a>\n              </small>\n            </h4>\n            <p>\n              <strong>Start</strong>: ' + start + ' <br/>\n              <strong>End</strong>: ' + end + ' <br/>\n              <strong>Description</strong>: ' + value.description + ' <br/>\n              <strong>Location</strong>: ' + value.address + ' ' + value.city + ', ' + value.state + ' ' + value.zip + '<br/>\n              <strong>Url</strong>: ' + (value.eventUrl ? 'Not specified' : value.eventUrl) + '\n            </p>\n          '
 	          };
 	        });
 	

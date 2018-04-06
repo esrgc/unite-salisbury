@@ -48,14 +48,14 @@ class mainController {
               <strong>End</strong>: ${end} <br/>
               <strong>Description</strong>: ${value.description} <br/>
               <strong>Location</strong>: ${value.address} ${value.city}, ${value.state} ${value.zip}<br/>
-              <strong>Url</strong>: ${value.eventUrl}
+              <strong>Url</strong>: ${value.eventUrl ? 'Not specified' : value.eventUrl}
             </p>
           `
         };
       });
 
 
-       console.log(data);
+      console.log(data);
 
       scope._mapView.addClusterMarkers(data);
 
