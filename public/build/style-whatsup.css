@@ -66,9 +66,21 @@
   background-size: cover;
   min-height: 40vh;
   color: #fff;
-  opacity: .85;
+  position: relative;
+}
+.introJumbo .backdrop {
+  background-color: #000000;
+  opacity: 0.5;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 .introJumbo .topSection {
+  position: absolute;
+  left: 10px;
+  right: 10px;
   text-align: center;
   padding: 50px;
 }
