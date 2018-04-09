@@ -117,8 +117,8 @@
   color: #333345;
   text-decoration: none;
 }
-.youthOrg-form-group {
-  padding-left: 25px;
+.youthOrg-form-group .checkbox {
+  margin-left: 20px;
 }
 .deleteButtonForm {
   display: inline-block;
