@@ -37,10 +37,11 @@
           </div>
 
           <div class="form-group youthOrg-form-group">
-            <div class="col-md-10 col-md-offset-3">
+            <label class="control-label col-md-3">Is This Organization</label>
+            <div class="col-md-9">
               <label class="checkbox">
                 <input data-val="true" data-val-required="This field is required." id="isYouthOrganization" name="isYouthOrganization" type="checkbox" value="{{newUser.isYouthOrganization}}" {{#if newUser.isYouthOrganization }}checked{{/if}}>
-                <input name="isYouthOrganization" type="hidden" value="false">Is this organization a Youth Service Organization?
+                <input name="isYouthOrganization" type="hidden" value="false">a Youth Service Organization?
               </label>
             </div>
           </div>
@@ -49,7 +50,7 @@
             <div class="col-md-10 col-md-offset-3">
               <label class="checkbox">
                 <input data-val="true" data-val-required="This field is required." id="is501c3" name="is501c3" type="checkbox" value="{{newUser.is501c3}}" {{#if newUser.is501c3 }}checked{{/if}}>
-                <input name="is501c3" type="hidden" value="false">Is this organization a 501c3 Organization?
+                <input name="is501c3" type="hidden" value="false">a 501c3 Organization?
               </label>
             </div>
           </div>
@@ -58,7 +59,7 @@
             <div class="col-md-10 col-md-offset-3">
               <label class="checkbox">
                 <input data-val="true" data-val-required="This field is required." id="isReligiousOrg" name="isReligiousOrg" type="checkbox" value="{{newUser.isReligiousOrg}}" {{#if newUser.isReligiousOrg }}checked{{/if}}>
-                <input name="isReligiousOrg" type="hidden" value="false">Is this organization a Religious Organization?
+                <input name="isReligiousOrg" type="hidden" value="false">a Religious Organization?
               </label>
             </div>
           </div>
