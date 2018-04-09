@@ -61,15 +61,35 @@
   margin-top: 2px;
   color: #e0e0e0;
 }
+.introJumbo {
+  background: url('../img/homepage-background.jpg') center no-repeat;
+  background-size: cover;
+  min-height: 40vh;
+  color: #fff;
+  opacity: .85;
+}
+.introJumbo .topSection {
+  text-align: center;
+  padding: 50px;
+}
+.introJumbo .topSection h1 {
+  font-size: 7em;
+  opacity: 1;
+  font-weight: 600;
+}
 .introCol {
   font-size: 17px;
   line-height: 1.8;
   color: #7a7a7a;
   padding: 10px;
+  margin-bottom: 20px;
 }
-.topSection {
-  text-align: center;
-  padding: 50px;
+.introCol #homepage-buttons {
+  margin-top: 40px;
+}
+.introCol #homepage-buttons a {
+  min-width: 160px;
+  margin: 0 5px;
 }
 .bottomSection i {
   display: block;
@@ -175,12 +195,6 @@ a {
 .page-wrap .container,
 .page-wrap .container-fluid {
   padding-top: 12px;
-}
-.jumbotron {
-  background: url('../img/homepage-background.jpg') center no-repeat;
-  background-size: cover;
-  min-height: 40vh;
-  color: #fff;
 }
 .switchable {
   display: none;
