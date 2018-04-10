@@ -158,11 +158,13 @@
 	          var value = v[0]; //only take the first element
 	          var start = value.start.local().format('dddd, MMMM Do YYYY, h:mm:ss a');
 	          var end = value.end != null ? value.end.local().format('dddd, MMMM Do YYYY, h: mm: ss a') : '';
+	          var link = value.eventUrl ? '<a href="' + value.eventUrl + '">' + value.eventUrl + '</a>' : 'Not specified';
+	
 	          return {
 	            id: value._id,
 	            x_coord: value.location.x,
 	            y_coord: value.location.y,
-	            template: '\n            <h4>\n              <strong>' + value.title + '</strong>\n              <small>\n                <a href="edit?id=' + value._id + '"><i class="fa fa-pencil"></i></a>\n              </small>\n            </h4>\n            <p>\n              <strong>Start</strong>: ' + start + ' <br/>\n              <strong>End</strong>: ' + end + ' <br/>\n              <strong>Description</strong>: ' + value.description + ' <br/>\n              <strong>Location</strong>: ' + value.address + ' ' + value.city + ', ' + value.state + ' ' + value.zip + '<br/>\n              <strong>Url</strong>: ' + (value.eventUrl ? value.eventUrl : 'Not specified') + '\n            </p>\n          '
+	            template: '\n            <h4>\n              <strong>' + value.title + '</strong>\n              <small>\n                <a href="edit?id=' + value._id + '"><i class="fa fa-pencil"></i></a>\n              </small>\n            </h4>\n            <p>\n              <strong>Start</strong>: ' + start + ' <br/>\n              <strong>End</strong>: ' + end + ' <br/>\n              <strong>Description</strong>: ' + value.description + ' <br/>\n              <strong>Location</strong>: ' + value.address + ' ' + value.city + ', ' + value.state + ' ' + value.zip + '<br/>\n              <strong>Url</strong>: ' + link + '\n            </p>\n          '
 	          };
 	        });
 	

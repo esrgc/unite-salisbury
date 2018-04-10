@@ -32,6 +32,10 @@ class mainController {
         let start = value.start.local().format('dddd, MMMM Do YYYY, h:mm:ss a');
         let end = value.end != null ?
           value.end.local().format('dddd, MMMM Do YYYY, h: mm: ss a') : '';
+        let link = value.eventUrl ? 
+          `<a href="${value.eventUrl}">${value.eventUrl}</a>`:
+          'Not specified';
+
         return {
           id: value._id,
           x_coord: value.location.x,
@@ -48,7 +52,7 @@ class mainController {
               <strong>End</strong>: ${end} <br/>
               <strong>Description</strong>: ${value.description} <br/>
               <strong>Location</strong>: ${value.address} ${value.city}, ${value.state} ${value.zip}<br/>
-              <strong>Url</strong>: ${value.eventUrl ? value.eventUrl : 'Not specified'}
+              <strong>Url</strong>: ${link}
             </p>
           `
         };
