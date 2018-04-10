@@ -61,17 +61,19 @@
                     <input type="checkbox" name="repeat" {{#if event.repeat}}checked{{/if}}>
                     <input type="hidden" name="repeat" value="false"/>
                   </label>
-                </div>
-                <label class="control-label col-md-2">Repeat Ends On</label>
-                <div class="col-md-3">
-                  <div class="input-group date" data-provide="datepicker">
-                    <input class="form-control" id="repeatEnd" name="repeatEnd" type="text" value="{{parseDate event.repeatEnd}}" placeholder="MM/DD/YYYY" data-format="MM/dd/YYYY" />
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-                  </div>
-                </div>
+                </div>                
               </div>
               <!--Frequency, hidden controls -- only displayed when repeat is true-->
               <div class="switchable {{#if event.repeat}}active{{/if}}" id="repeat-frequency-controls">
+                <div class="form-group">
+                  <label class="control-label col-md-3">Repeat Ends</label>
+                  <div class="col-md-6">
+                    <div class="input-group date" data-provide="datepicker">
+                      <input class="form-control" id="repeatEnd" name="repeatEnd" type="text" value="{{parseDate event.repeatEnd}}" placeholder="MM/DD/YYYY" data-format="MM/dd/YYYY" />
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                    </div>
+                  </div>
+                </div>
                 <div class="form-group">
                   <label class="col-md-3 control-label">Frequency</label>
                   <div class="col-md-2">
