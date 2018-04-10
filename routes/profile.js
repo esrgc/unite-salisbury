@@ -76,7 +76,8 @@ router.post('/edit', function(req, res) {
       organization: data.organization,
       isYouthOrganization: data.isYouthOrganization,
       is501c3: data.is501c3,
-      isReligiousOrg: data.isReligiousOrg
+      isReligiousOrg: data.isReligiousOrg,
+      otherOrg: data.otherOrg
     }
   };
   var updateOptions = { runValidators: true, new: true };

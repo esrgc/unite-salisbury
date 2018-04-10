@@ -77,6 +77,7 @@ router.post('/signup', function(req, res, next) {
     isReligiousOg: data.isReligiousOg,
     firstName: data.firstName,
     lastName: data.lastName,
+    otherOrg: data.otherOrg,
     role: 'user' //default
   });
   console.log(newUser);
