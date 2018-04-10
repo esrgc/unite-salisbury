@@ -69,9 +69,10 @@
               <table class="table table-hover table-compact">
                 <thead>
                   <th>{{{generateSortUrl this 'manageUser' 'organization' 'Organization'}}}</th>
-                  <th>{{{generateSortUrl this 'manageUser' 'isYouthOrganization' 'Youth Org?'}}}</th>
+                  <th>{{{generateSortUrl this 'manageUser' 'isYouthOrganization' 'Youth?'}}}</th>
                   <th>{{{generateSortUrl this 'manageUser' 'is501c3' '501c3?'}}}</th>
-                  <th>{{{generateSortUrl this 'manageUser' 'isReligiousOrg' 'Religious Org?'}}}</th>
+                  <th>{{{generateSortUrl this 'manageUser' 'isReligiousOrg' 'Religious?'}}}</th>
+                  <th>{{{generateSortUrl this 'manageUser' 'otherOrg' 'Other'}}}</th>
                   <th>
                     {{{generateSortUrl this 'manageUser' 'firstName' 'First Name'}}}
                   </th>
@@ -115,7 +116,7 @@
                         <label class="label label-danger">No</label>
                       {{/if}}
                     </td>
-
+                    <td>{{otherOrg}}</td>
                     <td>{{firstName}}</td>
                     <td>{{lastName}}</td>
                     <td>{{email}}</td>
