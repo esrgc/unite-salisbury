@@ -31,13 +31,21 @@
               <dd class="">
                 {{#if user.isYouthOrganization}}
                 <label class="label label-success">
-                  <i class="fa fa-check"></i>&nbsp;Youth Service Organization</label>
+                  <i class="fa fa-check"></i>&nbsp;Youth Service Organization
+                </label>
                 {{/if}} {{#if user.is501c3}}
                 <label class="label label-primary">
-                  <i class="fa fa-check"></i>&nbsp;501c3 Organization</label>
+                  <i class="fa fa-check"></i>&nbsp;501c3 Organization
+                </label>
                 {{/if}} {{#if user.isReligiousOrg}}
                 <label class="label label-warning">
-                  <i class="fa fa-check"></i>&nbsp;Religious Organization</label>
+                  <i class="fa fa-check"></i>&nbsp;Religious Organization
+                </label>
+                {{/if}}
+                {{#if user.otherOrg}}
+                  <label class="label label-default">
+                    <i class="fa fa-check"></i>&nbsp;{{user.otherOrg}}
+                  </label>
                 {{/if}}
               </dd>
               
