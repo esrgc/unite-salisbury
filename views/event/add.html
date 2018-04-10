@@ -33,7 +33,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-md-3 control-label">Starts On</label>
+                <label class="col-md-3 control-label">Starts</label>
                 <div class="col-md-6">
                   <div class="input-group date" data-provide="datepicker">
                     <input required class="form-control" id="start" name="start" type="text" value="{{parseDateTime event.start}}" placeholder="MM/DD/YYYY" role="datetime-picker" />
@@ -59,6 +59,7 @@
                 <div class="checkbox col-md-1">
                   <label id="repeat-switch">
                     <input type="checkbox" name="repeat" {{#if event.repeat}}checked{{/if}}>
+                    <input type="hidden" name="repeat" value="false"/>
                   </label>
                 </div>
                 <label class="control-label col-md-2">Repeat Ends On</label>
