@@ -1,5 +1,6 @@
 {{#contentFor 'customCss'}}
-<link rel="stylesheet" href="{{rootPath}}lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" /> {{/contentFor}}
+<link rel="stylesheet" href="{{rootPath}}lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" /> 
+{{/contentFor}}
 <div class="page-wrap">
   <div class="container">
     <div class="row">
@@ -38,7 +39,7 @@
                 <div class="col-md-6">
                   <div class="input-group date" data-provide="datepicker">
                     <input required class="form-control" id="start" name="start" type="text" value="{{parseDateTime event.start}}" placeholder="MM/DD/YYYY" role="datetime-picker" />
-                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <!--calendar icon removed-->
                   </div>
                   <!--<span class="label label-default">Required</span>-->
                 </div>
@@ -48,7 +49,7 @@
                 <div class="col-md-6">
                   <div class="input-group date" data-provide="datepicker">
                     <input required class="form-control" id="end" name="end" type="text" value="{{parseDateTime event.end}}" placeholder="MM/DD/YYYY" role="datetime-picker" />
-                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <!--calendar icon removed-->
                   </div>
                   <!--<span class="label label-default">Required</span>-->
                 </div>
@@ -71,7 +72,7 @@
                   <div class="col-md-6">
                     <div class="input-group date" data-provide="datepicker">
                       <input class="form-control" id="repeatEnd" name="repeatEnd" type="text" value="{{parseDate event.repeatEnd}}" placeholder="MM/DD/YYYY" data-format="MM/dd/YYYY" />
-                      <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                      <!--calendar icon removed-->
                     </div>
                   </div>
                 </div>
