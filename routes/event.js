@@ -465,10 +465,15 @@ router.post('/edit', isLoggedIn, authorized.can('manage event'), function(req, r
               editingEvent.dayOfWeek = model.monthlyDayOfWeek;
               editingEvent.dayOfWeekCount = model.monthlyDayOfWeekCount;
               console.log('day of week count ' + editingEvent.dayOfWeekCount);
+              //clear out day of month so day of week is scheduled
+              editingEvent.dayOfMonth = [];
             }
             //day of month
             if (model.monthlyOnType == 'dayOfMonth') {
               editingEvent.dayOfMonth = model.monthlyDayOfMonth;
+              //clear out the others
+              editingEvent.dayOfWeek = [];
+              editingEvent.dayOfWeekCount = null;
             }
             break;
           case 'yearly':

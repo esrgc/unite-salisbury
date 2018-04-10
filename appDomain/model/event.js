@@ -112,12 +112,20 @@ EventSchema.methods.calculateSchedule = function() {
   try {
     switch (scope.frequency) {
       case 'daily':
-        schedule = later.parse.recur().every(scope.every).dayOfYear();
+        schedule = later.parse.recur()
+          .every(scope.every).dayOfYear();
         break;
       case 'weekly':
+        console.log('Calculating weekly schedule...');
+        console.log(scope);
         //recurs every # of week
+        // schedule = later.parse.recur()
+        //   .every(scope.every * 7).dayOfYear()
+        //   .startingOn(later.dayOfYear.val(scope.start));
         schedule = later.parse.recur()
-          .every(scope.every).weekOfYear();
+          .every(scope.every).weekOfYear()
+          .startingOn(later.weekOfYear.val(scope.start))
+          // .every(scope.every).weekOfYear();
         //on specific days of week
         scope.dayOfWeek.forEach(function(d) {
           schedule.on(d).dayOfWeek();
@@ -126,7 +134,8 @@ EventSchema.methods.calculateSchedule = function() {
       case 'monthly':
         //occur every # of month
         schedule = later.parse.recur()
-          .every(scope.every).month();
+          .every(scope.every).month()
+          .startingOn(later.month.val(scope.start));
         //on days of month
         if (scope.dayOfMonth.length > 0)
           scope.dayOfMonth.forEach(function(d) {
@@ -144,7 +153,9 @@ EventSchema.methods.calculateSchedule = function() {
         break;
       case 'yearly':
         //occurs every # year
-        schedule = later.parse.recur().every(scope.every).year();
+        schedule = later.parse.recur()
+          .every(scope.every).year()
+          .startingOn(later.year.val(scope.start));
         //in months
         if (scope.monthOfYear.length > 0)
           scope.monthOfYear.forEach(function(d) {

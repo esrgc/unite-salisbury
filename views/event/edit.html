@@ -91,7 +91,12 @@
                   <div class="col-md-1">
                     <input class="form-control" id="every-count" name="every" type="number" min="1" value="{{event.every}}">
                   </div>
-                  <label class="col-md-1 control-label" id="every-type" style="text-align: left;"></label>
+                  <label class="col-md-1 control-label" id="every-type" style="text-align: left;">
+                    {{#ifCond event.frequency 'daily'}}Day(s){{/ifCond}}
+                    {{#ifCond event.frequency 'weekly'}}Week(s){{/ifCond}}
+                    {{#ifCond event.frequency 'monthly'}}Month(s){{/ifCond}}
+                    {{#ifCond event.frequency 'yearly'}}Year(s){{/ifCond}}
+                  </label>
                 </div>
                 <!--OPTIONAL options based on frequency-->
                 <!--Daily-->
