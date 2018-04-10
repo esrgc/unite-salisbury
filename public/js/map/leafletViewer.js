@@ -48,7 +48,8 @@ var LeafletViewer = Class.define({
       ],
       center: this.center || new L.LatLng(39.0, -76.70),
       zoom: this.zoomLevel || 7,
-      scrollWheelZoom: this.scrollZoom || false
+      scrollWheelZoom: this.scrollZoom || false,
+      minZoom: this.minZoom || '*'
     });
 
 

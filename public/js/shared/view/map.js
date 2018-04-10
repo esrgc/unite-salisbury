@@ -70,6 +70,7 @@ var map = Backbone.View.extend({
       el: this.el,
       center: new L.LatLng(38.3607, -75.5994), //salisbury coordinates
       zoomLevel: 10,
+      minZoom: 8,
       scrollZoom: true,
       clusterOptions: {
         showCoverageOnHover: false,

@@ -328,6 +328,7 @@
 	      el: this.el,
 	      center: new L.LatLng(38.3607, -75.5994), //salisbury coordinates
 	      zoomLevel: 10,
+	      minZoom: 8,
 	      scrollZoom: true,
 	      clusterOptions: {
 	        showCoverageOnHover: false,
@@ -811,7 +812,8 @@
 	      layers: [minimal, this.features, this.geoJsonFeatures, this.clusterGroup],
 	      center: this.center || new L.LatLng(39.0, -76.70),
 	      zoom: this.zoomLevel || 7,
-	      scrollWheelZoom: this.scrollZoom || false
+	      scrollWheelZoom: this.scrollZoom || false,
+	      minZoom: this.minZoom || '*'
 	    });
 	
 	    //copy layers to layer controls
