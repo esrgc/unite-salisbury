@@ -31,11 +31,12 @@ class mainController {
         let value = v[0]; //only take the first element
         let start = value.start.local().format('dddd, MMMM Do YYYY, h:mm:ss a');
         let end = value.end != null ?
-          value.end.local().format('dddd, MMMM Do YYYY, h: mm: ss a') : '';
+          value.end.local().format('dddd, MMMM Do YYYY, h:mm:ss a') : '';
         let link = value.eventUrl ? 
           `<a href="${value.eventUrl}">${value.eventUrl}</a>`:
           'Not specified';
 
+          
         return {
           id: value._id,
           x_coord: value.location.x,
@@ -48,8 +49,8 @@ class mainController {
               </small>
             </h4>
             <p>
-              <strong>Start</strong>: ${start} <br/>
-              <strong>End</strong>: ${end} <br/>
+              <strong>Start</strong>: ${start}<br/>
+              <strong>End</strong>: ${end}<br/>
               <strong>Description</strong>: ${value.description} <br/>
               <strong>Location</strong>: ${value.address} ${value.city}, ${value.state} ${value.zip}<br/>
               <strong>Url</strong>: ${link}

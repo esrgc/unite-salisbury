@@ -7,7 +7,9 @@ This defines schema for model Event
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var moment = require('moment'); //for datetime math
+require('moment-recur'); //recurring calculation
 var later = require('later'); //for recurring event
+var _ = require('lodash');
 var config = require('../../config');
 
 mongoose.Promise = require('bluebird');
@@ -22,10 +24,10 @@ var EventSchema = new Schema({
   name: {
     type: String,
     required: [true, "Event name is required"]
-      // validate: {
-      //   validator: nameValidator,
-      //   message: "Name entered is invalid"
-      // }
+    // validate: {
+    //   validator: nameValidator,
+    //   message: "Name entered is invalid"
+    // }
   },
   date: Date,
   location: Object,
@@ -139,7 +141,7 @@ EventSchema.methods.calculateSchedule = function() {
         schedule = later.parse.recur()
           .every(scope.every).weekOfYear()
           .startingOn(later.weekOfYear.val(scope.start))
-          // .every(scope.every).weekOfYear();
+        // .every(scope.every).weekOfYear();
         //on specific days of week
         scope.dayOfWeek.forEach(function(d) {
           schedule.on(d).dayOfWeek();
@@ -220,7 +222,7 @@ EventSchema.methods.calculateSchedule = function() {
   //return occurences;
 };
 
-EventSchema.statics.calculateOccurrences = function(event, futureRecurring) {
+EventSchema.statics.calculateLaterOccurrences = function(event, futureRecurring) {
   // set later to use local time
   //later.date.localTime();
   // console.log(event);
@@ -229,7 +231,7 @@ EventSchema.statics.calculateOccurrences = function(event, futureRecurring) {
     futureOccurencesCount,
     schedule = event.schedule;
   console.log(scope.start);
-  
+
   if (typeof schedule == 'undefined')
     return null;
 
@@ -253,6 +255,91 @@ EventSchema.statics.calculateOccurrences = function(event, futureRecurring) {
   return occurences;
 }
 
-// EventSchema.set('toObject', { getters: true });
+EventSchema.set('toObject', { getters: true });
+
+EventSchema.statics.calculateOccurrences = (event, start, end) => {
+  // set later to use local time
+  later.date.localTime();
+
+  var scope = event;
+  //not repeated
+  if (typeof scope.repeat == 'undefined' || !scope.repeat)
+    return null;
+
+  var schedule = null,
+    occurences = [],
+    repeatEndDate;
+  console.log('repeat ends on: %s', scope.repeatEnd);
+
+  //end date
+  if (scope.repeatEnd != null) {
+    repeatEndDate = moment(scope.repeatEnd);
+  } else {
+    repeatEndDate = moment(end);
+  }
+
+  //start date
+  let startDate = moment(scope.start);
+  // let calendarStart = moment(start);
+  // //select later start date
+  // if(startDate.isBefore(calendarStart))
+  //   startDate = calendarStart;
+
+  console.log('repeatEndDate %s', repeatEndDate);
+  //create schedule
+  schedule = moment(startDate).recur(repeatEndDate);
+
+
+  let next = [];
+
+  try {
+    switch (scope.frequency) {
+      case 'daily':
+        //set up schedule
+        schedule.every(scope.every).day();
+        break;
+      case 'weekly':
+        console.log('Calculating weekly schedule...');
+        schedule.every(scope.every).week();
+        break;
+      case 'monthly':
+        console.log('Calculating monthly schedule...');
+        //occur every # of month
+        if(scope.dayOfWeek.length == 0)
+          schedule.every(scope.every).month();
+        else{
+          //create a new schedule to set recurrences for every > 2 months
+          let monthlySchedule = moment(startDate).recur(repeatEndDate);
+          //figure out month of year using the new schedule
+          let monthsToRecur = monthlySchedule.every(scope.every).month()
+            .all('L');
+          
+          monthsToRecur = _.map(monthsToRecur, 
+            (d) => parseInt(moment(d).format('M')) -1);  
+          console.log(monthsToRecur);  
+
+          schedule
+            .every(scope.dayOfWeek).daysOfWeek()
+            .every(scope.dayOfWeekCount).weeksOfMonthByDay()
+            .every(monthsToRecur).monthsOfYear();
+        }
+        break;
+      case 'yearly':
+
+
+        break;
+    }
+  } catch (e) {
+    //error has occur
+    console.log(e);
+    return null;
+  }
+
+  //generate occurrences
+  occurences = schedule.all('L');
+
+  console.log(schedule);
+  return occurences;
+}
 
 module.exports = mongoose.model('Event', EventSchema);

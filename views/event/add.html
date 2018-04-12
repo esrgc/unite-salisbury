@@ -59,9 +59,9 @@
                 <div class="checkbox col-md-1">
                   <label id="repeat-switch">
                     <input type="checkbox" name="repeat" {{#if event.repeat}}checked{{/if}}>
-                    <input type="hidden" name="repeat" value="false"/>
+                    <input type="hidden" name="repeat" value="false" />
                   </label>
-                </div>                
+                </div>
               </div>
               <!--Frequency, hidden controls -- only displayed when repeat is true-->
               <div class="switchable {{#if event.repeat}}active{{/if}}" id="repeat-frequency-controls">
@@ -96,53 +96,53 @@
                 <!-- <div class="form-group switchable" id="daily-on">
             </div> -->
                 <!--Weekly-->
-                <div class="form-group switchable detail-frequency {{#ifCond event.frequency 'weekly'}}active{{/ifCond}}" id="weekly-on">
+                <!-- <div class="form-group switchable detail-frequency {{#ifCond event.frequency 'weekly'}}active{{/ifCond}}" id="weekly-on">
                   <label class="control-label col-md-3">On</label>
                   <div class="col-md-9">
                     <div class="checkbox">
-                      <!--monday-->
+                      
                       <label id="monday-switch">
                         <input type="checkbox" name="weeklyDayOfWeek" value="2" {{#ifIn '2' event.weeklyDayOfWeek}}checked{{/ifIn}}> Monday
                       </label>
                     </div>
                     <div class="checkbox">
-                      <!--tuesday-->
+                      
                       <label id="tuesday-switch">
                         <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn '3' event.weeklyDayOfWeek}}checked{{/ifIn}} value="3"> Tuesday
                       </label>
                     </div>
                     <div class="checkbox">
-                      <!--wednesday-->
+                      
                       <label id="wednesday-switch">
                         <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn '4' event.weeklyDayOfWeek}}checked{{/ifIn}} value="4"> Wednesday
                       </label>
                     </div>
                     <div class="checkbox">
-                      <!--thursday-->
+                      
                       <label id="thursday-switch">
                         <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn '5' event.weeklyDayOfWeek}}checked{{/ifIn}} value="5"> Thursday
                       </label>
                     </div>
                     <div class="checkbox">
-                      <!--Friday-->
+                      
                       <label id="Friday-switch">
                         <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn '6' event.weeklyDayOfWeek}}checked{{/ifIn}} value="6"> Friday
                       </label>
                     </div>
                     <div class="checkbox">
-                      <!--Saturday-->
+                      
                       <label id="Saturday-switch">
                         <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn '7' event.weeklyDayOfWeek}}checked{{/ifIn}} value="7"> Saturday
                       </label>
                     </div>
                     <div class="checkbox">
-                      <!--Sunday-->
+                      
                       <label id="sunday-switch">
                         <input type="checkbox" name="weeklyDayOfWeek" {{#ifIn '1' event.weeklyDayOfWeek}}checked{{/ifIn}} value="1"> Sunday
                       </label>
                     </div>
                   </div>
-                </div>
+                </div> -->
                 <!--Monthly-->
                 <div class="form-group switchable detail-frequency {{#ifCond event.frequency 'monthly'}}active{{/ifCond}}" id="monthly-on">
                   <label class="control-label col-md-3">On</label>
@@ -159,41 +159,40 @@
                     </div>
                   </div>
                   <div class="col-md-3">
-                    <div id="monthly-on-each" class="switchable monthly-freq-type {{#ifCond 'dayOfMonth' event.monthlyOnType}}active{{/ifCond}}">
+                    <!-- <div id="monthly-on-each" class="switchable monthly-freq-type {{#ifCond 'dayOfMonth' event.monthlyOnType}}active{{/ifCond}}">
                       {{#for 1 31}}
                       <div class="checkbox">
                         <!--{{i}}-->
-                        <label id="{{i}}-switch">
+                        <!-- <label id="{{i}}-switch">
                           <input type="checkbox" name="monthlyDayOfMonth" value="{{i}}" {{#ifIn i model.monthlyDayOfMonth}}checked{{/ifIn}}>{{i}}
                         </label>
                       </div>
-                      {{/for}}
+                      {{/for}} -->
                       <!-- <div class="btn-group btn-group-sm" data-toggle="buttons-radio" role="group" aria-label="1">
                     {{#for 1 31}}
                     <button type="button" class="btn btn-default {{#ifCond event.dayOfMonth i}}active{{/ifCond}}" value="{{i}}">{{i}}</button>
                     {{/for}}
                   </div> -->
-                      <div id="dayOfMonth-container">
+                      <!-- <div id="dayOfMonth-container"> -->
                         <!--Contains hidden fields for monthly day of month-->
-                      </div>
-                    </div>
+                      <!-- </div> -->
+                    <!-- </div> -->
                     <div id="monthly-on-day-of-week" class="switchable monthly-freq-type {{#ifCond 'dayOfWeek' event.monthlyOnType}}active{{/ifCond}}">
                       <select id="monthly-day-of-week" class="form-control" name="monthlyDayOfWeekCount">
-                        <option value="1" {{#ifCond '1' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>First</option>
-                        <option value="2" {{#ifCond '2' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>Second</option>
-                        <option value="3" {{#ifCond '3' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>Third</option>
-                        <option value="4" {{#ifCond '4' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>Fourth</option>
-                        <option value="5" {{#ifCond '5' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>Fifth</option>
-                        <option value="0" {{#ifCond '0' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>Last</option>
+                        <option value="0" {{#ifCond '0' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>First</option>
+                        <option value="1" {{#ifCond '1' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>Second</option>
+                        <option value="2" {{#ifCond '2' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>Third</option>
+                        <option value="3" {{#ifCond '3' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>Fourth</option>
+                        <option value="4" {{#ifCond '4' event.monthlyDayOfWeekCount}}selected{{/ifCond}}>Fifth</option>
                       </select>
                       <select id="monthly-day-of-week" class="form-control" multiple name="monthlyDayOfWeek">
-                        <option value="2" {{#ifIn 2 event.monthlyDayOfWeek}}selected{{/ifIn}}>Monday</option>
-                        <option value="3" {{#ifIn 3 event.monthlyDayOfWeek}}selected{{/ifIn}}>Tuesday</option>
-                        <option value="4" {{#ifIn 4 event.monthlyDayOfWeek}}selected{{/ifIn}}>Wednesday</option>
-                        <option value="5" {{#ifIn 5 event.monthlyDayOfWeek}}selected{{/ifIn}}>Thursday</option>
-                        <option value="6" {{#ifIn 6 event.monthlyDayOfWeek}}selected{{/ifIn}}>Friday</option>
-                        <option value="7" {{#ifIn 7 event.monthlyDayOfWeek}}selected{{/ifIn}}>Saturday</option>
-                        <option value="1" {{#ifIn 1 event.monthlyDayOfWeek}}selected{{/ifIn}}>Sunday</option>
+                        <option value="1" {{#ifIn 1 event.monthlyDayOfWeek}}selected{{/ifIn}}>Monday</option>
+                        <option value="2" {{#ifIn 2 event.monthlyDayOfWeek}}selected{{/ifIn}}>Tuesday</option>
+                        <option value="3" {{#ifIn 3 event.monthlyDayOfWeek}}selected{{/ifIn}}>Wednesday</option>
+                        <option value="4" {{#ifIn 4 event.monthlyDayOfWeek}}selected{{/ifIn}}>Thursday</option>
+                        <option value="5" {{#ifIn 5 event.monthlyDayOfWeek}}selected{{/ifIn}}>Friday</option>
+                        <option value="6" {{#ifIn 6 event.monthlyDayOfWeek}}selected{{/ifIn}}>Saturday</option>
+                        <option value="7" {{#ifIn 7 event.monthlyDayOfWeek}}selected{{/ifIn}}>Sunday</option>
                       </select>
                       <small class="text-info">Hold down <kbd>CTRL</kbd> to select multiple items</small>
                     </div>
@@ -279,12 +278,12 @@
                     <div class="col-md-3">
                       <div id="yearly-on-day-of-week-count-container" class="switchable {{#ifCond 'true' event.yearlyDayOfWeekMode}}active{{/ifCond}}">
                         <select id="yearly-day-of-week-count" name="yearlyDayOfWeekCount" class="form-control">
-                          <option value="1" {{#ifCond '1' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>First</option>
-                          <option value="2" {{#ifCond '2' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Second</option>
-                          <option value="3" {{#ifCond '3' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Third</option>
-                          <option value="4" {{#ifCond '4' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Fourth</option>
-                          <option value="5" {{#ifCond '5' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Fifth</option>
-                          <option value="0" {{#ifCond '0' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Last</option>
+                          <option value="1" {{#ifCond 1 event.yearlyDayOfWeekCount}}selected{{/ifCond}}>First</option>
+                          <option value="2" {{#ifCond 2 event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Second</option>
+                          <option value="3" {{#ifCond 3 event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Third</option>
+                          <option value="4" {{#ifCond 4 event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Fourth</option>
+                          <option value="5" {{#ifCond 5 event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Fifth</option>
+                         <!--  <option value="0" {{#ifCond '0' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Last</option> -->
                         </select>
                         <select multiple id="yearly-day-of-week" name="yearlyDayOfWeek" class="form-control">
                           <option value="2" {{#ifIn 2 event.yearlyDayOfWeek}}selected{{/ifIn}}>Monday</option>

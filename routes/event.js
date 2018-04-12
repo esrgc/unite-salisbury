@@ -70,8 +70,9 @@ router.get('/feed', function(req, res) {
         // if (typeof d.schedule == 'undefined')
         //   d.calculateSchedule();
         //calculate occurences
-        let occurences = Event.calculateOccurrences(d);
-        // console.log(occurences);
+        let occurences = Event.calculateOccurrences(d, start, end);
+
+        console.log(occurences);
         // console.log(occurences);
         if (occurences == null)
           return; //no occurrence then move on to the next event
