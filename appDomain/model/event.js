@@ -113,7 +113,21 @@ EventSchema.methods.calculateSchedule = function() {
     switch (scope.frequency) {
       case 'daily':
         schedule = later.parse.recur()
-          .every(scope.every).dayOfYear();
+          .every(scope.every).dayOfYear()
+          .startingOn(later.dayOfYear.val(scope.start));
+        // let {dy} = schedule.schedules[0];
+        // let startDay = dy[0] - scope.every;
+        // let retro = [];
+
+        // while(startDay > 0) {
+        //   retro.push(startDay);
+        //   startDay -= scope.every;
+        // } 
+
+        // retro = retro.reverse();
+        // //merge schedule
+        // schedule.schedules[0].dy = retro.concat(dy);
+
         break;
       case 'weekly':
         console.log('Calculating weekly schedule...');
