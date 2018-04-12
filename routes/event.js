@@ -479,9 +479,13 @@ router.post('/edit', isLoggedIn, authorized.can('manage event'), function(req, r
             break;
           case 'yearly':
             editingEvent.monthOfYear = model.monthOfYear;
-            if (model.yearlyDayOfWeekMode == 'true') {
+            if (model.yearlyDayOfWeekMode) {
               editingEvent.dayOfWeekCount = model.yearlyDayOfWeekCount;
               editingEvent.dayOfWeek = model.yearlyDayOfWeek;
+            }
+            else {
+              editingEvent.dayOfWeekCount = null;
+              editingEvent.dayOfWeek = [];
             }
             break;
         }

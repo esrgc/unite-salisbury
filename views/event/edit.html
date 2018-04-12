@@ -264,17 +264,18 @@
                     <div class="checkbox col-md-3">
                       <label id="yearly-day-of-week-count-switch">
                         <input type="checkbox" name="yearlyDayOfWeekMode" {{#ifCond 'true' event.yearlyDayOfWeekMode}}checked{{/ifCond}} value="true">
+                        <input type="hidden" name="yearlyDayOfWeekMode" value="false"/>
                       </label>
                     </div>
                     <div class="col-md-3">
                       <div id="yearly-on-day-of-week-count-container" class="switchable {{#ifCond 'true' event.yearlyDayOfWeekMode}}active{{/ifCond}}">
                         <select id="yearly-day-of-week-count" name="yearlyDayOfWeekCount" class="form-control">
-                          <option value="1" {{#ifCond '1' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>First</option>
-                          <option value="2" {{#ifCond '2' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Second</option>
-                          <option value="3" {{#ifCond '3' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Third</option>
-                          <option value="4" {{#ifCond '4' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Fourth</option>
-                          <option value="5" {{#ifCond '5' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Fifth</option>
-                          <option value="0" {{#ifCond '0' event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Last</option>
+                          <option value="1" {{#ifCond 1 event.yearlyDayOfWeekCount}}selected{{/ifCond}}>First</option>
+                          <option value="2" {{#ifCond 2 event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Second</option>
+                          <option value="3" {{#ifCond 3 event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Third</option>
+                          <option value="4" {{#ifCond 4 event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Fourth</option>
+                          <option value="5" {{#ifCond 5 event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Fifth</option>
+                          <option value="0" {{#ifCond 0 event.yearlyDayOfWeekCount}}selected{{/ifCond}}>Last</option>
                         </select>
                         <select multiple id="yearly-day-of-week" name="yearlyDayOfWeek" class="form-control">
                           <option value="2" {{#ifIn 2 event.yearlyDayOfWeek}}selected{{/ifIn}}>Monday</option>
@@ -290,7 +291,6 @@
                     </div>
                   </div>
                 </div>
-                <!-- TO BE IMPLEMENTED -->
                 <div class="form-group">
                   <div class="col-md-6 col-md-offset-3">
                     <span class="text-success" id="repeat-summary">Event will occur every 1 day(s)</span> &nbsp;

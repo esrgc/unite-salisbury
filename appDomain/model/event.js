@@ -334,11 +334,18 @@ EventSchema.statics.calculateOccurrences = (event, start, end) => {
     console.log(e);
     return null;
   }
-
-  //generate occurrences
-  occurences = schedule.all('L');
-
+  
   console.log(schedule);
+  
+  //generate occurrences
+  if(scope.frequency == 'yearly') {
+    // console.log(EventSchema.statics);
+    occurences = EventSchema.statics.calculateLaterOccurrences(scope);
+  }
+  else
+    occurences = schedule.all('L');
+
+ 
   return occurences;
 }
 
