@@ -80,7 +80,7 @@ router.get('/feed', function(req, res) {
         //repeating events
         _.each(occurences, (occurence) => {
           //check if the occurence is between start and end time
-
+          // console.log(occurence);
           if (moment(occurence).isBetween(start, end)) {
 
             var e = {
@@ -430,7 +430,7 @@ router.get('/edit', isLoggedIn, authorized.can('manage event'), function(req, re
 router.post('/edit', isLoggedIn, authorized.can('manage event'), function(req, res) {
   var model = req.body;
   let id = model.id;
-  model._id = id;//copy for re-display on error
+  model._id = id; //copy for re-display on error
   console.log('..........Editing Event.............');
   console.log(model);
   let promise = Event.findOne({ _id: id });
@@ -451,13 +451,13 @@ router.post('/edit', isLoggedIn, authorized.can('manage event'), function(req, r
           case 'daily':
             break;
           case 'weekly':
-            if (typeof model.weeklyDayOfWeek == 'undefined')
-              return res.render('event/edit', {
-                message: 'Please specify day of week for weekly recurring!',
-                err: true,
-                event: model
-              });
-            editingEvent.dayOfWeek = model.weeklyDayOfWeek;
+            if (typeof model.weeklyDayOfWeek != 'undefined')
+              // return res.render('event/edit', {
+              //   message: 'Please specify day of week for weekly recurring!',
+              //   err: true,
+              //   event: model
+              // });
+              editingEvent.dayOfWeek = model.weeklyDayOfWeek;
 
             break;
           case 'monthly':
@@ -482,8 +482,7 @@ router.post('/edit', isLoggedIn, authorized.can('manage event'), function(req, r
             if (model.yearlyDayOfWeekMode) {
               editingEvent.dayOfWeekCount = model.yearlyDayOfWeekCount;
               editingEvent.dayOfWeek = model.yearlyDayOfWeek;
-            }
-            else {
+            } else {
               editingEvent.dayOfWeekCount = null;
               editingEvent.dayOfWeek = [];
             }
@@ -568,7 +567,7 @@ router.post('/edit', isLoggedIn, authorized.can('manage event'), function(req, r
               });
             })
 
-          });        
+          });
           // if (newEvent) {
           // newEvent.save((err) => {
           //   if (err)
