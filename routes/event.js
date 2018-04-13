@@ -70,8 +70,9 @@ router.get('/feed', function(req, res) {
         // if (typeof d.schedule == 'undefined')
         //   d.calculateSchedule();
         //calculate occurences
-        let occurences = Event.calculateOccurrences(d);
-        // console.log(occurences);
+        let occurences = Event.calculateOccurrences(d, start, end);
+
+        console.log(occurences);
         // console.log(occurences);
         if (occurences == null)
           return; //no occurrence then move on to the next event
@@ -478,9 +479,13 @@ router.post('/edit', isLoggedIn, authorized.can('manage event'), function(req, r
             break;
           case 'yearly':
             editingEvent.monthOfYear = model.monthOfYear;
-            if (model.yearlyDayOfWeekMode == 'true') {
+            if (model.yearlyDayOfWeekMode) {
               editingEvent.dayOfWeekCount = model.yearlyDayOfWeekCount;
               editingEvent.dayOfWeek = model.yearlyDayOfWeek;
+            }
+            else {
+              editingEvent.dayOfWeekCount = null;
+              editingEvent.dayOfWeek = [];
             }
             break;
         }
