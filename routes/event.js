@@ -183,13 +183,13 @@ router.post('/add', isLoggedIn, authorized.can('create event'), function(req, re
           case 'daily':
             break;
           case 'weekly':
-            if (typeof model.weeklyDayOfWeek == 'undefined')
-              return res.render('event/add', {
-                message: 'Please specify day of week for weekly recurring!',
-                err: true,
-                event: model
-              });
-            newEvent.dayOfWeek = model.weeklyDayOfWeek;
+            if (typeof model.weeklyDayOfWeek != 'undefined')
+              // return res.render('event/add', {
+              //   message: 'Please specify day of week for weekly recurring!',
+              //   err: true,
+              //   event: model
+              // });
+              newEvent.dayOfWeek = model.weeklyDayOfWeek;
 
             break;
           case 'monthly':
