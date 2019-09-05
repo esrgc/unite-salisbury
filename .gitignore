@@ -1,7 +1,5 @@
-
-
 #custom
-config/
+config/index.js
 node_modules/
 bower_components/
 old-code/
