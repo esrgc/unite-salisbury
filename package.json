@@ -39,7 +39,7 @@
     "later": "^1.2.0",
     "lodash": "^4.17.21",
     "mdimapgeocoder": "~0.1.6",
-    "moment": "^2.21.0",
+    "moment": "^2.29.2",
     "moment-recur": "^1.0.7",
     "mongodb": "^3.1.13",
     "mongoose": "^5.7.5",
